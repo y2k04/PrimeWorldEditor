@@ -54,12 +54,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-if (WIN32)
-    set(QT_PLATFORM_COMPONENTS WinExtras)
-    set(QT_PLATFORM_COMPONENTS_LIBS Qt5::WinExtras)
-endif()
-
-find_package(Qt5 COMPONENTS Core Widgets ${QT_PLATFORM_COMPONENTS} REQUIRED)
+find_package(Qt6 COMPONENTS Concurrent Core Gui OpenGL OpenGLWidgets Widgets REQUIRED)
 
 file(GLOB_RECURSE source_files
     "*.cpp"
@@ -109,8 +104,13 @@ target_compile_features(pwe_editor PRIVATE cxx_std_17)
 target_link_libraries(
     pwe_editor
     pwe_core
-    Qt5::Widgets
-    ${QT_PLATFORM_COMPONENTS_LIBS}
+    Qt6::Concurrent
+    Qt6::Core
+    Qt6::Gui
+    Qt6::OpenGL
+    Qt6::OpenGLWidgets
+    Qt6::Widgets
+
     ${PLAT_LIBS}
 )
 
@@ -154,7 +154,7 @@ if (WIN32 OR APPLE)
 endif()
 
 if (WIN32)
-    find_program(WINDEPLOYQT_PROGRAM windeployqt PATHS ${Qt5_DIR}/../../../bin/)
+    find_program(WINDEPLOYQT_PROGRAM windeployqt PATHS ${Qt6_DIR}/../../../bin/)
     if(WINDEPLOYQT_PROGRAM)
         message(STATUS "Found ${WINDEPLOYQT_PROGRAM}")
     else()
@@ -163,7 +163,7 @@ if (WIN32)
 
     # run windeployqt to gather necessary qt libraries and plugins
     add_custom_command(TARGET pwe_editor POST_BUILD COMMAND ${WINDEPLOYQT_PROGRAM} ARGS
-                       --no-angle --no-opengl-sw $<TARGET_FILE:pwe_editor>)
+                       $<TARGET_FILE:pwe_editor>)
 
     # copy bin directory of dew prefix
     add_custom_command(TARGET pwe_editor POST_BUILD COMMAND ${CMAKE_COMMAND} ARGS -E copy_directory
@@ -174,7 +174,7 @@ if (WIN32)
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/resources" DESTINATION ".")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/templates" DESTINATION ".")
 elseif (APPLE)
-    find_program(MACDEPLOYQT_PROGRAM macdeployqt PATHS ${Qt5_DIR}/../../../bin/)
+    find_program(MACDEPLOYQT_PROGRAM macdeployqt PATHS ${Qt6_DIR}/../../../bin/)
     if(MACDEPLOYQT_PROGRAM)
         message(STATUS "Found ${MACDEPLOYQT_PROGRAM}")
     else()

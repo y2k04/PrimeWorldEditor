@@ -92,7 +92,7 @@ public:
 
 public slots:
     void QuickplayStarted();
-    void QuickplayFinished(int ReturnCode);
+    void QuickplayFinished(int ReturnCode, QProcess::ExitStatus exitStatus);
 };
 
 /** Attempt to launch quickplay based on the current editor state. */

@@ -4,8 +4,8 @@
 #include "Editor/SDolHeader.h"
 
 #include <QFileInfo>
-#include <QRegExp>
 #include <QObject>
+#include <QOverload>
 #include <QSettings>
 
 #undef CopyFile
@@ -37,10 +37,10 @@ CGameProject* gpQuickplayProject = nullptr;
 void CQuickplayRelay::QuickplayStarted()
 {
     debugf("Quickplay session started.");
-    connect(gpDolphinProcess, qOverload<int>(&QProcess::finished), this, &CQuickplayRelay::QuickplayFinished);
+    connect(gpDolphinProcess, &QProcess::finished, this, &CQuickplayRelay::QuickplayFinished);
 }
 
-void CQuickplayRelay::QuickplayFinished(int ReturnCode)
+void CQuickplayRelay::QuickplayFinished(int ReturnCode, QProcess::ExitStatus exitStatus)
 {
     debugf("Quickplay session finished.");
     disconnect(gpDolphinProcess, 0, this, 0);

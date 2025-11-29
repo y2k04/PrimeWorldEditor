@@ -59,7 +59,9 @@ void WColorPicker::mousePressEvent(QMouseEvent *)
 
 void WColorPicker::mouseReleaseEvent(QMouseEvent *pEvent)
 {
-    if ((pEvent->x() < width()) && (pEvent->y() < height()))
+    const auto pos = pEvent->position().toPoint();
+
+    if (pos.x() < width() && pos.y() < height())
     {
         mOldColor = mColor;
 

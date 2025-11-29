@@ -13,10 +13,12 @@ CPoiMapModel::CPoiMapModel(CWorldEditor *pEditor, QObject *pParent)
 
 QVariant CPoiMapModel::headerData(int Section, Qt::Orientation Orientation, int Role) const
 {
-    if (Section == 0 && Orientation == Qt::Horizontal && Role == Qt::DisplayRole)
-        return tr("PointOfInterest");
-
-    return QVariant::Invalid;
+    if (Section == 0 && Orientation == Qt::Horizontal)
+    {
+        if (Role == Qt::DisplayRole)
+            return tr("PointOfInterest");
+    }
+    return QVariant();
 }
 
 int CPoiMapModel::rowCount(const QModelIndex& /*rkParent*/) const
@@ -59,7 +61,7 @@ QVariant CPoiMapModel::data(const QModelIndex& rkIndex, int Role) const
         }
     }
 
-    return QVariant::Invalid;
+    return QVariant();
 }
 
 void CPoiMapModel::AddPOI(CScriptNode *pPOI)

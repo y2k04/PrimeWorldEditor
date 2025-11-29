@@ -16,7 +16,7 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QMessageBox>
-#include <QtConcurrent/QtConcurrentRun>
+#include <QtConcurrentRun>
 
 CProjectSettingsDialog::CProjectSettingsDialog(QWidget *pParent)
     : QDialog(pParent)
@@ -191,12 +191,12 @@ void CProjectSettingsDialog::BuildISO()
 
             if (!NeedsDiscMerge)
             {
-                QFuture<bool> Future = QtConcurrent::run(pProj, &CGameProject::BuildISO, TO_TSTRING(IsoPath), &Dialog);
+                QFuture<bool> Future = QtConcurrent::run(&CGameProject::BuildISO, pProj, TO_TSTRING(IsoPath), &Dialog);
                 Success = Dialog.WaitForResults(Future);
             }
             else
             {
-                QFuture<bool> Future = QtConcurrent::run(pProj, &CGameProject::MergeISO, TO_TSTRING(IsoPath), (nod::DiscWii*) pBaseDisc.get(), &Dialog);
+                QFuture<bool> Future = QtConcurrent::run(&CGameProject::MergeISO, pProj, TO_TSTRING(IsoPath), (nod::DiscWii*)pBaseDisc.get(), &Dialog);
                 Success = Dialog.WaitForResults(Future);
             }
 

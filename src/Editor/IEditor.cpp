@@ -48,7 +48,7 @@ bool IEditor::CheckUnsavedChanges()
 
     if (!OkToClear)
     {
-        const int Result = QMessageBox::warning(this, tr("Save"), tr("You have unsaved changes. Save?"), QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);
+        const int Result = QMessageBox::warning(this, tr("Save"), tr("You have unsaved changes. Save?"), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Cancel);
 
         if (Result == QMessageBox::Yes)
         {

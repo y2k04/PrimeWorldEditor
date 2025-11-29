@@ -83,7 +83,7 @@ public:
             }
         }
 
-        return QVariant::Invalid;
+        return QVariant();
     }
 
     // Accessors

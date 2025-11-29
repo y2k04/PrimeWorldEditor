@@ -112,9 +112,9 @@
         <property name="sortingEnabled">
          <bool>true</bool>
         </property>
-        <attribute name="headerVisible">
+        <property name="headerHidden">
          <bool>false</bool>
-        </attribute>
+        </property>
        </widget>
       </item>
      </layout>

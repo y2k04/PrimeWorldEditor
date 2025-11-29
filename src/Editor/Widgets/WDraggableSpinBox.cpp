@@ -1,6 +1,5 @@
 #include "WDraggableSpinBox.h"
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QLineEdit>
 #include <QMouseEvent>
 #include <QScreen>
@@ -35,7 +34,9 @@ void WDraggableSpinBox::mouseReleaseEvent(QMouseEvent *pEvent)
     {
         if (!mBeenDragged)
         {
-            if (pEvent->y() <= height() / 2)
+            const auto pos = pEvent->position().toPoint();
+
+            if (pos.y() <= height() / 2)
                 stepUp();
             else
                 stepDown();

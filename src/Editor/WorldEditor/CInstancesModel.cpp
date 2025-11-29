@@ -49,7 +49,7 @@ CInstancesModel::~CInstancesModel() = default;
 
 QVariant CInstancesModel::headerData(int Section, Qt::Orientation Orientation, int Role) const
 {
-    if ((Orientation == Qt::Horizontal) && (Role == Qt::DisplayRole))
+    if (Orientation == Qt::Horizontal && Role == Qt::DisplayRole)
     {
         switch (Section)
         {
@@ -59,7 +59,8 @@ QVariant CInstancesModel::headerData(int Section, Qt::Orientation Orientation, i
         case 3: return tr("Show");
         }
     }
-    return QVariant::Invalid;
+
+    return QVariant();
 }
 
 QModelIndex CInstancesModel::index(int Row, int Column, const QModelIndex& rkParent) const
@@ -154,7 +155,7 @@ QModelIndex CInstancesModel::parent(const QModelIndex& rkChild) const
         {
             CScriptTemplate *pTemp = pObj->Template();
 
-            for (size_t iTemp = 0; iTemp < mTemplateList.size(); iTemp++)
+            for (qsizetype iTemp = 0; iTemp < mTemplateList.size(); iTemp++)
             {
                 if (mTemplateList[iTemp] == pTemp)
                     return createIndex(static_cast<int>(iTemp), 0, static_cast<quintptr>((iTemp << TYPES_ROW_INDEX_SHIFT) | 1));
@@ -221,7 +222,7 @@ QVariant CInstancesModel::data(const QModelIndex& rkIndex, int Role) const
             if (rkIndex.column() == 0)
                 return mBaseItems[rkIndex.row()];
 
-            return QVariant::Invalid;
+            return QVariant();
         }
 
         // Object types
@@ -236,7 +237,7 @@ QVariant CInstancesModel::data(const QModelIndex& rkIndex, int Role) const
             }
 
             // todo: show/hide button in column 2
-            return QVariant::Invalid;
+            return QVariant();
         }
 
         // Instances
@@ -260,7 +261,7 @@ QVariant CInstancesModel::data(const QModelIndex& rkIndex, int Role) const
             }
             else
             {
-                return QVariant::Invalid;
+                return QVariant();
             }
         }
     }
@@ -269,7 +270,7 @@ QVariant CInstancesModel::data(const QModelIndex& rkIndex, int Role) const
     else if ((Role == Qt::DecorationRole) && (rkIndex.column() == 3))
     {
         if (!mpScene)
-            return QVariant::Invalid;
+            return QVariant();
 
         static const QIcon Visible(QStringLiteral(":/icons/Show.svg"));
         static const QIcon Invisible(QStringLiteral(":/icons/Hide.svg"));
@@ -321,7 +322,7 @@ QVariant CInstancesModel::data(const QModelIndex& rkIndex, int Role) const
         }
     }
 
-    return QVariant::Invalid;
+    return QVariant();
 }
 
 void CInstancesModel::SetModelType(EInstanceModelType Type)
@@ -493,7 +494,8 @@ void CInstancesModel::PropertyModified(IProperty *pProp, CScriptObject *pInst)
         const uint32 Index = mTemplateList.indexOf(pInst->Template());
         const QModelIndex TempIndex = index(Index, 0, ScriptRoot);
 
-        const QList<CScriptObject*> InstList = QList<CScriptObject*>::fromStdList(pInst->Template()->ObjectList());
+        const auto& ObjList = pInst->Template()->ObjectList();
+        const QList<CScriptObject*> InstList(ObjList.begin(), ObjList.end());
         const uint32 InstIdx = InstList.indexOf(pInst);
         const QModelIndex InstIndex = index(InstIdx, 0, TempIndex);
         emit dataChanged(InstIndex, InstIndex);

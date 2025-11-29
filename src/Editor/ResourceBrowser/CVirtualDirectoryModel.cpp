@@ -73,7 +73,7 @@ int CVirtualDirectoryModel::columnCount(const QModelIndex&) const
 QVariant CVirtualDirectoryModel::data(const QModelIndex& rkIndex, int Role) const
 {
     if (!rkIndex.isValid())
-        return QVariant::Invalid;
+        return QVariant();
 
     if (Role == Qt::DisplayRole || Role == Qt::ToolTipRole)
     {
@@ -94,7 +94,7 @@ QVariant CVirtualDirectoryModel::data(const QModelIndex& rkIndex, int Role) cons
         return QIcon(QStringLiteral(":/icons/Open_24px.svg"));
     }
 
-    return QVariant::Invalid;
+    return QVariant();
 }
 
 bool CVirtualDirectoryModel::setData(const QModelIndex& rkIndex, const QVariant& rkValue, int Role)

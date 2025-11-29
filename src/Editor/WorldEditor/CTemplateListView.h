@@ -28,8 +28,8 @@ public:
     {
         if (Role == Qt::DisplayRole || Role == Qt::ToolTipRole)
             return TO_QSTRING(mTemplates[rkIndex.row()]->Name());
-        else
-            return QVariant::Invalid;
+
+        return QVariant();
     }
 
     Qt::DropActions supportedDropActions() const override

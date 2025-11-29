@@ -5,7 +5,8 @@
 #include "UICommon.h"
 #include <Core/Resource/Script/NGameList.h>
 #include <Core/Resource/Script/NPropertyMap.h>
-#include <QtConcurrent/QtConcurrent>
+#include <QtConcurrentRun>
+#include <QThreadPool>
 #include <iterator>
 
 CGeneratePropertyNamesDialog::CGeneratePropertyNamesDialog(QWidget* pParent)
@@ -39,7 +40,7 @@ CGeneratePropertyNamesDialog::CGeneratePropertyNamesDialog(QWidget* pParent)
     mpUI->OutputTreeWidget->setSortingEnabled(true);
 
     // Allow the generator to initialize in the background while the user is getting set up
-    QtConcurrent::run(&mGenerator, &CPropertyNameGenerator::Warmup);
+    QThreadPool::globalInstance()->start([this] { mGenerator.Warmup(); });
 }
 
 CGeneratePropertyNamesDialog::~CGeneratePropertyNamesDialog() = default;
@@ -159,14 +160,14 @@ void CGeneratePropertyNamesDialog::StartGeneration()
     Params.Prefix = TO_TSTRING(mpUI->PrefixLineEdit->text());
     Params.Suffix = TO_TSTRING(mpUI->SuffixLineEdit->text());
     Params.Casing = mpUI->CasingComboBox->currentEnum();
-    Params.ValidIdPairs = mIdPairs.toStdVector();
+    Params.ValidIdPairs = std::vector<SPropertyIdTypePair>(mIdPairs.begin(), mIdPairs.end());
     Params.ExcludeAccuratelyNamedProperties = mpUI->UnnamedOnlyCheckBox->isChecked();
     Params.TestIntsAsChoices = mpUI->TestIntsAsChoicesCheckBox->isChecked();
     Params.PrintToLog = mpUI->LogOutputCheckBox->isChecked();
 
     // Run the task and configure ourselves so we can update correctly
     connect(&mFutureWatcher, &QFutureWatcher<void>::finished, this, &CGeneratePropertyNamesDialog::GenerationComplete);
-    mFuture = QtConcurrent::run(&mGenerator, &CPropertyNameGenerator::Generate, Params, &mNotifier);
+    mFuture = QtConcurrent::run(&CPropertyNameGenerator::Generate, &mGenerator, Params, &mNotifier);
     mFutureWatcher.setFuture(mFuture);
 
     mUpdateTimer.start(500);

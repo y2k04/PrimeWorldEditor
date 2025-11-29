@@ -220,13 +220,14 @@ QVariant CPropertyModel::headerData(int Section, Qt::Orientation Orientation, in
         if (Section == 0) return tr("Name");
         if (Section == 1) return tr("Value");
     }
-    return QVariant::Invalid;
+
+    return QVariant();
 }
 
 QVariant CPropertyModel::data(const QModelIndex& rkIndex, int Role) const
 {
     if (!rkIndex.isValid())
-        return QVariant::Invalid;
+        return QVariant();
 
     if (Role == Qt::DisplayRole || (Role == Qt::ToolTipRole && rkIndex.column() == 1))
     {
@@ -465,7 +466,7 @@ QVariant CPropertyModel::data(const QModelIndex& rkIndex, int Role) const
         }
     }
 
-    return QVariant::Invalid;
+    return QVariant();
 }
 
 QModelIndex CPropertyModel::index(int Row, int Column, const QModelIndex& rkParent) const

@@ -48,7 +48,8 @@ public:
 
     QVariant data(const QModelIndex& rkIndex, int Role) const override
     {
-        if (!rkIndex.isValid()) return QVariant::Invalid;
+        if (!rkIndex.isValid())
+            return QVariant();
 
         if (Role == Qt::DisplayRole)
             return TO_QSTRING(mObjList[rkIndex.row()]->Instance()->InstanceName());
@@ -65,7 +66,7 @@ public:
                 return QIcon(QStringLiteral(":/icons/POI Normal.svg"));
         }
 
-        return QVariant::Invalid;
+        return QVariant();
     }
 
     CScriptNode* PoiForIndex(const QModelIndex& rkIndex) const

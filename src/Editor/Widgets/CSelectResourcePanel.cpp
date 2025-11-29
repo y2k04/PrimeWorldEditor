@@ -2,8 +2,8 @@
 #include "ui_CSelectResourcePanel.h"
 #include "Editor/CEditorApplication.h"
 #include <Common/Math/MathUtil.h>
-#include <QDesktopWidget>
 #include <QDebug>
+#include <QScreen>
 
 CSelectResourcePanel::CSelectResourcePanel(CResourceSelector *pSelector)
     : QFrame(pSelector)
@@ -24,7 +24,7 @@ CSelectResourcePanel::CSelectResourcePanel(CResourceSelector *pSelector)
 
     // Determine size
     QPoint SelectorPos = pSelector->parentWidget()->mapToGlobal( pSelector->pos() );
-    QRect ScreenRect = gpEdApp->desktop()->availableGeometry();
+    QRect ScreenRect = gpEdApp->primaryScreen()->availableGeometry();
 
     int MaxWidthLeft = SelectorPos.x();
     int MaxWidthRight = ScreenRect.width() - SelectorPos.x() - pSelector->width();

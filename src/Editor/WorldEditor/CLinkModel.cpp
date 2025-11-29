@@ -36,7 +36,7 @@ int CLinkModel::columnCount(const QModelIndex& /*rkParent*/) const
 QVariant CLinkModel::data(const QModelIndex& rkIndex, int Role) const
 {
     if (!mpObject)
-        return QVariant::Invalid;
+        return QVariant();
 
     if (Role == Qt::DisplayRole || Role == Qt::ToolTipRole)
     {
@@ -76,11 +76,11 @@ QVariant CLinkModel::data(const QModelIndex& rkIndex, int Role) const
         }
 
         default:
-            return QVariant::Invalid;
+            return QVariant();
         }
     }
 
-    return QVariant::Invalid;
+    return QVariant();
 }
 
 QVariant CLinkModel::headerData(int Section, Qt::Orientation Orientation, int Role) const
@@ -92,9 +92,9 @@ QVariant CLinkModel::headerData(int Section, Qt::Orientation Orientation, int Ro
         case 0: return (mType == ELinkType::Incoming ? tr("Sender") : tr("Target"));
         case 1: return tr("State");
         case 2: return tr("Message");
-        default: return QVariant::Invalid;
+        default: return QVariant();
         }
     }
 
-    return QVariant::Invalid;
+    return QVariant();
 }
