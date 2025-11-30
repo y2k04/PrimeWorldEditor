@@ -229,7 +229,7 @@ bool CEditorApplication::CookPackageList(QList<CPackage*> PackageList)
     if (PackageList.isEmpty())
         return true;
 
-    CProgressDialog Dialog(tr("Cooking package%1)").arg(PackageList.size() > 1  ? tr("s") : QString{}), false, true, mpWorldEditor);
+    CProgressDialog Dialog(tr("Cooking package%1").arg(PackageList.size() > 1  ? tr("s") : QString{}), false, true, mpWorldEditor);
 
     QFuture<void> Future = QtConcurrent::run([&]()
     {
