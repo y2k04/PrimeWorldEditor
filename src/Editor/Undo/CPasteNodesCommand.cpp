@@ -10,15 +10,10 @@ CPasteNodesCommand::CPasteNodesCommand(CWorldEditor *pEditor, CScriptLayer *pLay
     const CNodeCopyMimeData *pkMimeData = qobject_cast<const CNodeCopyMimeData*>(qApp->clipboard()->mimeData());
 
     if (pkMimeData)
-        mpMimeData = new CNodeCopyMimeData(*pkMimeData);
-    else
-        mpMimeData = nullptr;
+        mpMimeData = std::make_unique<CNodeCopyMimeData>(*pkMimeData);
 }
 
-CPasteNodesCommand::~CPasteNodesCommand()
-{
-    if (mpMimeData) delete mpMimeData;
-}
+CPasteNodesCommand::~CPasteNodesCommand() = default;
 
 void CPasteNodesCommand::undo()
 {

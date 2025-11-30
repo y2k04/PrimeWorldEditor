@@ -6,13 +6,14 @@
 #include "Editor/CNodeCopyMimeData.h"
 #include "Editor/WorldEditor/CWorldEditor.h"
 #include <QClipboard>
+#include <memory>
 
 class CPasteNodesCommand : public IUndoCommand
 {
     CWorldEditor *mpEditor;
     CScriptLayer *mpLayer;
     CVector3f mPastePoint;
-    CNodeCopyMimeData *mpMimeData;
+    std::unique_ptr<CNodeCopyMimeData> mpMimeData;
     CNodePtrList mPastedNodes;
     CNodePtrList mOriginalSelection;
     CInstancePtrList mLinkedInstances;
