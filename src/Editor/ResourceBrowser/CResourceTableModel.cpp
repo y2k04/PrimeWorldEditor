@@ -2,6 +2,8 @@
 #include "CResourceBrowser.h"
 #include "CResourceMimeData.h"
 
+#include <algorithm>
+
 CResourceTableModel::CResourceTableModel(CResourceBrowser *pBrowser, QObject *pParent)
     : QAbstractTableModel(pParent)
 {
@@ -27,7 +29,7 @@ int CResourceTableModel::columnCount(const QModelIndex&) const
 QVariant CResourceTableModel::data(const QModelIndex& rkIndex, int Role) const
 {
     if (rkIndex.column() != 0)
-        return QVariant::Invalid;
+        return QVariant();
 
     // Directory
     if (IsIndexDirectory(rkIndex))
@@ -44,7 +46,7 @@ QVariant CResourceTableModel::data(const QModelIndex& rkIndex, int Role) const
         if (Role == Qt::DecorationRole)
             return QIcon(QStringLiteral(":/icons/Open_24px.svg"));
 
-        return QVariant::Invalid;
+        return QVariant();
     }
 
     // Resource
@@ -59,7 +61,7 @@ QVariant CResourceTableModel::data(const QModelIndex& rkIndex, int Role) const
     if (Role == Qt::DecorationRole)
         return QIcon(QStringLiteral(":/icons/Sphere Preview.svg"));
 
-    return QVariant::Invalid;
+    return QVariant();
 }
 
 Qt::ItemFlags CResourceTableModel::flags(const QModelIndex& rkIndex) const
@@ -277,7 +279,7 @@ void CResourceTableModel::RecursiveAddDirectoryContents(CVirtualDirectory *pDir)
 
 int CResourceTableModel::EntryListIndex(CResourceEntry *pEntry)
 {
-    return qLowerBound(mEntries, pEntry) - mEntries.constBegin();
+    return std::lower_bound(mEntries.begin(), mEntries.end(), pEntry) - mEntries.begin();
 }
 
 void CResourceTableModel::RefreshAllIndices()

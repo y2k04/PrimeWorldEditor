@@ -19,7 +19,7 @@ QVariant CLayerModel::data(const QModelIndex &index, int role) const
     if (mpArea && (role == Qt::DisplayRole) && (index.row() < rowCount(QModelIndex())))
         return TO_QSTRING(Layer(index)->Name());
 
-    return QVariant::Invalid;
+    return QVariant();
 }
 
 void CLayerModel::SetArea(CGameArea *pArea)

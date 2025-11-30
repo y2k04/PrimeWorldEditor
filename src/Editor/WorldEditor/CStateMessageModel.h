@@ -57,7 +57,7 @@ public:
             return mEntries[rkIndex.row()].Name;
         }
 
-        return QVariant::Invalid;
+        return QVariant();
     }
 
     void SetGameTemplate(CGameTemplate *pGame)

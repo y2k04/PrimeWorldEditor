@@ -99,7 +99,7 @@ QVariant CWorldTreeModel::data(const QModelIndex& rkIndex, int Role) const
         static const QIcon sAreaIcon  = QIcon(QStringLiteral(":/icons/New_16px.svg"));
 
         if (rkIndex.column() == 1)
-            return QVariant::Invalid;
+            return QVariant();
         else if (IndexIsWorld(rkIndex))
             return sWorldIcon;
         else
@@ -144,7 +144,7 @@ QVariant CWorldTreeModel::data(const QModelIndex& rkIndex, int Role) const
         return Font;
     }
 
-    return QVariant::Invalid;
+    return QVariant();
 }
 
 QVariant CWorldTreeModel::headerData(int Section, Qt::Orientation Orientation, int Role) const
@@ -156,7 +156,7 @@ QVariant CWorldTreeModel::headerData(int Section, Qt::Orientation Orientation, i
         else
             return tr("Internal Name");
     }
-    return QVariant::Invalid;
+    return QVariant();
 }
 
 bool CWorldTreeModel::IndexIsWorld(const QModelIndex& rkIndex) const

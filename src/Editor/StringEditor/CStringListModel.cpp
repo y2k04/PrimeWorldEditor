@@ -39,7 +39,7 @@ QVariant CStringListModel::data(const QModelIndex& kIndex, int Role) const
 {
     if (!kIndex.isValid() || !mpStringTable)
     {
-        return QVariant::Invalid;
+        return QVariant();
     }
 
     const auto StringIndex = static_cast<size_t>(kIndex.row());
@@ -66,7 +66,7 @@ QVariant CStringListModel::data(const QModelIndex& kIndex, int Role) const
     // other roles: invalid
     else
     {
-        return QVariant::Invalid;
+        return QVariant();
     }
 }
 

@@ -82,7 +82,7 @@ void CResourceBrowserDelegate::paint(QPainter *pPainter, const QStyleOptionViewI
     // Draw icon
     QVariant IconVariant = rkIndex.model()->data(rkIndex, Qt::DecorationRole);
 
-    if (IconVariant != QVariant::Invalid)
+    if (IconVariant.isValid())
     {
         QIcon Icon = IconVariant.value<QIcon>();
         Icon.paint(pPainter, GeomInfo.IconRect);

@@ -74,7 +74,7 @@ QVariant CSkeletonHierarchyModel::data(const QModelIndex& rkIndex, int Role) con
         return TO_QSTRING(pBone->Name());
     }
 
-    return QVariant::Invalid;
+    return QVariant();
 }
 
 CBone* CSkeletonHierarchyModel::BoneForIndex(const QModelIndex& rkIndex) const

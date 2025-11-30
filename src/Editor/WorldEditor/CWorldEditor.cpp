@@ -92,7 +92,7 @@ CWorldEditor::CWorldEditor(QWidget *parent)
 
     // Initialize edit mode toolbar
     mpEditModeButtonGroup = new QButtonGroup(this);
-    connect(mpEditModeButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(ChangeEditMode(int)));
+    connect(mpEditModeButtonGroup, &QButtonGroup::idClicked, this, qOverload<int>(&CWorldEditor::ChangeEditMode));
 
     AddEditModeButton(QIcon(QStringLiteral(":/icons/World.svg")), tr("Edit World Info"), eWEM_EditWorldInfo);
     AddEditModeButton(QIcon(QStringLiteral(":/icons/Modify.svg")), tr("Edit Script"), eWEM_EditScript);
@@ -131,7 +131,7 @@ CWorldEditor::CWorldEditor(QWidget *parent)
     mpQuickplayAction->setVisible(false);
     mpQuickplayAction->setEnabled(false);
 
-    connect(pQuickplayButton, SIGNAL(pressed()), this, SLOT(LaunchQuickplay()));
+    connect(pQuickplayButton, &QToolButton::pressed, this, &CWorldEditor::LaunchQuickplay);
 
     // "Open Recent" menu
     mpOpenRecentMenu = new QMenu(this);
@@ -142,7 +142,7 @@ CWorldEditor::CWorldEditor(QWidget *parent)
         QAction *pAction = new QAction(this);
         pAction->setVisible(false);
         pAction->setData((int) iAct);
-        connect(pAction, SIGNAL(triggered(bool)), this, SLOT(OpenRecentProject()));
+        connect(pAction, &QAction::triggered, this, &CWorldEditor::OpenRecentProject);
 
         mpOpenRecentMenu->addAction(pAction);
         mRecentProjectsActions[iAct] = pAction;
@@ -150,69 +150,69 @@ CWorldEditor::CWorldEditor(QWidget *parent)
     UpdateOpenRecentActions();
 
     // Connect signals and slots
-    connect(gpEdApp, SIGNAL(ActiveProjectChanged(CGameProject*)), this, SLOT(OnActiveProjectChanged(CGameProject*)));
-    connect(gpEdApp->clipboard(), SIGNAL(dataChanged()), this, SLOT(OnClipboardDataModified()));
+    connect(gpEdApp, &CEditorApplication::ActiveProjectChanged, this, &CWorldEditor::OnActiveProjectChanged);
+    connect(gpEdApp->clipboard(), &QClipboard::dataChanged, this, &CWorldEditor::OnClipboardDataModified);
 
-    connect(ui->MainViewport, SIGNAL(ViewportClick(SRayIntersection,QMouseEvent*)), this, SLOT(OnViewportClick(SRayIntersection,QMouseEvent*)));
-    connect(ui->MainViewport, SIGNAL(InputProcessed(SRayIntersection,QMouseEvent*)), this, SLOT(OnViewportInputProcessed(SRayIntersection,QMouseEvent*)));
-    connect(ui->MainViewport, SIGNAL(InputProcessed(SRayIntersection,QMouseEvent*)), this, SLOT(UpdateGizmoUI()) );
-    connect(ui->MainViewport, SIGNAL(InputProcessed(SRayIntersection,QMouseEvent*)), this, SLOT(UpdateStatusBar()) );
-    connect(ui->MainViewport, SIGNAL(InputProcessed(SRayIntersection,QMouseEvent*)), this, SLOT(UpdateCursor()) );
-    connect(ui->MainViewport, SIGNAL(GizmoMoved()), this, SLOT(OnGizmoMoved()));
-    connect(ui->MainViewport, SIGNAL(CameraOrbit()), this, SLOT(UpdateCameraOrbit()));
-    connect(this, SIGNAL(SelectionModified()), this, SLOT(OnSelectionModified()));
-    connect(this, SIGNAL(SelectionTransformed()), this, SLOT(UpdateCameraOrbit()));
-    connect(this, SIGNAL(PickModeEntered(QCursor)), this, SLOT(OnPickModeEnter(QCursor)));
-    connect(this, SIGNAL(PickModeExited()), this, SLOT(OnPickModeExit()));
-    connect(ui->TransformSpinBox, SIGNAL(ValueChanged(CVector3f)), this, SLOT(OnTransformSpinBoxModified(CVector3f)));
-    connect(ui->TransformSpinBox, SIGNAL(EditingDone(CVector3f)), this, SLOT(OnTransformSpinBoxEdited(CVector3f)));
-    connect(ui->CamSpeedSpinBox, SIGNAL(valueChanged(double)), this, SLOT(OnCameraSpeedChange(double)));
-    connect(&UndoStack(), SIGNAL(indexChanged(int)), this, SLOT(OnUndoStackIndexChanged()));
+    connect(ui->MainViewport, &CSceneViewport::ViewportClick, this, &CWorldEditor::OnViewportClick);
+    connect(ui->MainViewport, &CSceneViewport::InputProcessed, this, &CWorldEditor::OnViewportInputProcessed);
+    connect(ui->MainViewport, &CSceneViewport::InputProcessed, this, &CWorldEditor::UpdateGizmoUI);
+    connect(ui->MainViewport, &CSceneViewport::InputProcessed, this, &CWorldEditor::UpdateStatusBar);
+    connect(ui->MainViewport, &CSceneViewport::InputProcessed, this, &CWorldEditor::UpdateCursor);
+    connect(ui->MainViewport, &CSceneViewport::GizmoMoved, this, &CWorldEditor::OnGizmoMoved);
+    connect(ui->MainViewport, &CSceneViewport::CameraOrbit, this, &CWorldEditor::UpdateCameraOrbit);
+    connect(this, &CWorldEditor::SelectionModified, this, &CWorldEditor::OnSelectionModified);
+    connect(this, &CWorldEditor::SelectionTransformed, this, &CWorldEditor::UpdateCameraOrbit);
+    connect(this, &CWorldEditor::PickModeEntered, this, &CWorldEditor::OnPickModeEnter);
+    connect(this, &CWorldEditor::PickModeExited, this, &CWorldEditor::OnPickModeExit);
+    connect(ui->TransformSpinBox, &WVectorEditor::ValueChanged, this, &CWorldEditor::OnTransformSpinBoxModified);
+    connect(ui->TransformSpinBox, &WVectorEditor::EditingDone, this, &CWorldEditor::OnTransformSpinBoxEdited);
+    connect(ui->CamSpeedSpinBox, &WDraggableSpinBox::valueChanged, this, &CWorldEditor::OnCameraSpeedChange);
+    connect(&UndoStack(), &QUndoStack::indexChanged, this, &CWorldEditor::OnUndoStackIndexChanged);
 
-    connect(ui->ActionOpenProject, SIGNAL(triggered()), this, SLOT(OpenProject()));
-    connect(ui->ActionSave, SIGNAL(triggered()) , this, SLOT(Save()));
-    connect(ui->ActionSaveAndRepack, SIGNAL(triggered()), this, SLOT(SaveAndRepack()));
-    connect(ui->ActionExportGame, SIGNAL(triggered()), this, SLOT(ExportGame()));
-    connect(ui->ActionProjectSettings, SIGNAL(triggered()), this, SLOT(OpenProjectSettings()));
-    connect(ui->ActionCloseProject, SIGNAL(triggered()), this, SLOT(CloseProject()));
-    connect(ui->ActionExit, SIGNAL(triggered()), this, SLOT(close()));
+    connect(ui->ActionOpenProject, &QAction::triggered, this, &CWorldEditor::OpenProject);
+    connect(ui->ActionSave, &QAction::triggered , this, &CWorldEditor::Save);
+    connect(ui->ActionSaveAndRepack, &QAction::triggered, this, &CWorldEditor::SaveAndRepack);
+    connect(ui->ActionExportGame, &QAction::triggered, this, &CWorldEditor::ExportGame);
+    connect(ui->ActionProjectSettings, &QAction::triggered, this, &CWorldEditor::OpenProjectSettings);
+    connect(ui->ActionCloseProject, &QAction::triggered, this, &CWorldEditor::CloseProject);
+    connect(ui->ActionExit, &QAction::triggered, this, &CWorldEditor::close);
 
-    connect(ui->ActionCut, SIGNAL(triggered()), this, SLOT(Cut()));
-    connect(ui->ActionCopy, SIGNAL(triggered()), this, SLOT(Copy()));
-    connect(ui->ActionPaste, SIGNAL(triggered()), this, SLOT(Paste()));
-    connect(ui->ActionDelete, SIGNAL(triggered()), this, SLOT(DeleteSelection()));
-    connect(ui->ActionSelectAll, SIGNAL(triggered()), this, SLOT(SelectAllTriggered()));
-    connect(ui->ActionInvertSelection, SIGNAL(triggered()), this, SLOT(InvertSelectionTriggered()));
-    connect(ui->ActionLink, SIGNAL(toggled(bool)), this, SLOT(OnLinkButtonToggled(bool)));
-    connect(ui->ActionUnlink, SIGNAL(triggered()), this, SLOT(OnUnlinkClicked()));
+    connect(ui->ActionCut, &QAction::triggered, this, &CWorldEditor::Cut);
+    connect(ui->ActionCopy, &QAction::triggered, this, &CWorldEditor::Copy);
+    connect(ui->ActionPaste, &QAction::triggered, this, &CWorldEditor::Paste);
+    connect(ui->ActionDelete, &QAction::triggered, this, &CWorldEditor::DeleteSelection);
+    connect(ui->ActionSelectAll, &QAction::triggered, this, &CWorldEditor::SelectAllTriggered);
+    connect(ui->ActionInvertSelection, &QAction::triggered, this, &CWorldEditor::InvertSelectionTriggered);
+    connect(ui->ActionLink, &QAction::toggled, this, &CWorldEditor::OnLinkButtonToggled);
+    connect(ui->ActionUnlink, &QAction::triggered, this, &CWorldEditor::OnUnlinkClicked);
 
-    connect(ui->ActionEditTweaks, SIGNAL(triggered()), mpTweakEditor, SLOT(show()));
-    connect(ui->ActionEditLayers, SIGNAL(triggered()), this, SLOT(EditLayers()));
+    connect(ui->ActionEditTweaks, &QAction::triggered, mpTweakEditor, &CWorldEditor::show);
+    connect(ui->ActionEditLayers, &QAction::triggered, this, &CWorldEditor::EditLayers);
     if (gTemplatesWritable)
-        connect(ui->ActionGeneratePropertyNames, SIGNAL(triggered()), mpGeneratePropertyNamesDialog, SLOT(show()));
+        connect(ui->ActionGeneratePropertyNames, &QAction::triggered, mpGeneratePropertyNamesDialog, &CWorldEditor::show);
     else
         ui->ActionGeneratePropertyNames->setEnabled(false);
 
-    connect(ui->ActionDrawWorld, SIGNAL(triggered()), this, SLOT(ToggleDrawWorld()));
-    connect(ui->ActionDrawObjects, SIGNAL(triggered()), this, SLOT(ToggleDrawObjects()));
-    connect(ui->ActionDrawCollision, SIGNAL(triggered()), this, SLOT(ToggleDrawCollision()));
-    connect(ui->ActionDrawObjectCollision, SIGNAL(triggered()), this, SLOT(ToggleDrawObjectCollision()));
-    connect(ui->ActionDrawLights, SIGNAL(triggered()), this, SLOT(ToggleDrawLights()));
-    connect(ui->ActionDrawSky, SIGNAL(triggered()), this, SLOT(ToggleDrawSky()));
-    connect(ui->ActionGameMode, SIGNAL(triggered()), this, SLOT(ToggleGameMode()));
-    connect(ui->ActionDisableAlpha, SIGNAL(triggered()), this, SLOT(ToggleDisableAlpha()));
-    connect(ui->ActionNoLighting, SIGNAL(triggered()), this, SLOT(SetNoLighting()));
-    connect(ui->ActionBasicLighting, SIGNAL(triggered()), this, SLOT(SetBasicLighting()));
-    connect(ui->ActionWorldLighting, SIGNAL(triggered()), this, SLOT(SetWorldLighting()));
-    connect(ui->ActionNoBloom, SIGNAL(triggered()), this, SLOT(SetNoBloom()));
-    connect(ui->ActionBloomMaps, SIGNAL(triggered()), this, SLOT(SetBloomMaps()));
-    connect(ui->ActionFakeBloom, SIGNAL(triggered()), this, SLOT(SetFakeBloom()));
-    connect(ui->ActionBloom, SIGNAL(triggered()), this, SLOT(SetBloom()));
-    connect(ui->ActionIncrementGizmo, SIGNAL(triggered()), this, SLOT(IncrementGizmo()));
-    connect(ui->ActionDecrementGizmo, SIGNAL(triggered()), this, SLOT(DecrementGizmo()));
-    connect(ui->ActionCollisionRenderSettings, SIGNAL(triggered()), mpCollisionDialog, SLOT(show()));
+    connect(ui->ActionDrawWorld, &QAction::triggered, this, &CWorldEditor::ToggleDrawWorld);
+    connect(ui->ActionDrawObjects, &QAction::triggered, this, &CWorldEditor::ToggleDrawObjects);
+    connect(ui->ActionDrawCollision, &QAction::triggered, this, &CWorldEditor::ToggleDrawCollision);
+    connect(ui->ActionDrawObjectCollision, &QAction::triggered, this, &CWorldEditor::ToggleDrawObjectCollision);
+    connect(ui->ActionDrawLights, &QAction::triggered, this, &CWorldEditor::ToggleDrawLights);
+    connect(ui->ActionDrawSky, &QAction::triggered, this, &CWorldEditor::ToggleDrawSky);
+    connect(ui->ActionGameMode, &QAction::triggered, this, &CWorldEditor::ToggleGameMode);
+    connect(ui->ActionDisableAlpha, &QAction::triggered, this, &CWorldEditor::ToggleDisableAlpha);
+    connect(ui->ActionNoLighting, &QAction::triggered, this, &CWorldEditor::SetNoLighting);
+    connect(ui->ActionBasicLighting, &QAction::triggered, this, &CWorldEditor::SetBasicLighting);
+    connect(ui->ActionWorldLighting, &QAction::triggered, this, &CWorldEditor::SetWorldLighting);
+    connect(ui->ActionNoBloom, &QAction::triggered, this, &CWorldEditor::SetNoBloom);
+    connect(ui->ActionBloomMaps, &QAction::triggered, this, &CWorldEditor::SetBloomMaps);
+    connect(ui->ActionFakeBloom, &QAction::triggered, this, &CWorldEditor::SetFakeBloom);
+    connect(ui->ActionBloom, &QAction::triggered, this, &CWorldEditor::SetBloom);
+    connect(ui->ActionIncrementGizmo, &QAction::triggered, this, &CWorldEditor::IncrementGizmo);
+    connect(ui->ActionDecrementGizmo, &QAction::triggered, this, &CWorldEditor::DecrementGizmo);
+    connect(ui->ActionCollisionRenderSettings, &QAction::triggered, mpCollisionDialog, &CWorldEditor::show);
 
-    connect(ui->ActionAbout, SIGNAL(triggered(bool)), this, SLOT(About()));
+    connect(ui->ActionAbout, &QAction::triggered, this, &CWorldEditor::About);
 }
 
 CWorldEditor::~CWorldEditor()
@@ -1056,8 +1056,8 @@ void CWorldEditor::OnLinkButtonToggled(bool Enabled)
     if (Enabled)
     {
         EnterPickMode(ENodeType::Script, true, false, false);
-        connect(this, SIGNAL(PickModeClick(SRayIntersection,QMouseEvent*)), this, SLOT(OnLinkClick(SRayIntersection)));
-        connect(this, SIGNAL(PickModeExited()), this, SLOT(OnLinkEnd()));
+        connect(this, &CWorldEditor::PickModeClick, this, &CWorldEditor::OnLinkClick);
+        connect(this, &CWorldEditor::PickModeExited, this, &CWorldEditor::OnLinkEnd);
         mIsMakingLink = true;
         mpNewLinkSender = nullptr;
         mpNewLinkReceiver = nullptr;
@@ -1088,8 +1088,8 @@ void CWorldEditor::OnLinkClick(const SRayIntersection& rkIntersect)
 
 void CWorldEditor::OnLinkEnd()
 {
-    disconnect(this, SIGNAL(PickModeClick(SRayIntersection,QMouseEvent*)), this, SLOT(OnLinkClick(SRayIntersection)));
-    disconnect(this, SIGNAL(PickModeExited()), this, SLOT(OnLinkEnd()));
+    disconnect(this, &CWorldEditor::PickModeClick, this, &CWorldEditor::OnLinkClick);
+    disconnect(this, &CWorldEditor::PickModeExited, this, &CWorldEditor::OnLinkEnd);
     ui->ActionLink->setChecked(false);
     mIsMakingLink = false;
     mpNewLinkSender = nullptr;

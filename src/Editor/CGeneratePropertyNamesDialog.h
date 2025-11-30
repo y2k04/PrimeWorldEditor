@@ -36,7 +36,7 @@ class CGeneratePropertyNamesDialog : public QDialog
     CProgressBarNotifier mNotifier;
 
     /** List of ID/type pairs in the ID pool */
-    QVector<SPropertyIdTypePair> mIdPairs;
+    QList<SPropertyIdTypePair> mIdPairs;
 
     /** Future/future watcher for name generation task */
     QFuture<void> mFuture;
@@ -46,7 +46,7 @@ class CGeneratePropertyNamesDialog : public QDialog
     QTimer mUpdateTimer;
 
     /** Checked items in the output tree widget */
-    QVector<QTreeWidgetItem*> mCheckedItems;
+    QList<QTreeWidgetItem*> mCheckedItems;
 
     /** Whether name generation is running */
     bool mRunningNameGeneration = false;

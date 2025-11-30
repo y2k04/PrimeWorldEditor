@@ -14,7 +14,7 @@
 #include <QFileDialog>
 #include <QLabel>
 #include <QVBoxLayout>
-#include <QtConcurrent/QtConcurrentRun>
+#include <QtConcurrentRun>
 
 #include <nod/nod.hpp>
 
@@ -445,7 +445,7 @@ void CExportGameDialog::Export()
     StrExportDir.EnsureEndsWith('/');
 
     CProgressDialog Dialog(tr("Creating new game project"), false, true, parentWidget());
-    QFuture<bool> Future = QtConcurrent::run(mpExporter.get(), &CGameExporter::Export, mpDisc.get(), StrExportDir, &NameMap, &GameInfo, &Dialog);
+    QFuture<bool> Future = QtConcurrent::run(&CGameExporter::Export, mpExporter.get(), mpDisc.get(), StrExportDir, &NameMap, &GameInfo, &Dialog);
     mExportSuccess = Dialog.WaitForResults(Future);
 
     if (!mExportSuccess)

@@ -18,7 +18,7 @@
 #include <Core/GameProject/CGameProject.h>
 
 #include <QFuture>
-#include <QtConcurrent/QtConcurrentRun>
+#include <QtConcurrentRun>
 
 CEditorApplication::CEditorApplication(int& rArgc, char **ppArgv)
     : QApplication(rArgc, ppArgv)
@@ -280,7 +280,7 @@ bool CEditorApplication::RebuildResourceDatabase()
         Dialog.SetOneShotTask("Rebuilding resource database");
         Dialog.DisallowCanceling();
 
-        QFuture<void> Future = QtConcurrent::run(pProj->ResourceStore(), &CResourceStore::RebuildFromDirectory);
+        QFuture<void> Future = QtConcurrent::run(&CResourceStore::RebuildFromDirectory, pProj->ResourceStore());
         Dialog.WaitForResults(Future);
         Dialog.close();
 

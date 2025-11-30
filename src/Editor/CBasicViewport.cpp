@@ -96,7 +96,7 @@ void CBasicViewport::mousePressEvent(QMouseEvent *pEvent)
         OnMouseClick(pEvent);
     }
 
-    mLastMousePos = pEvent->globalPos();
+    mLastMousePos = pEvent->globalPosition().toPoint();
 }
 
 void CBasicViewport::mouseReleaseEvent(QMouseEvent *pEvent)
@@ -117,7 +117,7 @@ void CBasicViewport::mouseReleaseEvent(QMouseEvent *pEvent)
     // Send context menu event to subclass if needed
     if ((pEvent->button() == Qt::RightButton) && (mMoveTimer.Time() <= 0.3) && !mMouseMoved)
     {
-        QContextMenuEvent Event(QContextMenuEvent::Mouse, QCursor::pos());
+        QContextMenuEvent Event(QContextMenuEvent::Mouse, QCursor::pos(), QCursor::pos());
         this->ContextMenu(&Event);
     }
  }

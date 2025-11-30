@@ -6,7 +6,6 @@
 #include <Common/Log.h>
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QScreen>
 
 CGizmo::CGizmo()
