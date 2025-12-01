@@ -26,7 +26,21 @@ integrate_dew()
 include(cmake/generate_product_version.cmake)
 
 if(MSVC)
-    add_compile_options(/WX /wd4267 /wd4100 /wd4101 /wd4189)
+    add_compile_options(
+        /WX     # Warnings as errors
+        /wd4267 # 'var' : conversion from 'size_t' to 'type', possible loss of data
+        /wd4100 # 'identifier' : unreferenced formal parameter
+        /wd4101 # 'identifier': unreferenced local variable
+        /wd4189 # 'identifier' : local variable is initialized but not referenced
+    )
+
+    # TODO: EXT Deprecation warnings can be removed when nod gets updated.
+    #       the current tracked branch uses an older version of fmt that causes
+    #       these warnings.
+    add_compile_definitions(
+        _SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS
+        _CRT_SECURE_NO_DEPRECATE
+    )
 else()
     add_compile_options(-Wno-multichar -Wno-undefined-var-template)
 endif()
