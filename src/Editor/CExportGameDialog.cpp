@@ -326,8 +326,8 @@ void CExportGameDialog::RecursiveAddToTree(const nod::Node *pkNode, QTreeWidgetI
     {
         if (pkLeft->getKind() != pkRight->getKind())
             return pkLeft->getKind() == nod::Node::Kind::Directory;
-        else
-            return TString(pkLeft->getName().data()).ToUpper() < TString(pkRight->getName().data()).ToUpper();
+
+        return TString(pkLeft->getName()).ToUpper() < TString(pkRight->getName()).ToUpper();
     });
 
     // Add nodes to tree
@@ -343,7 +343,8 @@ void CExportGameDialog::RecursiveAddToTree(const nod::Node *pkNode, QTreeWidgetI
 
         const bool IsDir = pkNode->getKind() == nod::Node::Kind::Directory;
 
-        auto* pItem = new QTreeWidgetItem(pParent, QStringList(QString::fromStdString(pkNode->getName().data())));
+        const auto nodeName = pkNode->getName();
+        auto* pItem = new QTreeWidgetItem(pParent, QStringList(QString::fromUtf8(nodeName.data(), nodeName.size())));
         pItem->setIcon(0, QIcon(IsDir ? skDirIcon : skFileIcon));
 
         if (IsDir)
