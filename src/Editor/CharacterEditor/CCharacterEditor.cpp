@@ -81,14 +81,13 @@ void CCharacterEditor::EditorTick(float DeltaTime)
 
 void CCharacterEditor::UpdateAnimTime(float DeltaTime)
 {
-    CAnimation *pAnim = CurrentAnimation();
+    const CAnimation *pAnim = CurrentAnimation();
 
     if (pAnim && mPlayAnim && !mBindPose && !ui->AnimSlider->isSliderDown())
     {
         mAnimTime += DeltaTime * mPlaybackSpeed;
 
-        CAnimation *pAnim = CurrentAnimation();
-        float AnimLength = (pAnim ? pAnim->Duration() : 0.f);
+        const float AnimLength = pAnim->Duration();
 
         if (mAnimTime > AnimLength)
         {
