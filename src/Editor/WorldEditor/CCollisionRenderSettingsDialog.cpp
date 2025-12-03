@@ -1,7 +1,11 @@
 #include "CCollisionRenderSettingsDialog.h"
 #include "ui_CCollisionRenderSettingsDialog.h"
-#include "CWorldEditor.h"
+
 #include "Editor/UICommon.h"
+#include "Editor/WorldEditor/CWorldEditor.h"
+
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 
 CCollisionRenderSettingsDialog::CCollisionRenderSettingsDialog(CWorldEditor *pEditor, QWidget *pParent /*= 0*/)
     : QDialog(pParent)
@@ -35,8 +39,14 @@ void CCollisionRenderSettingsDialog::SetupWidgets()
     EGame Game = mpEditor->CurrentGame();
 
     // Set widgets to match current render setting values
-    mpUi->HideMaskLineEdit->setText(QStringLiteral("0x") + QString::number(rSettings.HideMask, 16).toUpper());
-    mpUi->HighlightMaskLineEdit->setText(QStringLiteral("0x") + QString::number(rSettings.HighlightMask, 16).toUpper());
+    auto* hexValidator = new QRegularExpressionValidator(QRegularExpression(QStringLiteral("^(?:0[xX])?([0-9]|[A-F]|[a-f]){1,16}$")));
+    mpUi->HideMaskLineEdit->setText(QString::number(rSettings.HideMask, 16).toUpper());
+    mpUi->HighlightMaskLineEdit->setText(QString::number(rSettings.HighlightMask, 16).toUpper());
+    mpUi->HideMaskLineEdit->setValidator(hexValidator);
+    mpUi->HighlightMaskLineEdit->setValidator(hexValidator);
+    mpUi->HideMaskLineEdit->setToolTip(tr("Must be hex characters (0x optional)"));
+    mpUi->HighlightMaskLineEdit->setToolTip(tr("Must be hex characters (0x optional)"));
+
     mpUi->WireframeCheckBox->setChecked(rSettings.DrawWireframe);
     mpUi->SurfaceTypeCheckBox->setChecked(rSettings.TintWithSurfaceColor);
     mpUi->StandableTrisCheckBox->setChecked(rSettings.TintUnwalkableTris);
