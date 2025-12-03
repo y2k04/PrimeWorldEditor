@@ -39,7 +39,7 @@ QVariant CResourceTableModel::data(const QModelIndex& rkIndex, int Role) const
         if (Role == Qt::DisplayRole || Role == Qt::ToolTipRole)
         {
             return ((mpCurrentDir && !mpCurrentDir->IsRoot() && rkIndex.row() == 0)
-                        ? tr("..")
+                        ? QStringLiteral("..")
                         : TO_QSTRING(pDir->Name()));
         }
 
