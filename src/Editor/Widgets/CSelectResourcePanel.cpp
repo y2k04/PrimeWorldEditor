@@ -79,12 +79,12 @@ void CSelectResourcePanel::FocusChanged(QWidget*, QWidget *pNew)
         deleteLater();
 }
 
-void CSelectResourcePanel::SearchStringChanged(QString SearchString)
+void CSelectResourcePanel::SearchStringChanged(const QString& SearchString)
 {
     mProxyModel.SetSearchString(SearchString);
 }
 
-void CSelectResourcePanel::ResourceClicked(QModelIndex Index)
+void CSelectResourcePanel::ResourceClicked(const QModelIndex& Index)
 {
     QModelIndex SourceIndex = mProxyModel.mapToSource(Index);
     CResourceEntry *pEntry = mModel.EntryForIndex(SourceIndex);

@@ -26,8 +26,8 @@ public:
 
 public slots:
     void FocusChanged(QWidget *pOld, QWidget *pNew);
-    void SearchStringChanged(QString SearchString);
-    void ResourceClicked(QModelIndex Index);
+    void SearchStringChanged(const QString& SearchString);
+    void ResourceClicked(const QModelIndex& Index);
 };
 
 #endif // CSELECTRESOURCEPANEL_H
