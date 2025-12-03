@@ -109,17 +109,17 @@ public:
         return mCachedBounds;
     }
 
-    uint32 Size() const                          { return mSelectedNodes.size(); }
-    bool IsEmpty() const                         { return Size() == 0; }
-    CSceneNode* At(uint32 Index) const           { return mSelectedNodes[Index]; }
-    CSceneNode* Front() const                    { return mSelectedNodes.front(); }
-    CSceneNode* Back() const                     { return mSelectedNodes.back(); }
-    CSceneNode* operator[](uint32 Index) const   { return mSelectedNodes[Index]; }
-    void UpdateBounds()                          { mBoundsDirty = true; }
-    void SetAllowedNodeTypes(FNodeFlags Types)   { mAllowedNodes = Types; }
-    bool IsAllowedType(ENodeType Type) const     { return (mAllowedNodes & Type) != 0; }
-    bool IsAllowedType(CSceneNode *pNode) const  { return (mAllowedNodes & pNode->NodeType()) != 0; }
-    QList<CSceneNode*> SelectedNodeList() const  { return mSelectedNodes; }
+    uint32 Size() const                                { return mSelectedNodes.size(); }
+    bool IsEmpty() const                               { return Size() == 0; }
+    CSceneNode* At(uint32 Index) const                 { return mSelectedNodes[Index]; }
+    CSceneNode* Front() const                          { return mSelectedNodes.front(); }
+    CSceneNode* Back() const                           { return mSelectedNodes.back(); }
+    CSceneNode* operator[](uint32 Index) const         { return mSelectedNodes[Index]; }
+    void UpdateBounds()                                { mBoundsDirty = true; }
+    void SetAllowedNodeTypes(FNodeFlags Types)         { mAllowedNodes = Types; }
+    bool IsAllowedType(ENodeType Type) const           { return (mAllowedNodes & Type) != 0; }
+    bool IsAllowedType(CSceneNode *pNode) const        { return (mAllowedNodes & pNode->NodeType()) != 0; }
+    const QList<CSceneNode*>& SelectedNodeList() const { return mSelectedNodes; }
 
 signals:
     void Modified();
