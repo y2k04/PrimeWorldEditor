@@ -17,7 +17,7 @@ struct SResDelegateGeometryInfo
     QRect NameStringRect;
     QRect InfoStringRect;
 };
-SResDelegateGeometryInfo GetGeometryInfo(const SDelegateFontInfo& rkFontInfo, const QStyleOptionViewItem& rkOption, bool IsDirectory)
+static SResDelegateGeometryInfo GetGeometryInfo(const SDelegateFontInfo& rkFontInfo, const QStyleOptionViewItem& rkOption, bool IsDirectory)
 {
     SResDelegateGeometryInfo Info;
 

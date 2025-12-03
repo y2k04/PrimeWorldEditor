@@ -14,7 +14,7 @@
 #include <QtGlobal>
 
 // Redirect qDebug output to the log file
-void QtLogRedirect(QtMsgType Type, const QMessageLogContext& /*rkContext*/, const QString& rkMessage)
+static void QtLogRedirect(QtMsgType Type, const QMessageLogContext& /*rkContext*/, const QString& rkMessage)
 {
     switch (Type)
     {

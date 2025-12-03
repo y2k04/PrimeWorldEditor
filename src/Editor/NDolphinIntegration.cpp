@@ -26,13 +26,13 @@ const char* const gkDolPath             = "sys/main.dol";
 const char* const gkDolBackupPath       = "sys/main.original.dol";
 
 /** The user's path to the Dolphin exe */
-QString gDolphinPath;
+static QString gDolphinPath;
 
 /** The current Dolphin quickplay process */
-QProcess* gpDolphinProcess = nullptr;
+static QProcess* gpDolphinProcess = nullptr;
 
 /** The project that the current active quickplay session is running for */
-CGameProject* gpQuickplayProject = nullptr;
+static CGameProject* gpQuickplayProject = nullptr;
 
 /** Quickplay relay implementation to detect when the active quickplay session closes */
 void CQuickplayRelay::QuickplayStarted()
@@ -52,9 +52,9 @@ void CQuickplayRelay::QuickplayFinished(int ReturnCode, QProcess::ExitStatus exi
     gpQuickplayProject = nullptr;
 }
 
-CQuickplayRelay gQuickplayRelay;
+static CQuickplayRelay gQuickplayRelay;
 
-uint32 AssembleBranchInstruction(uint32 instructionAddress, uint32 branchTarget)
+static uint32 AssembleBranchInstruction(uint32 instructionAddress, uint32 branchTarget)
 {
     int32 jumpOffset = ((int32)branchTarget - (int32)instructionAddress) / 4;
     if (jumpOffset < 0)
@@ -64,7 +64,7 @@ uint32 AssembleBranchInstruction(uint32 instructionAddress, uint32 branchTarget)
     return (18 << 26) + (jumpOffset << 2);
 }
 
-std::map<TString, uint32> LoadSymbols(const TString& mapContents) {
+static std::map<TString, uint32> LoadSymbols(const TString& mapContents) {
     std::map<TString, uint32> result;
 
     for (auto& line : mapContents.Split("\n"))
