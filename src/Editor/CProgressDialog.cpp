@@ -3,7 +3,7 @@
 #include "CEditorApplication.h"
 #include <QCloseEvent>
 
-CProgressDialog::CProgressDialog(QString OperationName, bool UseBusyIndicator, bool AlertOnFinish, QWidget *pParent)
+CProgressDialog::CProgressDialog(const QString& OperationName, bool UseBusyIndicator, bool AlertOnFinish, QWidget *pParent)
     : IProgressNotifierUI(pParent)
     , mpUI(std::make_unique<Ui::CProgressDialog>())
     , mUseBusyIndicator(UseBusyIndicator)

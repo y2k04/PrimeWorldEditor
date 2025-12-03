@@ -26,7 +26,7 @@ class CProgressDialog : public IProgressNotifierUI
     bool mCanceled = false;
 
 public:
-    explicit CProgressDialog(QString OperationName, bool UseBusyIndicator, bool AlertOnFinish, QWidget *pParent = nullptr);
+    explicit CProgressDialog(const QString& OperationName, bool UseBusyIndicator, bool AlertOnFinish, QWidget *pParent = nullptr);
     ~CProgressDialog() override;
 
     void DisallowCanceling();
@@ -44,7 +44,7 @@ public slots:
     // Results
 protected:
     template<typename RetType>
-    void InternalWaitForResults(QFuture<RetType> Future)
+    void InternalWaitForResults(const QFuture<RetType>& Future)
     {
         gpEdApp->SetEditorTicksEnabled(false);
 
@@ -61,7 +61,7 @@ protected:
 
 public:
     template<typename RetType>
-    RetType WaitForResults(QFuture<RetType> Future)
+    RetType WaitForResults(const QFuture<RetType>& Future)
     {
         InternalWaitForResults(Future);
         return Future.result();
@@ -69,7 +69,7 @@ public:
 };
 
 template<>
-inline void CProgressDialog::WaitForResults(QFuture<void> Future)
+inline void CProgressDialog::WaitForResults(const QFuture<void>& Future)
 {
     InternalWaitForResults(Future);
 }
