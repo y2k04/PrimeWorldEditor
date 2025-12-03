@@ -109,10 +109,10 @@ CModelEditorWindow::CModelEditorWindow(CModel *pModel, QWidget *pParent)
     connect(ui->EnableDynamicLightingCheck, &QCheckBox::toggled, this, qOverload<int>(&CModelEditorWindow::UpdateMaterial));
     connect(ui->SourceBlendComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, qOverload<int>(&CModelEditorWindow::UpdateMaterial));
     connect(ui->DestBlendComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, qOverload<int>(&CModelEditorWindow::UpdateMaterial));
-    connect(ui->KonstColorPickerA, &WColorPicker::ColorChanged, this, qOverload<QColor>(&CModelEditorWindow::UpdateMaterial));
-    connect(ui->KonstColorPickerB, &WColorPicker::ColorChanged, this, qOverload<QColor>(&CModelEditorWindow::UpdateMaterial));
-    connect(ui->KonstColorPickerC, &WColorPicker::ColorChanged, this, qOverload<QColor>(&CModelEditorWindow::UpdateMaterial));
-    connect(ui->KonstColorPickerD, &WColorPicker::ColorChanged, this, qOverload<QColor>(&CModelEditorWindow::UpdateMaterial));
+    connect(ui->KonstColorPickerA, &WColorPicker::ColorChanged, this, qOverload<const QColor&>(&CModelEditorWindow::UpdateMaterial));
+    connect(ui->KonstColorPickerB, &WColorPicker::ColorChanged, this, qOverload<const QColor&>(&CModelEditorWindow::UpdateMaterial));
+    connect(ui->KonstColorPickerC, &WColorPicker::ColorChanged, this, qOverload<const QColor&>(&CModelEditorWindow::UpdateMaterial));
+    connect(ui->KonstColorPickerD, &WColorPicker::ColorChanged, this, qOverload<const QColor&>(&CModelEditorWindow::UpdateMaterial));
     connect(ui->PassTable, &QTableWidget::cellClicked, this, qOverload<int, int>(&CModelEditorWindow::UpdateMaterial));
     connect(ui->TevKColorSelComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, qOverload<int>(&CModelEditorWindow::UpdateMaterial));
     connect(ui->TevKAlphaSelComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, qOverload<int>(&CModelEditorWindow::UpdateMaterial));
@@ -541,7 +541,7 @@ void CModelEditorWindow::UpdateMaterial(bool Value)
     }
 }
 
-void CModelEditorWindow::UpdateMaterial(QColor Color)
+void CModelEditorWindow::UpdateMaterial(const QColor& Color)
 {
     // This function takes input from WColorPickers
     if (!mpCurrentMat) return;
@@ -568,7 +568,7 @@ void CModelEditorWindow::UpdateMaterial(QColor Color)
     }
 }
 
-void CModelEditorWindow::UpdateMaterial(QString Value)
+void CModelEditorWindow::UpdateMaterial(const QString& Value)
 {
     // This function takes input from WResourceSelectors
     if (!mpCurrentMat) return;

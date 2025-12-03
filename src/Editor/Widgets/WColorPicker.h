@@ -18,14 +18,14 @@ public:
     void mousePressEvent(QMouseEvent*) override;
     void mouseReleaseEvent(QMouseEvent* pEvent) override;
     QColor Color() const;
-    void SetColor(QColor Color);
+    void SetColor(const QColor& Color);
 
 signals:
-    void ColorChanged(QColor NewColor);
-    void ColorEditComplete(QColor NewColor);
+    void ColorChanged(const QColor& NewColor);
+    void ColorEditComplete(const QColor& NewColor);
 
 private slots:
-    void DialogColorChanged(QColor NewColor);
+    void DialogColorChanged(const QColor& NewColor);
     void DialogRejected();
 };
 

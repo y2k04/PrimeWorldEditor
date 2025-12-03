@@ -85,7 +85,7 @@ QColor WColorPicker::Color() const
     return mColor;
 }
 
-void WColorPicker::SetColor(QColor Color)
+void WColorPicker::SetColor(const QColor& Color)
 {
     if (mColor != Color)
     {
@@ -95,7 +95,7 @@ void WColorPicker::SetColor(QColor Color)
     }
 }
 
-void WColorPicker::DialogColorChanged(QColor NewColor)
+void WColorPicker::DialogColorChanged(const QColor& NewColor)
 {
     mColor = NewColor;
     emit ColorChanged(mColor);
