@@ -238,7 +238,7 @@ void CSceneViewport::CreateContextMenu()
 
 QMouseEvent CSceneViewport::CreateMouseEvent()
 {
-    return QMouseEvent(QEvent::MouseMove, mapFromGlobal(QCursor::pos()), Qt::NoButton, qApp->mouseButtons(), qApp->keyboardModifiers());
+    return QMouseEvent(QEvent::MouseMove, mapFromGlobal(QCursor::pos()), QCursor::pos(), Qt::NoButton, qApp->mouseButtons(), qApp->keyboardModifiers());
 }
 
 void CSceneViewport::FindConnectedObjects(uint32 InstanceID, bool SearchOutgoing, bool SearchIncoming, QList<uint32>& rIDList)
