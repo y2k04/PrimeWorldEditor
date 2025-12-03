@@ -342,7 +342,7 @@ void CResourceTableModel::CheckRemoveDirectory(CVirtualDirectory *pDir)
     endRemoveRows();
 }
 
-void CResourceTableModel::OnResourceMoved(CResourceEntry *pEntry, CVirtualDirectory *pOldDir, TString OldName)
+void CResourceTableModel::OnResourceMoved(CResourceEntry *pEntry, CVirtualDirectory *pOldDir, const TString& OldName)
 {
     CVirtualDirectory *pNewDir = pEntry->Directory();
     const bool WasInModel = (pOldDir == mpCurrentDir || (mIsAssetListMode && pOldDir->IsDescendantOf(mpCurrentDir)));
@@ -381,7 +381,7 @@ void CResourceTableModel::OnResourceMoved(CResourceEntry *pEntry, CVirtualDirect
     }
 }
 
-void CResourceTableModel::OnDirectoryMoved(CVirtualDirectory *pDir, CVirtualDirectory *pOldDir, TString OldName)
+void CResourceTableModel::OnDirectoryMoved(CVirtualDirectory *pDir, CVirtualDirectory *pOldDir, const TString& OldName)
 {
     CVirtualDirectory *pNewDir = pDir->Parent();
     const bool WasInModel = !mIsAssetListMode && pOldDir == mpCurrentDir;

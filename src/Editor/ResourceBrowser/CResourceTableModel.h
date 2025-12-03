@@ -63,8 +63,8 @@ public slots:
     void CheckRemoveResource(CResourceEntry *pEntry);
     void CheckAddDirectory(CVirtualDirectory *pDir);
     void CheckRemoveDirectory(CVirtualDirectory *pDir);
-    void OnResourceMoved(CResourceEntry *pEntry, CVirtualDirectory *pOldDir, TString OldName);
-    void OnDirectoryMoved(CVirtualDirectory *pDir, CVirtualDirectory *pOldDir, TString OldName);
+    void OnResourceMoved(CResourceEntry *pEntry, CVirtualDirectory *pOldDir, const TString& OldName);
+    void OnDirectoryMoved(CVirtualDirectory *pDir, CVirtualDirectory *pOldDir, const TString& OldName);
 };
 
 #endif // CRESOURCELISTMODEL
