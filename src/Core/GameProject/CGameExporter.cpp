@@ -188,7 +188,7 @@ bool CGameExporter::ExtractDiscData()
     nod::ExtractionContext Context;
     Context.force = false;
     Context.progressCB = [&](const std::string_view rkDesc, float ProgressPercent) {
-        mpProgress->Report((int) (ProgressPercent * 10000), 10000, rkDesc.data());
+        mpProgress->Report((int) (ProgressPercent * 10000), 10000, TString(rkDesc));
     };
 
     TString FilesDir = AbsDiscDir + "files/";
