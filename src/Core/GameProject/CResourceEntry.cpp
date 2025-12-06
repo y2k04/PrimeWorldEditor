@@ -77,7 +77,7 @@ std::unique_ptr<CResourceEntry> CResourceEntry::BuildFromDirectory(CResourceStor
 
     // Make sure we're valid, then load the remaining data from the metadata file
     ASSERT(pEntry->HasCookedVersion() || pEntry->HasRawVersion());
-    bool Success = pEntry->LoadMetadata();
+    [[maybe_unused]] const bool Success = pEntry->LoadMetadata();
     ASSERT(Success);
 
     return pEntry;
