@@ -9,16 +9,7 @@ struct SScriptArray
     std::vector<char> Array;
 
     SScriptArray() = default;
-
-    bool operator==(const SScriptArray& other) const
-    {
-        return Count == other.Count && Array == other.Array;
-    }
-
-    bool operator!=(const SScriptArray& other) const
-    {
-        return !operator==(other);
-    }
+    bool operator==(const SScriptArray&) const = default;
 };
 
 /** You probably shouldn't use this on intrinsic classes; script only */
