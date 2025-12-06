@@ -26,15 +26,7 @@ class TEnumPropertyBase : public TSerializeableTypedProperty<int32, TypeEnum>
             : Name(std::move(rkInName)), ID(InID) {}
 
 
-        bool operator==(const SEnumValue& other) const
-        {
-            return Name == other.Name && ID == other.ID;
-        }
-
-        bool operator!=(const SEnumValue& other) const
-        {
-            return !operator==(other);
-        }
+        bool operator==(const SEnumValue&) const = default;
 
         void Serialize(IArchive& rArc)
         {
