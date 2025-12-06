@@ -456,8 +456,8 @@ void CAnimSetLoader::ProcessPrimitives()
 
                 for (auto& transition : pSet->mTransitions)
                 {
-                    if (character.UsedAnimationIndices.find(transition.AnimIdA) == character.UsedAnimationIndices.cend() ||
-                        character.UsedAnimationIndices.find(transition.AnimIdB) == character.UsedAnimationIndices.cend())
+                    if (!character.UsedAnimationIndices.contains(transition.AnimIdA) ||
+                        !character.UsedAnimationIndices.contains(transition.AnimIdB))
                     {
                         continue;
                     }
@@ -467,7 +467,7 @@ void CAnimSetLoader::ProcessPrimitives()
 
                     for (const auto& primitive : Primitives)
                     {
-                        if (character.UsedAnimationIndices.find(primitive.ID()) == character.UsedAnimationIndices.cend())
+                        if (!character.UsedAnimationIndices.contains(primitive.ID()))
                         {
                             character.UsedAnimationIndices.insert(primitive.ID());
                             AddedNewAnims = true;
@@ -477,7 +477,7 @@ void CAnimSetLoader::ProcessPrimitives()
 
                 for (SHalfTransition& trans : pSet->mHalfTransitions)
                 {
-                    if (character.UsedAnimationIndices.find(trans.AnimID) == character.UsedAnimationIndices.cend())
+                    if (!character.UsedAnimationIndices.contains(trans.AnimID))
                         continue;
 
                     std::set<CAnimPrimitive> Primitives;
@@ -485,7 +485,7 @@ void CAnimSetLoader::ProcessPrimitives()
 
                     for (const auto& primitive : Primitives)
                     {
-                        if (character.UsedAnimationIndices.find(primitive.ID()) == character.UsedAnimationIndices.cend())
+                        if (!character.UsedAnimationIndices.contains(primitive.ID()))
                         {
                             character.UsedAnimationIndices.insert(primitive.ID());
                             AddedNewAnims = true;

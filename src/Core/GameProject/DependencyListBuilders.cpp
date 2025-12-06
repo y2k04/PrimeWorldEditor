@@ -131,7 +131,7 @@ void CCharacterUsageMap::ParseDependencyNode(IDependencyNode *pNode)
         const CAssetID ResID = pDep->ID();
         const auto Find = mUsageMap.find(ResID);
 
-        if (!mIsInitialArea && mStillLookingIDs.find(ResID) == mStillLookingIDs.cend())
+        if (!mIsInitialArea && !mStillLookingIDs.contains(ResID))
             return;
 
         if (Find != mUsageMap.cend())
@@ -197,7 +197,7 @@ void CPackageDependencyListBuilder::BuildDependencyList(bool AllowDuplicates, st
             continue;
         }
 
-        mIsUniversalAreaAsset = mUniversalAreaAssets.find(rkRes.ID) != mUniversalAreaAssets.cend();
+        mIsUniversalAreaAsset = mUniversalAreaAssets.contains(rkRes.ID);
 
         if (rkRes.Type == "MLVL")
         {
@@ -234,9 +234,9 @@ void CPackageDependencyListBuilder::AddDependency(CResourceEntry *pCurEntry, con
     if (!IsValid)
         return;
 
-    if ((mCurrentAreaHasDuplicates && mAreaUsedAssets.find(rkID) != mAreaUsedAssets.end()) ||
-        (!mCurrentAreaHasDuplicates && mPackageUsedAssets.find(rkID) != mPackageUsedAssets.end()) ||
-        (!mIsUniversalAreaAsset && mUniversalAreaAssets.find(rkID) != mUniversalAreaAssets.end()))
+    if ((mCurrentAreaHasDuplicates && mAreaUsedAssets.contains(rkID)) ||
+        (!mCurrentAreaHasDuplicates && mPackageUsedAssets.contains(rkID)) ||
+        (!mIsUniversalAreaAsset && mUniversalAreaAssets.contains(rkID)))
     {
         return;
     }
@@ -502,7 +502,7 @@ void CAreaDependencyListBuilder::AddDependency(const CAssetID& rkID, std::list<C
     if (ResType == EResourceType::World || ResType == EResourceType::Area)
         return;
 
-    if (mBaseUsedAssets.find(rkID) != mBaseUsedAssets.end() || mLayerUsedAssets.find(rkID) != mLayerUsedAssets.end())
+    if (mBaseUsedAssets.contains(rkID) || mLayerUsedAssets.contains(rkID))
         return;
 
     // Dependency is valid! Evaluate the node tree (except for SCAN and DGRP)
@@ -593,7 +593,7 @@ void CAssetDependencyListBuilder::AddDependency(const CAssetID& kID, std::vector
 
     const EResourceType ResType = pEntry->ResourceType();
 
-    if (mUsedAssets.find(kID) != mUsedAssets.cend())
+    if (mUsedAssets.contains(kID))
         return;
 
     // Dependency is valid! Evaluate the node tree

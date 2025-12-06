@@ -27,7 +27,7 @@ void CSplinePathExtra::PostLoad()
 
 void CSplinePathExtra::FindAttachedWaypoints(std::set<CWaypointExtra*>& rChecked, CWaypointExtra* pWaypoint)
 {
-    if (rChecked.find(pWaypoint) != rChecked.cend())
+    if (rChecked.contains(pWaypoint))
         return;
 
     rChecked.insert(pWaypoint);

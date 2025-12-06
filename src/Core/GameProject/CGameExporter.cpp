@@ -320,7 +320,7 @@ void CGameExporter::LoadPaks()
                     const uint32 ResSize = Pak.ReadULong();
                     const uint32 ResOffset = Pak.ReadULong();
 
-                    if (mResourceMap.find(ResID) == mResourceMap.cend())
+                    if (!mResourceMap.contains(ResID))
                         mResourceMap.insert_or_assign(ResID, SResourceInstance{PakPath, ResID, ResType, ResOffset, ResSize, Compressed, false});
 
                     // Check for duplicate resources
@@ -329,7 +329,7 @@ void CGameExporter::LoadPaks()
                         mAreaDuplicateMap[ResID] = AreaHasDuplicates;
                         AreaHasDuplicates = false;
                     }
-                    else if (!AreaHasDuplicates && PakResourceSet.find(ResID) != PakResourceSet.cend())
+                    else if (!AreaHasDuplicates && PakResourceSet.contains(ResID))
                     {
                         AreaHasDuplicates = true;
                     }
@@ -399,7 +399,7 @@ void CGameExporter::LoadPaks()
                         const uint32 Size = Pak.ReadULong();
                         const uint32 Offset = DataStart + Pak.ReadULong();
 
-                        if (mResourceMap.find(ResID) == mResourceMap.cend())
+                        if (!mResourceMap.contains(ResID))
                             mResourceMap.insert_or_assign(ResID, SResourceInstance{PakPath, ResID, Type, Offset, Size, Compressed, false});
 
                         // Check for duplicate resources (unnecessary for DKCR)
@@ -410,7 +410,7 @@ void CGameExporter::LoadPaks()
                                 mAreaDuplicateMap.insert_or_assign(ResID, AreaHasDuplicates);
                                 AreaHasDuplicates = false;
                             }
-                            else if (!AreaHasDuplicates && PakResourceSet.find(ResID) != PakResourceSet.cend())
+                            else if (!AreaHasDuplicates && PakResourceSet.contains(ResID))
                             {
                                 AreaHasDuplicates = true;
                             }

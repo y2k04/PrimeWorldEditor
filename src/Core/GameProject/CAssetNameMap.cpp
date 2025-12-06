@@ -107,12 +107,12 @@ void CAssetNameMap::CopyFromStore(CResourceStore *pStore /*= gpResourceStore*/)
             SAssetNameInfo NameInfo { Name, Directory, Type, AutoName, AutoDir };
 
             // Check for conflicts with new name
-            if (mUsedSet.find(NameInfo) != mUsedSet.end())
+            if (mUsedSet.contains(NameInfo))
             {
                 SAssetNameInfo NewNameInfo = NameInfo;
                 int NumConflicted = 0;
 
-                while (mUsedSet.find(NewNameInfo) != mUsedSet.end())
+                while (mUsedSet.contains(NewNameInfo))
                 {
                     NewNameInfo.Name = NameInfo.Name + '_' + TString::FromInt32(NumConflicted, 0, 10);
                     NumConflicted++;
@@ -153,7 +153,7 @@ void CAssetNameMap::PostLoadValidate()
     {
         const SAssetNameInfo& rkInfo = Iter->second;
 
-        if (mUsedSet.find(rkInfo) != mUsedSet.end())
+        if (mUsedSet.contains(rkInfo))
         {
             Dupes.insert(rkInfo);
         }

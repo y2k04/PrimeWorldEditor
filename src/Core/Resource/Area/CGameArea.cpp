@@ -177,7 +177,7 @@ CScriptObject* CGameArea::SpawnInstance(CScriptTemplate *pTemplate,
 
     if (InstanceID != UINT32_MAX)
     {
-        if (mObjectMap.find(InstanceID) == mObjectMap.cend())
+        if (!mObjectMap.contains(InstanceID))
             InstanceID = UINT32_MAX;
     }
 

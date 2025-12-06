@@ -176,7 +176,7 @@ public:
     void Serialize(IArchive& rArc) override;
 
     // Accessors
-    bool IsUsedByCharacter(uint32 CharIdx) const { return mCharacterIndices.find(CharIdx) != mCharacterIndices.end(); }
+    bool IsUsedByCharacter(uint32 CharIdx) const { return mCharacterIndices.contains(CharIdx); }
     bool IsUsedByAnyCharacter() const            { return !mCharacterIndices.empty(); }
 
     // Static

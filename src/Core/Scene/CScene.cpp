@@ -25,7 +25,7 @@ CScene::~CScene()
 
 bool CScene::IsNodeIDUsed(uint32 ID) const
 {
-    return mNodeMap.find(ID) != mNodeMap.cend();
+    return mNodeMap.contains(ID);
 }
 
 uint32 CScene::CreateNodeID(uint32 SuggestedID) const

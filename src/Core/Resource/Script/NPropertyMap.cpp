@@ -398,7 +398,7 @@ void ChangeTypeName(IProperty* pProperty, const char* pkOldTypeName, const char*
             if (Find != gNameMap.cend())
             {
                 SNameValue& Value = Find->second;
-                WasRegistered = Value.PropertyList.find(pProperty) != Value.PropertyList.cend();
+                WasRegistered = Value.PropertyList.contains(pProperty);
             }
 
             // Create a key for the new property and add it to the list.

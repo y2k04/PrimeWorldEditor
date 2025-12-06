@@ -66,7 +66,7 @@ public:
             // Find all relevant primitives
             std::set<CAnimPrimitive> PrimSet;
 
-            if (UsedTransitions.find(mpDefaultTransition.get()) == UsedTransitions.cend())
+            if (!UsedTransitions.contains(mpDefaultTransition.get()))
             {
                 mpDefaultTransition->GetUniquePrimitives(PrimSet);
                 UsedTransitions.insert(mpDefaultTransition.get());
@@ -78,7 +78,7 @@ public:
 
                 if (pTree->HasDependency(transition.AnimA) &&
                     pTree->HasDependency(transition.AnimB) &&
-                    UsedTransitions.find(pTransition) == UsedTransitions.cend())
+                    !UsedTransitions.contains(pTransition))
                 {
                     pTransition->GetUniquePrimitives(PrimSet);
                     UsedTransitions.insert(pTransition);
@@ -90,7 +90,7 @@ public:
                 IMetaTransition *pTransition = halfTrans.pTransition.get();
 
                 if (pTree->HasDependency(halfTrans.Anim) &&
-                    UsedTransitions.find(pTransition) == UsedTransitions.cend())
+                    !UsedTransitions.contains(pTransition))
                 {
                     pTransition->GetUniquePrimitives(PrimSet);
                     UsedTransitions.insert(pTransition);

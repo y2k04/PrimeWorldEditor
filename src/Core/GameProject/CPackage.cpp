@@ -414,7 +414,7 @@ void CPackage::CompareOriginalAssetList(const std::list<CAssetID>& rkNewList)
     // Check for missing resources in the new list
     for (const auto& ID : OldListSet)
     {
-        if (NewListSet.find(ID) == NewListSet.end())
+        if (!NewListSet.contains(ID))
         {
             const CResourceEntry *pEntry = gpResourceStore->FindEntry(ID);
             const TString Extension = (pEntry != nullptr ? "." + pEntry->CookedExtension() : "");
@@ -425,7 +425,7 @@ void CPackage::CompareOriginalAssetList(const std::list<CAssetID>& rkNewList)
     // Check for extra resources in the new list
     for (const auto& ID : NewListSet)
     {
-        if (OldListSet.find(ID) == OldListSet.end())
+        if (!OldListSet.contains(ID))
         {
             const CResourceEntry *pEntry = gpResourceStore->FindEntry(ID);
             const TString Extension = (pEntry != nullptr ? "." + pEntry->CookedExtension() : "");
@@ -439,7 +439,7 @@ bool CPackage::ContainsAsset(const CAssetID& rkID) const
     if (mCacheDirty)
         UpdateDependencyCache();
 
-    return mCachedDependencies.find(rkID) != mCachedDependencies.end();
+    return mCachedDependencies.contains(rkID);
 }
 
 TString CPackage::DefinitionPath(bool Relative) const

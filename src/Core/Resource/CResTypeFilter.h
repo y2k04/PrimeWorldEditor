@@ -59,7 +59,7 @@ public:
 
     bool Accepts(EResourceType Type) const
     {
-        return mAcceptedTypes.find(Type) != mAcceptedTypes.end();
+        return mAcceptedTypes.contains(Type);
     }
 
     bool Accepts(const CResTypeInfo *pType) const

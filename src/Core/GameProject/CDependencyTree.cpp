@@ -274,7 +274,7 @@ std::unique_ptr<CSetAnimationDependency> CSetAnimationDependency::BuildTree(cons
     {
         const SSetCharacter *pkChar = pkOwnerSet->Character(iChar);
 
-        if (pkChar->UsedAnimationIndices.find(AnimIndex) != pkChar->UsedAnimationIndices.end())
+        if (pkChar->UsedAnimationIndices.contains(AnimIndex))
             pTree->mCharacterIndices.insert(iChar);
     }
 
@@ -372,7 +372,7 @@ void CAreaDependencyTree::GetModuleDependencies(EGame Game, std::vector<TString>
             const auto *pInst = static_cast<CScriptInstanceDependency*>(pNode.get());
             const uint32 ObjType = pInst->ObjectType();
 
-            if (UsedObjectTypes.find(ObjType) == UsedObjectTypes.end())
+            if (!UsedObjectTypes.contains(ObjType))
             {
                 // Get the module list for this object type and check whether any of them are new before adding them to the output list
                 const CScriptTemplate *pTemplate = pGame->TemplateByID(ObjType);
