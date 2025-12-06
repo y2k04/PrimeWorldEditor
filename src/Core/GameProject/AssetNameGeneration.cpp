@@ -80,7 +80,7 @@ void ApplyGeneratedName(CResourceEntry *pEntry, const TString& rkDir, const TStr
     if (pEntry->Directory() == pNewDir && pEntry->Name() == NewName) return;
 
     // Perform the move
-    bool Success = pEntry->MoveAndRename(pNewDir->FullPath(), NewName, true, true);
+    [[maybe_unused]] const bool Success = pEntry->MoveAndRename(pNewDir->FullPath(), NewName, true, true);
     ASSERT(Success);
 }
 
