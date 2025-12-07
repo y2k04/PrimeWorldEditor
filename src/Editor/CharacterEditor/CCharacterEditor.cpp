@@ -121,31 +121,29 @@ void CCharacterEditor::UpdateAnimTime(float DeltaTime)
 
 void CCharacterEditor::UpdateCameraOrbit()
 {
-    CSkeleton *pSkel = CurrentSkeleton();
-
-    if (!pSkel)
+    if (const CSkeleton* pSkel = CurrentSkeleton())
+    {
+        // If we have a selected bone, orbit around that.
+        if (mpSelectedBone)
+        {
+            ui->Viewport->Camera().SetOrbitTarget(mpCharNode->BonePosition(mpSelectedBone->ID()));
+        }
+        else
+        {
+            // Otherwise, try to find Skeleton_Root. Barring that, we can orbit the root bone.
+            const CBone* pRoot = pSkel->RootBone();
+            const CBone* pSkelRoot = (pRoot ? pRoot->ChildByIndex(0) : pRoot);
+            const CVector3f OrbitTarget = (pSkelRoot ? mpCharNode->BonePosition(pSkelRoot->ID()) : mpCharNode->CenterPoint());
+            ui->Viewport->Camera().SetOrbitTarget(OrbitTarget);
+        }
+    }
+    else
     {
         // Center around character if we have one, otherwise fall back to default orbit.
         if (mpSet)
             ui->Viewport->Camera().SetOrbitTarget(mpCharNode->CenterPoint());
         else
             ui->Viewport->Camera().SetOrbit(skDefaultOrbitTarget, skDefaultOrbitDistance);
-    }
-
-    else
-    {
-        // If we have a selected bone, orbit around that.
-        if (mpSelectedBone)
-            ui->Viewport->Camera().SetOrbitTarget(mpCharNode->BonePosition(mpSelectedBone->ID()));
-
-        // Otherwise, try to find Skeleton_Root. Barring that, we can orbit the root bone.
-        else
-        {
-            CBone *pRoot = pSkel->RootBone();
-            CBone *pSkelRoot = (pRoot ? pRoot->ChildByIndex(0) : pRoot);
-            CVector3f OrbitTarget = (pSkelRoot ? mpCharNode->BonePosition(pSkelRoot->ID()) : mpCharNode->CenterPoint());
-            ui->Viewport->Camera().SetOrbitTarget(OrbitTarget);
-        }
     }
 }
 
