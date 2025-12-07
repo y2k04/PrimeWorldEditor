@@ -43,7 +43,7 @@ public:
     bool IsIndexDirectory(const QModelIndex& rkIndex) const;
     bool HasParentDirectoryEntry() const;
     void FillEntryList(CVirtualDirectory *pDir, bool AssetListMode);
-    void DisplayEntryList(QList<CResourceEntry*>& rkEntries, const QString& rkListDescription);
+    void DisplayEntryList(QList<CResourceEntry*> rkEntries, QString rkListDescription);
 protected:
     void RecursiveAddDirectoryContents(CVirtualDirectory *pDir);
     int EntryListIndex(CResourceEntry *pEntry);

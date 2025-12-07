@@ -249,12 +249,12 @@ void CResourceTableModel::FillEntryList(CVirtualDirectory *pDir, bool AssetListM
     endResetModel();
 }
 
-void CResourceTableModel::DisplayEntryList(QList<CResourceEntry*>& rkEntries, const QString& rkListDescription)
+void CResourceTableModel::DisplayEntryList(QList<CResourceEntry*> rkEntries, QString rkListDescription)
 {
     beginResetModel();
-    mEntries = rkEntries;
+    mEntries = std::move(rkEntries);
     mDirectories.clear();
-    mModelDescription = rkListDescription;
+    mModelDescription = std::move(rkListDescription);
     mIsAssetListMode = true;
     mIsDisplayingUserEntryList = true;
     endResetModel();

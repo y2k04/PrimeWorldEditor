@@ -178,8 +178,8 @@ void CResourceTableContextMenu::ShowReferencers()
     if (!mpModel->IsDisplayingUserEntryList())
         mpBrowser->SetInspectedEntry(mpClickedEntry);
 
-    const QString ListDesc = tr("Referencers of \"%1\"").arg( TO_QSTRING(mpClickedEntry->CookedAssetPath().GetFileName()) );
-    mpModel->DisplayEntryList(EntryList, ListDesc);
+    QString ListDesc = tr("Referencers of \"%1\"").arg(TO_QSTRING(mpClickedEntry->CookedAssetPath().GetFileName()));
+    mpModel->DisplayEntryList(std::move(EntryList), std::move(ListDesc));
     mpBrowser->ClearFilters();
 }
 
@@ -192,19 +192,17 @@ void CResourceTableContextMenu::ShowDependencies()
 
     QList<CResourceEntry*> EntryList;
 
-    for (auto Iter = Dependencies.begin(); Iter != Dependencies.end(); Iter++)
+    for (const auto& Dep : Dependencies)
     {
-        CResourceEntry *pEntry = mpClickedEntry->ResourceStore()->FindEntry(*Iter);
-
-        if (pEntry)
+        if (auto* pEntry = mpClickedEntry->ResourceStore()->FindEntry(Dep))
             EntryList.push_back(pEntry);
     }
 
     if (!mpModel->IsDisplayingUserEntryList())
         mpBrowser->SetInspectedEntry(mpClickedEntry);
 
-    const QString ListDesc = tr("Dependencies of \"%1\"").arg( TO_QSTRING(mpClickedEntry->CookedAssetPath().GetFileName()) );
-    mpModel->DisplayEntryList(EntryList, ListDesc);
+    QString ListDesc = tr("Dependencies of \"%1\"").arg(TO_QSTRING(mpClickedEntry->CookedAssetPath().GetFileName()));
+    mpModel->DisplayEntryList(std::move(EntryList), std::move(ListDesc));
     mpBrowser->ClearFilters();
 }
 
@@ -222,7 +220,7 @@ void CResourceTableContextMenu::Delete()
             Resources.push_back(mpModel->IndexEntry(kIndex));
     }
 
-    mpBrowser->Delete(Resources, Directories);
+    mpBrowser->Delete(std::move(Resources), std::move(Directories));
 }
 
 void CResourceTableContextMenu::CopyName()
