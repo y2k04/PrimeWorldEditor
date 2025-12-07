@@ -60,20 +60,19 @@ void CSelectInstanceDialog::OnTabChanged(int NewTabIndex)
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(mValidSelection);
 }
 
-void CSelectInstanceDialog::OnTreeClicked(QModelIndex Index)
+void CSelectInstanceDialog::OnTreeClicked(const QModelIndex& Index)
 {
-    int TabIndex = ui->TabWidget->currentIndex();
+    const int TabIndex = ui->TabWidget->currentIndex();
 
     if (TabIndex == 0)
     {
-        QModelIndex SourceIndex = mLayersProxyModel.mapToSource(Index);
+        const QModelIndex SourceIndex = mLayersProxyModel.mapToSource(Index);
         mpLayersInst = mLayersModel.IndexObject(SourceIndex);
         mValidSelection = (mpLayersInst != nullptr);
     }
-
     else
     {
-        QModelIndex SourceIndex = mTypesProxyModel.mapToSource(Index);
+        const QModelIndex SourceIndex = mTypesProxyModel.mapToSource(Index);
         mpTypesInst = mTypesModel.IndexObject(SourceIndex);
         mValidSelection = (mpTypesInst != nullptr);
     }
@@ -81,7 +80,7 @@ void CSelectInstanceDialog::OnTreeClicked(QModelIndex Index)
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(mValidSelection);
 }
 
-void CSelectInstanceDialog::OnTreeDoubleClicked(QModelIndex /*Index*/)
+void CSelectInstanceDialog::OnTreeDoubleClicked(const QModelIndex& /*Index*/)
 {
     // Instance selection was handled in OnTreeClicked on the first click.
     if (mValidSelection)

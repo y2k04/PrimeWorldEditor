@@ -36,8 +36,8 @@ public:
 
 public slots:
     void OnTabChanged(int NewTabIndex);
-    void OnTreeClicked(QModelIndex Index);
-    void OnTreeDoubleClicked(QModelIndex Index);
+    void OnTreeClicked(const QModelIndex& Index);
+    void OnTreeDoubleClicked(const QModelIndex& Index);
 };
 
 #endif // CSELECTINSTANCEDIALOG_H
