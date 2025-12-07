@@ -59,7 +59,7 @@ public:
     EPropertyType GetEffectiveFieldType(IProperty* pProperty) const;
     void SetShowPropertyNameValidity(bool Enable);
 
-    void SetFont(QFont Font) { mFont = Font; }
+    void SetFont(QFont Font) { mFont = std::move(Font); }
     void SetBoldModifiedProperties(bool Enable) { mBoldModifiedProperties = Enable; }
     CScriptObject* GetScriptObject() const { return mpObject; }
 
