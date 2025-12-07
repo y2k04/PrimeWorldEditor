@@ -664,7 +664,7 @@ void CGameExporter::ExportResource(SResourceInstance& rRes)
     }
 }
 
-TString CGameExporter::MakeWorldName(CAssetID WorldID)
+TString CGameExporter::MakeWorldName(const CAssetID& WorldID)
 {
     [[maybe_unused]] const CResourceEntry *pWorldEntry = mpStore->FindEntry(WorldID);
     ASSERT(pWorldEntry && pWorldEntry->ResourceType() == EResourceType::World);
