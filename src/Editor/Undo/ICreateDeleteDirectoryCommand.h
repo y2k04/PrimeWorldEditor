@@ -46,7 +46,7 @@ protected:
             if (mpDir->IsEmpty(true))
             {
                 gpEdApp->ResourceBrowser()->DirectoryAboutToBeDeleted(mpDir);
-                bool DeleteSuccess = mpDir->Delete();
+                [[maybe_unused]] const bool DeleteSuccess = mpDir->Delete();
                 ASSERT(DeleteSuccess);
                 gpEdApp->ResourceBrowser()->DirectoryDeleted();
 

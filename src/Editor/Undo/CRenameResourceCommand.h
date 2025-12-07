@@ -31,11 +31,11 @@ public:
 protected:
     void DoMove(const TString& rkName, bool IsAutoName)
     {
-        TString FullNewName = rkName + "." + mpEntry->CookedExtension().ToString();
+        const TString FullNewName = rkName + "." + mpEntry->CookedExtension().ToString();
         gpEdApp->ResourceBrowser()->ResourceAboutToBeMoved(mpEntry, TO_QSTRING(mpEntry->Directory()->FullPath() + FullNewName));
 
-        TString OldName = mpEntry->Name();
-        bool Success = mpEntry->Rename(rkName, IsAutoName);
+        const TString OldName = mpEntry->Name();
+        [[maybe_unused]] const bool Success = mpEntry->Rename(rkName, IsAutoName);
         ASSERT(Success);
 
         gpEdApp->ResourceBrowser()->ResourceMoved(mpEntry, mpEntry->Directory(), OldName);

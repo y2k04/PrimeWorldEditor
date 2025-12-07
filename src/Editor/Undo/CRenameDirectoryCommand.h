@@ -29,11 +29,11 @@ public:
 protected:
     void DoMove(const TString& rkName)
     {
-        QString ParentPath = TO_QSTRING(mpDir->Parent() ? mpDir->Parent()->FullPath() : "");
+        const QString ParentPath = TO_QSTRING(mpDir->Parent() ? mpDir->Parent()->FullPath() : "");
         gpEdApp->ResourceBrowser()->DirectoryAboutToBeMoved(mpDir, ParentPath + TO_QSTRING(rkName));
 
-        TString OldName = mpDir->Name();
-        bool Success = mpDir->Rename(rkName);
+        const TString OldName = mpDir->Name();
+        [[maybe_unused]] const bool Success = mpDir->Rename(rkName);
         ASSERT(Success);
 
         gpEdApp->ResourceBrowser()->DirectoryMoved(mpDir, mpDir->Parent(), OldName);

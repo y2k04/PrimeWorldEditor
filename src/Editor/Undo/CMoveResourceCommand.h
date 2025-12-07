@@ -35,11 +35,11 @@ public:
 protected:
     void DoMove(const TString& rkPath, bool IsAutoDir)
     {
-        TString ResName = mpEntry->CookedAssetPath(true).GetFileName();
+        const TString ResName = mpEntry->CookedAssetPath(true).GetFileName();
         gpEdApp->ResourceBrowser()->ResourceAboutToBeMoved(mpEntry, TO_QSTRING(rkPath + ResName));
 
         CVirtualDirectory *pOldDir = mpEntry->Directory();
-        bool Success = mpEntry->Move(rkPath, IsAutoDir);
+        [[maybe_unused]] const bool Success = mpEntry->Move(rkPath, IsAutoDir);
         ASSERT(Success); // todo better error handling
 
         gpEdApp->ResourceBrowser()->ResourceMoved(mpEntry, pOldDir, mpEntry->Name());
