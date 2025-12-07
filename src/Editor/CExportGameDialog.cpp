@@ -11,7 +11,7 @@
 
 #include <QComboBox>
 #include <QDialogButtonBox>
-#include <QFileDialog>
+#include <QFileInfo>
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QtConcurrentRun>
@@ -33,8 +33,8 @@ CExportGameDialog::CExportGameDialog(const QString& rkIsoPath, const QString& rk
         mpExporter = std::make_unique<CGameExporter>(mDiscType, mGame, mWiiFrontend, mRegion, mGameTitle, mGameID, mBuildVer);
         InitUI(rkExportDir);
 
-        TString IsoName = TO_TSTRING(rkIsoPath).GetFileName();
-        setWindowTitle(tr("Export Settings - %1").arg(TO_QSTRING(IsoName)));
+        const auto IsoName = QFileInfo(rkIsoPath).fileName();
+        setWindowTitle(tr("Export Settings - %1").arg(IsoName));
     }
     else
     {
