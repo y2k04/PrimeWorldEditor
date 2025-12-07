@@ -21,8 +21,8 @@ public:
     ICreateDeleteDirectoryCommand(const QString& rkText, CResourceStore *pStore, TString ParentPath, TString DirName)
         : IUndoCommand(rkText)
         , mpStore(pStore)
-        , mParentPath(ParentPath)
-        , mDirName(DirName)
+        , mParentPath(std::move(ParentPath))
+        , mDirName(std::move(DirName))
         , mpDir(nullptr)
     {}
 
@@ -66,7 +66,7 @@ class CCreateDirectoryCommand : public ICreateDeleteDirectoryCommand
 {
 public:
     CCreateDirectoryCommand(CResourceStore *pStore, TString ParentPath, TString DirName)
-        : ICreateDeleteDirectoryCommand(QCoreApplication::translate("CCreateDirectoryCommand", "Create Directory"), pStore, ParentPath, DirName)
+        : ICreateDeleteDirectoryCommand(QCoreApplication::translate("CCreateDirectoryCommand", "Create Directory"), pStore, std::move(ParentPath), std::move(DirName))
     {}
 
     void undo() override { DoDelete(); }
@@ -77,9 +77,9 @@ class CDeleteDirectoryCommand : public ICreateDeleteDirectoryCommand
 {
 public:
     CDeleteDirectoryCommand(CResourceStore *pStore, TString ParentPath, TString DirName)
-        : ICreateDeleteDirectoryCommand(QCoreApplication::translate("CDeleteDirectoryCommand", "Delete Directory"), pStore, ParentPath, DirName)
+        : ICreateDeleteDirectoryCommand(QCoreApplication::translate("CDeleteDirectoryCommand", "Delete Directory"), pStore, std::move(ParentPath), std::move(DirName))
     {
-        mpDir = pStore->GetVirtualDirectory(ParentPath + DirName, false);
+        mpDir = pStore->GetVirtualDirectory(mParentPath + mDirName, false);
         ASSERT(mpDir);
         ASSERT(!mpDir->IsRoot());
     }
