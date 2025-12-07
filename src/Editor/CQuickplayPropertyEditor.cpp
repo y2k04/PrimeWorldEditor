@@ -4,6 +4,8 @@
 #include "WorldEditor/CWorldEditor.h"
 #include <Core/Resource/Script/CScriptLayer.h>
 #include <QFileInfo>
+#include <QPushButton>
+#include <QValidator>
 
 /** Validator class for Dolphin line edit */
 class CDolphinValidator : public QValidator
