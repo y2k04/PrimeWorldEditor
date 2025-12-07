@@ -19,7 +19,7 @@ QModelIndex CSkeletonHierarchyModel::index(int Row, int Column, const QModelInde
             return QModelIndex();
     }
 
-    auto *pBone = static_cast<CBone*>(rkParent.internalPointer());
+    const auto* pBone = static_cast<const CBone*>(rkParent.internalPointer());
     if (Row < static_cast<int>(pBone->NumChildren()))
         return createIndex(Row, Column, pBone->ChildByIndex(Row));
     else
@@ -28,16 +28,16 @@ QModelIndex CSkeletonHierarchyModel::index(int Row, int Column, const QModelInde
 
 QModelIndex CSkeletonHierarchyModel::parent(const QModelIndex& rkChild) const
 {
-    auto *pBone = static_cast<CBone*>(rkChild.internalPointer());
+    const auto *pBone = static_cast<const CBone*>(rkChild.internalPointer());
 
     if (pBone->Parent())
     {
         // Determine parent index
-        CBone *pParent = pBone->Parent();
+        const CBone* pParent = pBone->Parent();
 
         if (pParent->Parent())
         {
-            CBone *pGrandparent = pParent->Parent();
+            const CBone* pGrandparent = pParent->Parent();
 
             for (size_t iChild = 0; iChild < pGrandparent->NumChildren(); iChild++)
             {
@@ -45,8 +45,10 @@ QModelIndex CSkeletonHierarchyModel::parent(const QModelIndex& rkChild) const
                     return createIndex(static_cast<int>(iChild), 0, pParent);
             }
         }
-
-        else return createIndex(0, 0, pParent);
+        else
+        {
+            return createIndex(0, 0, pParent);
+        }
     }
 
     return QModelIndex();
@@ -57,7 +59,7 @@ int CSkeletonHierarchyModel::rowCount(const QModelIndex& rkParent) const
     if (!mpSkeleton)
         return 0;
 
-    auto *pBone = static_cast<CBone*>(rkParent.internalPointer());
+    const auto* pBone = static_cast<const CBone*>(rkParent.internalPointer());
     return pBone ? static_cast<int>(pBone->NumChildren()) : 1;
 }
 
@@ -70,7 +72,7 @@ QVariant CSkeletonHierarchyModel::data(const QModelIndex& rkIndex, int Role) con
 {
     if (Role == Qt::DisplayRole || Role == Qt::ToolTipRole)
     {
-        CBone *pBone = (CBone*) rkIndex.internalPointer();
+        const auto* pBone = static_cast<const CBone*>(rkIndex.internalPointer());
         return TO_QSTRING(pBone->Name());
     }
 
@@ -79,12 +81,12 @@ QVariant CSkeletonHierarchyModel::data(const QModelIndex& rkIndex, int Role) con
 
 CBone* CSkeletonHierarchyModel::BoneForIndex(const QModelIndex& rkIndex) const
 {
-    return (CBone*) (rkIndex.internalPointer());
+    return static_cast<CBone*>(rkIndex.internalPointer());
 }
 
-QModelIndex CSkeletonHierarchyModel::IndexForBone(CBone *pBone) const
+QModelIndex CSkeletonHierarchyModel::IndexForBone(const CBone *pBone) const
 {
-    CBone *pParent = pBone->Parent();
+    const CBone* pParent = pBone->Parent();
     if (!pParent)
         return index(0, 0, QModelIndex());
 

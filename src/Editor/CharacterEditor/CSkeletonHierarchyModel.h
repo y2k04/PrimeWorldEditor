@@ -18,7 +18,7 @@ public:
     QVariant data(const QModelIndex& rkIndex, int Role) const override;
 
     CBone* BoneForIndex(const QModelIndex& rkIndex) const;
-    QModelIndex IndexForBone(CBone *pBone) const;
+    QModelIndex IndexForBone(const CBone *pBone) const;
     void SetSkeleton(CSkeleton *pSkel);
 };
 
