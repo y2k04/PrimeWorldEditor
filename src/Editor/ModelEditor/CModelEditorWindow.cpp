@@ -118,7 +118,7 @@ CModelEditorWindow::CModelEditorWindow(CModel *pModel, QWidget *pParent)
     connect(ui->TevKAlphaSelComboBox, &QComboBox::currentIndexChanged, this, qOverload<int>(&CModelEditorWindow::UpdateMaterial));
     connect(ui->TevRasSelComboBox, &QComboBox::currentIndexChanged, this, qOverload<int>(&CModelEditorWindow::UpdateMaterial));
     connect(ui->TexCoordSrcComboBox, &QComboBox::currentIndexChanged, this, qOverload<int>(&CModelEditorWindow::UpdateMaterial));
-    connect(ui->PassTextureResSelector, SIGNAL(ResourceChanged(QString)), this, SLOT(UpdateMaterial(QString)));
+    connect(ui->PassTextureResSelector, &CResourceSelector::ResourceChanged, this, qOverload<const CResourceEntry*>(&CModelEditorWindow::UpdateMaterial));
     connect(ui->TevColor1ComboBox, &QComboBox::currentIndexChanged, this, qOverload<int>(&CModelEditorWindow::UpdateMaterial));
     connect(ui->TevColor2ComboBox, &QComboBox::currentIndexChanged, this, qOverload<int>(&CModelEditorWindow::UpdateMaterial));
     connect(ui->TevColor3ComboBox, &QComboBox::currentIndexChanged, this, qOverload<int>(&CModelEditorWindow::UpdateMaterial));
@@ -568,17 +568,23 @@ void CModelEditorWindow::UpdateMaterial(const QColor& Color)
     }
 }
 
-void CModelEditorWindow::UpdateMaterial(const QString& Value)
+void CModelEditorWindow::UpdateMaterial(const CResourceEntry* Entry)
 {
     // This function takes input from WResourceSelectors
-    if (!mpCurrentMat) return;
-    if (mIgnoreSignals) return;
+    if (!mpCurrentMat)
+        return;
+    if (mIgnoreSignals)
+        return;
 
-    EModelEditorWidget Widget = (EModelEditorWidget) sender()->property("ModelEditorWidgetType").toInt();
-    TResPtr<CTexture> pTex = gpResourceStore->LoadResource(TO_TSTRING(Value));
-    if (pTex->Type() != EResourceType::Texture) pTex = nullptr;
+    TResPtr<CTexture> pTex;
+    if (Entry)
+    {
+        pTex = gpResourceStore->LoadResource(Entry->ID());
+        if (pTex->Type() != EResourceType::Texture)
+            pTex = nullptr;
+    }
 
-    switch (Widget)
+    switch (static_cast<EModelEditorWidget>(sender()->property("ModelEditorWidgetType").toInt()))
     {
     case EModelEditorWidget::PassTextureResSelector:
         mpCurrentPass->SetTexture(pTex);
@@ -587,7 +593,9 @@ void CModelEditorWindow::UpdateMaterial(const QString& Value)
     case EModelEditorWidget::IndTextureResSelector:
         mpCurrentMat->SetIndTexture(pTex);
         break;
-    default: break;
+
+    default:
+        break;
     }
 }
 void CModelEditorWindow::UpdateUI(int Value)

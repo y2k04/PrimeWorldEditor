@@ -94,7 +94,7 @@ public slots:
     void UpdateMaterial(double Value);
     void UpdateMaterial(bool Value);
     void UpdateMaterial(const QColor& Color);
-    void UpdateMaterial(const QString& Value);
+    void UpdateMaterial(const CResourceEntry* Entry);
     void UpdateUI(int Value);
     void UpdateAnimParamUI(EUVAnimMode Mode);
 
