@@ -61,45 +61,44 @@ bool CResourceProxyModel::filterAcceptsRow(int SourceRow, const QModelIndex& rkS
     if (pEntry && !IsTypeAccepted(pEntry->TypeInfo()))
         return false;
 
+    if (mSearchString.IsEmpty())
+        return true;
+
+    if (!pEntry)
+        return false;
+
     // Compare search results
-    if (!mSearchString.IsEmpty())
+    const bool HasNameMatch = pEntry->UppercaseName().Contains(mSearchString);
+    if (HasNameMatch)
+        return true;
+
+    bool HasIDMatch = false;
+
+    if (mCompareBitLength > 0)
     {
-        if (!pEntry)
-            return false;
+        const auto IDBitLength = static_cast<uint32_t>(pEntry->ID().Length()) * 8;
 
-        const bool HasNameMatch = pEntry->UppercaseName().Contains(mSearchString);
-
-        if (!HasNameMatch)
+        if (mCompareBitLength <= IDBitLength)
         {
-            bool HasIDMatch = false;
+            const uint64_t ID = pEntry->ID().ToLongLong();
+            const uint32_t MaxShift = IDBitLength - mCompareBitLength;
 
-            if (mCompareBitLength > 0)
+            for (uint32_t Shift = 0; Shift <= MaxShift; Shift += 4)
             {
-                const auto IDBitLength = static_cast<uint32_t>(pEntry->ID().Length()) * 8;
+                const uint64_t ShiftCompare = mCompareID << Shift;
+                const uint64_t Mask = mCompareMask << Shift;
 
-                if (mCompareBitLength <= IDBitLength)
+                if ((ID & Mask) == ShiftCompare)
                 {
-                    const uint64_t ID = pEntry->ID().ToLongLong();
-                    const uint32_t MaxShift = IDBitLength - mCompareBitLength;
-
-                    for (uint32_t Shift = 0; Shift <= MaxShift; Shift += 4)
-                    {
-                        const uint64_t ShiftCompare = mCompareID << Shift;
-                        const uint64_t Mask = mCompareMask << Shift;
-
-                        if ((ID & Mask) == ShiftCompare)
-                        {
-                            HasIDMatch = true;
-                            break;
-                        }
-                    }
+                    HasIDMatch = true;
+                    break;
                 }
             }
-
-            if (!HasIDMatch)
-                return false;
         }
     }
+
+    if (!HasIDMatch)
+        return false;
 
     return true;
 }
