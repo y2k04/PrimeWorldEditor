@@ -8,6 +8,7 @@
 
 #include <memory>
 
+class CGameProject;
 class CWorldEditor;
 
 namespace Ui {

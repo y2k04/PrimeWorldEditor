@@ -1,7 +1,10 @@
 #include "CWorldInfoSidebar.h"
 #include "ui_CWorldInfoSidebar.h"
-#include "CWorldEditor.h"
+
+
 #include "Editor/CEditorApplication.h"
+#include "Editor/UICommon.h"
+#include "Editor/WorldEditor/CWorldEditor.h"
 
 CWorldInfoSidebar::CWorldInfoSidebar(CWorldEditor *pEditor)
     : CWorldEditorSidebar(pEditor)
