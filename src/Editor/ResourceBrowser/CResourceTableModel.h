@@ -36,8 +36,8 @@ public:
     Qt::DropActions supportedDropActions() const override;
 
     // Functionality
-    QModelIndex GetIndexForEntry(CResourceEntry *pEntry) const;
-    QModelIndex GetIndexForDirectory(CVirtualDirectory *pDir) const;
+    QModelIndex GetIndexForEntry(const CResourceEntry *pEntry) const;
+    QModelIndex GetIndexForDirectory(const CVirtualDirectory *pDir) const;
     CResourceEntry* IndexEntry(const QModelIndex& rkIndex) const;
     CVirtualDirectory* IndexDirectory(const QModelIndex& rkIndex) const;
     bool IsIndexDirectory(const QModelIndex& rkIndex) const;
@@ -46,7 +46,7 @@ public:
     void DisplayEntryList(QList<CResourceEntry*> rkEntries, QString rkListDescription);
 protected:
     void RecursiveAddDirectoryContents(CVirtualDirectory *pDir);
-    int EntryListIndex(CResourceEntry *pEntry);
+    int EntryListIndex(const CResourceEntry *pEntry) const;
 
 public:
     // Accessors

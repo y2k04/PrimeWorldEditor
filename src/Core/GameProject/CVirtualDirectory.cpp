@@ -43,7 +43,7 @@ bool CVirtualDirectory::IsEmpty(bool CheckFilesystem) const
     return true;
 }
 
-bool CVirtualDirectory::IsDescendantOf(CVirtualDirectory *pDir) const
+bool CVirtualDirectory::IsDescendantOf(const CVirtualDirectory *pDir) const
 {
     return (this == pDir) || (mpParent != nullptr && pDir != nullptr && (mpParent == pDir || mpParent->IsDescendantOf(pDir)));
 }

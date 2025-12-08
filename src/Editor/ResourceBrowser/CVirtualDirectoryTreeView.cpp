@@ -38,9 +38,7 @@ void CVirtualDirectoryTreeView::dragEnterEvent(QDragEnterEvent *pEvent)
 
 void CVirtualDirectoryTreeView::setModel(QAbstractItemModel *pModel)
 {
-    CVirtualDirectoryModel *pDirModel = qobject_cast<CVirtualDirectoryModel*>(pModel);
-
-    if (pDirModel)
+    if (auto* pDirModel = qobject_cast<CVirtualDirectoryModel*>(pModel))
     {
         mpModel = pDirModel;
         QTreeView::setModel(pModel);

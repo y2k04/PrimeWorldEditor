@@ -84,21 +84,17 @@ bool CResourceTableModel::canDropMimeData(const QMimeData *pkData, Qt::DropActio
     if (Row != -1 || Column != -1)
         return false;
 
-    const CResourceMimeData *pkMimeData = qobject_cast<const CResourceMimeData*>(pkData);
-
-    if (pkMimeData)
+    if (const auto* pkMimeData = qobject_cast<const CResourceMimeData*>(pkData))
     {
         // Don't allow dropping onto blank space in asset list mode
         if (!rkParent.isValid() && mIsAssetListMode)
             return false;
 
         // Make sure we're dropping onto a directory
-        CVirtualDirectory *pDir = (rkParent.isValid() ? IndexDirectory(rkParent) : mpCurrentDir);
-
-        if (pDir)
+        if (const CVirtualDirectory* pDir = (rkParent.isValid() ? IndexDirectory(rkParent) : mpCurrentDir))
         {
             // Make sure this directory isn't part of the mime data, or a subdirectory of a directory in the mime data
-            for (CVirtualDirectory *pMimeDir : pkMimeData->Directories())
+            for (const CVirtualDirectory* pMimeDir : pkMimeData->Directories())
             {
                 if (pDir == pMimeDir || pDir->IsDescendantOf(pMimeDir))
                     return false;
@@ -159,9 +155,9 @@ Qt::DropActions CResourceTableModel::supportedDropActions() const
 }
 
 // ************ FUNCTIONALITY ************
-QModelIndex CResourceTableModel::GetIndexForEntry(CResourceEntry *pEntry) const
+QModelIndex CResourceTableModel::GetIndexForEntry(const CResourceEntry *pEntry) const
 {
-    const auto Iter = std::find(mEntries.begin(), mEntries.end(), pEntry);
+    const auto Iter = std::find(mEntries.cbegin(), mEntries.cend(), pEntry);
 
     if (Iter == mEntries.cend())
         return QModelIndex();
@@ -170,7 +166,7 @@ QModelIndex CResourceTableModel::GetIndexForEntry(CResourceEntry *pEntry) const
     return index(mDirectories.size() + Index, 0, QModelIndex());
 }
 
-QModelIndex CResourceTableModel::GetIndexForDirectory(CVirtualDirectory *pDir) const
+QModelIndex CResourceTableModel::GetIndexForDirectory(const CVirtualDirectory *pDir) const
 {
     for (int DirIdx = 0; DirIdx < mDirectories.size(); DirIdx++)
     {
@@ -277,9 +273,9 @@ void CResourceTableModel::RecursiveAddDirectoryContents(CVirtualDirectory *pDir)
         RecursiveAddDirectoryContents(pDir->SubdirectoryByIndex(iDir));
 }
 
-int CResourceTableModel::EntryListIndex(CResourceEntry *pEntry)
+int CResourceTableModel::EntryListIndex(const CResourceEntry *pEntry) const
 {
-    return std::lower_bound(mEntries.begin(), mEntries.end(), pEntry) - mEntries.begin();
+    return std::lower_bound(mEntries.cbegin(), mEntries.cend(), pEntry) - mEntries.cbegin();
 }
 
 void CResourceTableModel::RefreshAllIndices()
@@ -344,7 +340,7 @@ void CResourceTableModel::CheckRemoveDirectory(CVirtualDirectory *pDir)
 
 void CResourceTableModel::OnResourceMoved(CResourceEntry *pEntry, CVirtualDirectory *pOldDir, const TString& OldName)
 {
-    CVirtualDirectory *pNewDir = pEntry->Directory();
+    const CVirtualDirectory* pNewDir = pEntry->Directory();
     const bool WasInModel = (pOldDir == mpCurrentDir || (mIsAssetListMode && pOldDir->IsDescendantOf(mpCurrentDir)));
     const bool IsInModel = (pNewDir == mpCurrentDir || (mIsAssetListMode && pNewDir->IsDescendantOf(mpCurrentDir)));
 
