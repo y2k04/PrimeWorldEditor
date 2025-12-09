@@ -32,9 +32,10 @@ void CCamera::Pan(float XAmount, float YAmount)
         mViewDirty = true;
         mFrustumPlanesDirty = true;
     }
-
     else
+    {
         Rotate(-XAmount * 0.3f, YAmount * 0.3f);
+    }
 }
 
 void CCamera::Rotate(float XAmount, float YAmount)
@@ -51,8 +52,9 @@ void CCamera::Rotate(float XAmount, float YAmount)
 void CCamera::Zoom(float Amount)
 {
     if (mMode == ECameraMoveMode::Free)
+    {
         mPosition += mDirection * (Amount * mMoveSpeed);
-
+    }
     else
     {
         mOrbitDistance -= Amount * mMoveSpeed;
@@ -83,12 +85,12 @@ void CCamera::ProcessKeyInput(FKeyInputs KeyFlags, double DeltaTime)
     const auto is_shift_pressed = (KeyFlags & EKeyInput::Shift) != 0;
     mMoveSpeed = is_shift_pressed ? 2.0f : default_move_speed;
 
-    if (KeyFlags & EKeyInput::W) Zoom(FDeltaTime * 25.f);
-    if (KeyFlags & EKeyInput::S) Zoom(-FDeltaTime * 25.f);
-    if (KeyFlags & EKeyInput::Q) Pan(0, -FDeltaTime * 25.f);
-    if (KeyFlags & EKeyInput::E) Pan(0, FDeltaTime * 25.f);
-    if (KeyFlags & EKeyInput::A) Pan(-FDeltaTime * 25.f, 0);
-    if (KeyFlags & EKeyInput::D) Pan(FDeltaTime * 25.f, 0);
+    if ((KeyFlags & EKeyInput::W) != 0) Zoom(FDeltaTime * 25.f);
+    if ((KeyFlags & EKeyInput::S) != 0) Zoom(-FDeltaTime * 25.f);
+    if ((KeyFlags & EKeyInput::Q) != 0) Pan(0, -FDeltaTime * 25.f);
+    if ((KeyFlags & EKeyInput::E) != 0) Pan(0, FDeltaTime * 25.f);
+    if ((KeyFlags & EKeyInput::A) != 0) Pan(-FDeltaTime * 25.f, 0);
+    if ((KeyFlags & EKeyInput::D) != 0) Pan(FDeltaTime * 25.f, 0);
 }
 
 void CCamera::ProcessMouseInput(FKeyInputs KeyFlags, FMouseInputs MouseFlags, float XMovement, float YMovement)
@@ -96,19 +98,23 @@ void CCamera::ProcessMouseInput(FKeyInputs KeyFlags, FMouseInputs MouseFlags, fl
     // Free Camera
     if (mMode == ECameraMoveMode::Free)
     {
-        if (MouseFlags & EMouseInput::MiddleButton)
+        if ((MouseFlags & EMouseInput::MiddleButton) != 0)
         {
-            if (KeyFlags & EKeyInput::Ctrl) Zoom(-YMovement * 0.2f);
-            else                            Pan(-XMovement, YMovement);
+            if ((KeyFlags & EKeyInput::Ctrl) != 0)
+                Zoom(-YMovement * 0.2f);
+            else
+                Pan(-XMovement, YMovement);
         }
-
-        else if (MouseFlags & EMouseInput::RightButton) Rotate(XMovement, YMovement);
+        else if ((MouseFlags & EMouseInput::RightButton) != 0)
+        {
+            Rotate(XMovement, YMovement);
+        }
     }
-
-    // Orbit Camera
     else if (mMode == ECameraMoveMode::Orbit)
     {
-        if ((MouseFlags & EMouseInput::MiddleButton) || (MouseFlags & EMouseInput::RightButton))
+        // Orbit Camera
+
+        if ((MouseFlags & EMouseInput::MiddleButton) != 0 || (MouseFlags & EMouseInput::RightButton) != 0)
             Pan(-XMovement, YMovement);
     }
 }
