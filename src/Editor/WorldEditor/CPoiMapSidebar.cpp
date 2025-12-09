@@ -253,7 +253,7 @@ void CPoiMapSidebar::OnSelectionChanged(const QItemSelection& rkSelected, const 
     }
 }
 
-void CPoiMapSidebar::OnItemDoubleClick(QModelIndex Index)
+void CPoiMapSidebar::OnItemDoubleClick(const QModelIndex& Index)
 {
     QModelIndex SourceIndex = mModel.mapToSource(Index);
     CScriptNode *pPOI = mSourceModel.PoiNodePointer(SourceIndex);
@@ -361,7 +361,7 @@ void CPoiMapSidebar::OnRemovePoiButtonClicked()
     }
 }
 
-void CPoiMapSidebar::OnPoiPicked(const SRayIntersection& rkIntersect, QMouseEvent *pEvent)
+void CPoiMapSidebar::OnPoiPicked(const SRayIntersection& rkIntersect, const QMouseEvent* pEvent)
 {
     CScriptNode *pPOI = static_cast<CScriptNode*>(rkIntersect.pNode);
     if (pPOI->Instance()->ObjectTypeID() != CFourCC("POIN").ToLong()) return;
@@ -374,7 +374,7 @@ void CPoiMapSidebar::OnPoiPicked(const SRayIntersection& rkIntersect, QMouseEven
         Editor()->ExitPickMode();
 }
 
-void CPoiMapSidebar::OnModelPicked(const SRayIntersection& rkRayIntersect, QMouseEvent* pEvent)
+void CPoiMapSidebar::OnModelPicked(const SRayIntersection& rkRayIntersect, const QMouseEvent* pEvent)
 {
     if (!rkRayIntersect.pNode)
         return;
@@ -418,7 +418,7 @@ void CPoiMapSidebar::OnModelPicked(const SRayIntersection& rkRayIntersect, QMous
     }
 }
 
-void CPoiMapSidebar::OnModelHover(const SRayIntersection& rkIntersect, QMouseEvent *pEvent)
+void CPoiMapSidebar::OnModelHover(const SRayIntersection& rkIntersect, const QMouseEvent *pEvent)
 {
     // Restore old hover model to correct overlay color, and set new hover model
     if (mpHoverModel)

@@ -66,16 +66,16 @@ public slots:
     void SetHighlightAll();
     void SetHighlightNone();
     void OnSelectionChanged(const QItemSelection& rkSelected, const QItemSelection& rkDeselected);
-    void OnItemDoubleClick(QModelIndex Index);
+    void OnItemDoubleClick(const QModelIndex& Index);
     void OnUnmapAllPressed();
 
     void OnPickButtonClicked();
     void StopPicking();
     void OnInstanceListButtonClicked();
     void OnRemovePoiButtonClicked();
-    void OnPoiPicked(const SRayIntersection& rkIntersect, QMouseEvent *pEvent);
-    void OnModelPicked(const SRayIntersection& rkIntersect, QMouseEvent *pEvent);
-    void OnModelHover(const SRayIntersection& rkIntersect, QMouseEvent *pEvent);
+    void OnPoiPicked(const SRayIntersection& rkIntersect, const QMouseEvent* pEvent);
+    void OnModelPicked(const SRayIntersection& rkIntersect, const QMouseEvent* pEvent);
+    void OnModelHover(const SRayIntersection& rkIntersect, const QMouseEvent* pEvent);
 };
 
 #endif // CPOIMAPEDITDIALOG_H
