@@ -26,15 +26,13 @@ class CPoiListModel : public QAbstractListModel
     QList<CScriptNode*> mObjList;
 
 public:
-    CPoiListModel(CScriptTemplate *pPoiTemplate, CPoiMapModel *pMapModel, CScene *pScene, QWidget *pParent = nullptr)
+    CPoiListModel(CScriptTemplate *pPoiTemplate, const CPoiMapModel *pMapModel, CScene *pScene, QWidget *pParent = nullptr)
         : QAbstractListModel(pParent)
         , mpPoiTemplate(pPoiTemplate)
     {
-        const std::list<CScriptObject*>& rkObjList = mpPoiTemplate->ObjectList();
-
-        for (auto it = rkObjList.begin(); it != rkObjList.end(); it++)
+        for (auto* obj : mpPoiTemplate->ObjectList())
         {
-            CScriptNode *pNode = pScene->NodeForInstance(*it);
+            auto* pNode = pScene->NodeForInstance(obj);
 
             if (!pMapModel->IsPoiTracked(pNode))
                 mObjList.push_back(pNode);
@@ -87,7 +85,7 @@ class CPoiListDialog : public QDialog
     QDialogButtonBox *mpButtonBox;
 
 public:
-    CPoiListDialog(CScriptTemplate *pPoiTemplate, CPoiMapModel *pMapModel, CScene *pScene, QWidget *pParent = nullptr)
+    CPoiListDialog(CScriptTemplate *pPoiTemplate, const CPoiMapModel *pMapModel, CScene *pScene, QWidget *pParent = nullptr)
         : QDialog(pParent)
         , mSourceModel(pPoiTemplate, pMapModel, pScene)
     {
