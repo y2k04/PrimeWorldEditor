@@ -20,7 +20,7 @@ class CPropertyModel : public QAbstractItemModel
         std::vector<int> ChildIDs;
     };
     QList<SProperty> mProperties;
-    QMap<IProperty*, int> mPropertyToIDMap;
+    QMap<const IProperty*, int> mPropertyToIDMap;
     int mFirstUnusedID = -1;
 
     CGameProject* mpProject = nullptr;
@@ -40,7 +40,7 @@ public:
     void ConfigureIntrinsic(CGameProject* pProject, IProperty* pRootProperty, void* pPropertyData);
     void ConfigureScript(CGameProject* pProject, IProperty* pRootProperty, CScriptObject* pObject);
     IProperty* PropertyForIndex(const QModelIndex& rkIndex, bool HandleFlaggedIndices) const;
-    QModelIndex IndexForProperty(IProperty *pProp) const;
+    QModelIndex IndexForProperty(const IProperty* pProp) const;
     void* DataPointerForIndex(const QModelIndex& rkIndex) const;
 
     int columnCount(const QModelIndex& rkParent) const override;
@@ -63,7 +63,7 @@ public:
     CScriptObject* GetScriptObject() const { return mpObject; }
 
 public slots:
-    void NotifyPropertyModified(class CScriptObject *pInst, IProperty *pProp);
+    void NotifyPropertyModified(CScriptObject *pInst, IProperty *pProp);
     void NotifyPropertyModified(const QModelIndex& rkIndex);
 
 signals:

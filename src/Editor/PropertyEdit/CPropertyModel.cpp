@@ -109,7 +109,7 @@ IProperty* CPropertyModel::PropertyForIndex(const QModelIndex& rkIndex, bool Han
     return mProperties[Index].pProperty;
 }
 
-QModelIndex CPropertyModel::IndexForProperty(IProperty *pProp) const
+QModelIndex CPropertyModel::IndexForProperty(const IProperty* pProp) const
 {
     // Array archetype properties cannot be associated with a single index because the same IProperty
     // is used for every element of the array. So instead fetch the index for the array itself.
@@ -121,7 +121,8 @@ QModelIndex CPropertyModel::IndexForProperty(IProperty *pProp) const
         ASSERT(pProp != nullptr && pProp->Type() == EPropertyType::Array);
     }
 
-    if (pProp == mpRootProperty) return QModelIndex();
+    if (pProp == mpRootProperty)
+        return QModelIndex();
 
     const int ID = mPropertyToIDMap[pProp];
     ASSERT(ID >= 0);
@@ -405,7 +406,7 @@ QVariant CPropertyModel::data(const QModelIndex& rkIndex, int Role) const
         if (!(rkIndex.internalId() & 0x80000000))
         {
             // Add name
-            IProperty *pProp = PropertyForIndex(rkIndex, false);
+            const IProperty* pProp = PropertyForIndex(rkIndex, false);
             const QString DisplayText = data(rkIndex, Qt::DisplayRole).toString();
             const QString TypeName = QString::fromUtf8(pProp->HashableTypeName());
             QString Text = tr("<b>%1</b> <i>(%2)</i>").arg(DisplayText).arg(TypeName);
@@ -518,7 +519,7 @@ Qt::ItemFlags CPropertyModel::flags(const QModelIndex& rkIndex) const
     return Qt::ItemIsEnabled | Qt::ItemIsEditable;
 }
 
-void CPropertyModel::NotifyPropertyModified(class CScriptObject*, IProperty* pProp)
+void CPropertyModel::NotifyPropertyModified(CScriptObject*, IProperty* pProp)
 {
     NotifyPropertyModified(IndexForProperty(pProp));
 }
