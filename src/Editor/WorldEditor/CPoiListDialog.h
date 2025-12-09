@@ -30,7 +30,7 @@ public:
         : QAbstractListModel(pParent)
         , mpPoiTemplate(pPoiTemplate)
     {
-        for (auto* obj : mpPoiTemplate->ObjectList())
+        for (const auto* obj : mpPoiTemplate->ObjectList())
         {
             auto* pNode = pScene->NodeForInstance(obj);
 

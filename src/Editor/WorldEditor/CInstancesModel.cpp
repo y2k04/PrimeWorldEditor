@@ -314,8 +314,8 @@ QVariant CInstancesModel::data(const QModelIndex& rkIndex, int Role) const
         // Show/Hide Instance
         else if (Type == EIndexType::Instance)
         {
-            CScriptObject *pObj = IndexObject(rkIndex);
-            const CScriptNode *pNode = mpScene->NodeForInstance(pObj);
+            const CScriptObject* pObj = IndexObject(rkIndex);
+            const CScriptNode* pNode = mpScene->NodeForInstance(pObj);
             if (pNode->MarkedVisible())
                 return Visible;
             return Invisible;

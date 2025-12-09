@@ -76,7 +76,7 @@ CDeleteSelectionCommand::CDeleteSelectionCommand(CWorldEditor *pEditor, const QS
     // Remove selected objects from the linked instances list.
     LinkedInstances.removeAll(nullptr);
 
-    for (CScriptObject *pInst : LinkedInstances)
+    for (const CScriptObject* pInst : LinkedInstances)
     {
         if (mpEditor->Scene()->NodeForInstance(pInst)->IsSelected())
             LinkedInstances.removeOne(pInst);

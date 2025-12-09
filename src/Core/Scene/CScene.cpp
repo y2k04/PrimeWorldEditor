@@ -324,12 +324,12 @@ CScriptNode* CScene::NodeForInstanceID(uint32 InstanceID)
     return nullptr;
 }
 
-CScriptNode* CScene::NodeForInstance(CScriptObject *pObj)
+CScriptNode* CScene::NodeForInstance(const CScriptObject *pObj)
 {
     return (pObj ? NodeForInstanceID(pObj->InstanceID()) : nullptr);
 }
 
-CLightNode* CScene::NodeForLight(CLight *pLight)
+CLightNode* CScene::NodeForLight(const CLight *pLight)
 {
     // Slow. Is there a better way to do this?
     std::vector<CSceneNode*>& rLights = mNodes[ENodeType::Light];

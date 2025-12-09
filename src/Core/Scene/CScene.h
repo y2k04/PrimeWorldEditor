@@ -64,8 +64,8 @@ public:
     SRayIntersection SceneRayCast(const CRay& rkRay, const SViewInfo& rkViewInfo);
     CSceneNode* NodeByID(uint32 NodeID);
     CScriptNode* NodeForInstanceID(uint32 InstanceID);
-    CScriptNode* NodeForInstance(CScriptObject *pObj);
-    CLightNode* NodeForLight(CLight *pLight);
+    CScriptNode* NodeForInstance(const CScriptObject *pObj);
+    CLightNode* NodeForLight(const CLight *pLight);
     CModel* ActiveSkybox();
     CGameArea* ActiveArea();
 

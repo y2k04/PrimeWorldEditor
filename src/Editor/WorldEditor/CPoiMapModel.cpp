@@ -30,8 +30,8 @@ QVariant CPoiMapModel::data(const QModelIndex& rkIndex, int Role) const
 {
     if (rkIndex.row() < rowCount(QModelIndex()))
     {
-        const CPoiToWorld::SPoiMap *pkMap = mpPoiToWorld->MapByIndex(static_cast<size_t>(rkIndex.row()));
-        CScriptObject *pPOI = mpArea->InstanceByID(pkMap->PoiID);
+        const CPoiToWorld::SPoiMap* pkMap = mpPoiToWorld->MapByIndex(static_cast<size_t>(rkIndex.row()));
+        const CScriptObject* pPOI = mpArea->InstanceByID(pkMap->PoiID);
 
         if (Role == Qt::DisplayRole)
         {
@@ -48,9 +48,7 @@ QVariant CPoiMapModel::data(const QModelIndex& rkIndex, int Role) const
             if (const CScriptNode* pNode = mpEditor->Scene()->NodeForInstance(pPOI))
             {
                 // Get scan
-                const CScan *pScan = static_cast<CPointOfInterestExtra*>(pNode->Extra())->GetScan();
-
-                if (pScan)
+                if (const CScan* pScan = static_cast<CPointOfInterestExtra*>(pNode->Extra())->GetScan())
                     IsImportant = pScan->IsCriticalPropertyRef();
             }
 

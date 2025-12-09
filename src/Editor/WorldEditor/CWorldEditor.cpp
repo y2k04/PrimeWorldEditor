@@ -252,7 +252,8 @@ bool CWorldEditor::CloseWorld()
         emit MapChanged(mpWorld, mpArea);
         return true;
     }
-    else return false;
+
+    return false;
 }
 
 bool CWorldEditor::SetArea(CWorld *pWorld, int AreaIndex)
@@ -414,8 +415,9 @@ void CWorldEditor::Paste()
             CVector3f PastePoint;
 
             if (ui->MainViewport->underMouse() && !ui->MainViewport->IsMouseInputActive())
+            {
                 PastePoint = ui->MainViewport->HoverPoint();
-
+            }
             else
             {
                 CRay Ray = ui->MainViewport->Camera().CastRay(CVector2f(0.f, 0.f));
@@ -560,7 +562,7 @@ void CWorldEditor::OnActiveProjectChanged(CGameProject *pProj)
 
 void CWorldEditor::OnLinksModified(const QList<CScriptObject*>& rkInstances)
 {
-    for (CScriptObject *pInstance : rkInstances)
+    for (const CScriptObject* pInstance : rkInstances)
     {
         CScriptNode *pNode = mScene.NodeForInstance(pInstance);
         pNode->LinksModified();
@@ -610,7 +612,9 @@ void CWorldEditor::OnPropertyModified(IProperty *pProp)
                 ShouldUpdateSelection = true;
         }
         else if (pProp->Type() == EPropertyType::AnimationSet)
+        {
             ShouldUpdateSelection = true;
+        }
     }
 
     if (ShouldUpdateSelection)
@@ -758,9 +762,10 @@ void CWorldEditor::UpdateOpenRecentActions()
             pAction->setText(ActionText);
             pAction->setVisible(true);
         }
-
         else
+        {
             pAction->setVisible(false);
+        }
     }
 }
 
@@ -840,10 +845,14 @@ void CWorldEditor::UpdateGizmoUI()
                     SpinBoxValue = mpSelection->Front()->AbsoluteScale();
                 break;
 
-            default: break;
+            default:
+                break;
             }
         }
-        else if (!mpSelection->IsEmpty()) SpinBoxValue = mpSelection->Front()->AbsolutePosition();
+        else if (!mpSelection->IsEmpty())
+        {
+            SpinBoxValue = mpSelection->Front()->AbsolutePosition();
+        }
 
         ui->TransformSpinBox->blockSignals(true);
         ui->TransformSpinBox->SetValue(SpinBoxValue);
@@ -907,9 +916,7 @@ void CWorldEditor::UpdateNewLinkLine()
         ui->MainViewport->SetLinkLineEnabled(true);
         ui->MainViewport->SetLinkLine(Start, End);
     }
-
-    // Otherwise check whether there's just a sender or just a receiver
-    else
+    else // Otherwise check whether there's just a sender or just a receiver
     {
         CScriptObject *pSender = nullptr;
         CScriptObject *pReceiver = nullptr;
@@ -922,21 +929,25 @@ void CWorldEditor::UpdateNewLinkLine()
                 pReceiver = mpLinkDialog->Receiver();
         }
         else if (mIsMakingLink && mpNewLinkSender)
+        {
             pSender = mpNewLinkSender;
+        }
         else if (mpScriptSidebar->ModifyTab()->IsPicking() && mpScriptSidebar->ModifyTab()->EditNode()->NodeType() == ENodeType::Script)
+        {
             pSender = static_cast<CScriptNode*>(mpScriptSidebar->ModifyTab()->EditNode())->Instance();
+        }
 
         // No sender and no receiver = no line
         if (!pSender && !pReceiver)
+        {
             ui->MainViewport->SetLinkLineEnabled(false);
-
+        }
         // Yes sender and yes receiver = yes line
         else if (pSender && pReceiver)
         {
             ui->MainViewport->SetLinkLineEnabled(true);
             ui->MainViewport->SetLinkLine( mScene.NodeForInstance(pSender)->CenterPoint(), mScene.NodeForInstance(pReceiver)->CenterPoint() );
         }
-
         // Compensate for missing sender or missing receiver
         else
         {
@@ -944,17 +955,18 @@ void CWorldEditor::UpdateNewLinkLine()
 
             if (ui->MainViewport->underMouse() && !ui->MainViewport->IsMouseInputActive() && IsPicking)
             {
-                CSceneNode *pHoverNode = ui->MainViewport->HoverNode();
-                CScriptObject *pInst = (pSender ? pSender : pReceiver);
+                CSceneNode* pHoverNode = ui->MainViewport->HoverNode();
+                const CScriptObject* pInst = (pSender ? pSender : pReceiver);
 
                 CVector3f Start = mScene.NodeForInstance(pInst)->CenterPoint();
                 CVector3f End = (pHoverNode && pHoverNode->NodeType() == ENodeType::Script ? pHoverNode->CenterPoint() : ui->MainViewport->HoverPoint());
                 ui->MainViewport->SetLinkLineEnabled(true);
                 ui->MainViewport->SetLinkLine(Start, End);
             }
-
             else
+            {
                 ui->MainViewport->SetLinkLineEnabled(false);
+            }
         }
     }
 }
@@ -1062,7 +1074,6 @@ void CWorldEditor::OnLinkButtonToggled(bool Enabled)
         mpNewLinkSender = nullptr;
         mpNewLinkReceiver = nullptr;
     }
-
     else
     {
         if (mIsMakingLink)
@@ -1076,7 +1087,6 @@ void CWorldEditor::OnLinkClick(const SRayIntersection& rkIntersect)
     {
         mpNewLinkSender = static_cast<CScriptNode*>(rkIntersect.pNode)->Instance();
     }
-
     else
     {
         mpNewLinkReceiver = static_cast<CScriptNode*>(rkIntersect.pNode)->Instance();
@@ -1186,28 +1196,30 @@ void CWorldEditor::OnTransformSpinBoxModified(const CVector3f& Value)
 
     switch (mGizmo.Mode())
     {
-        // Use absolute position/rotation, but relative scale. (This way spinbox doesn't show preview multiplier)
-        case CGizmo::EGizmoMode::Translate:
-        {
-            CVector3f Delta = Value - mpSelection->Front()->AbsolutePosition();
-            UndoStack().push(new CTranslateNodeCommand(this, mpSelection->SelectedNodeList(), Delta, mTranslateSpace));
-            break;
-        }
+    // Use absolute position/rotation, but relative scale. (This way spinbox doesn't show preview multiplier)
+    case CGizmo::EGizmoMode::Translate:
+    {
+        CVector3f Delta = Value - mpSelection->Front()->AbsolutePosition();
+        UndoStack().push(new CTranslateNodeCommand(this, mpSelection->SelectedNodeList(), Delta, mTranslateSpace));
+        break;
+    }
 
-        case CGizmo::EGizmoMode::Rotate:
-        {
-            CQuaternion Delta = CQuaternion::FromEuler(Value) * mpSelection->Front()->AbsoluteRotation().Inverse();
-            UndoStack().push(new CRotateNodeCommand(this, mpSelection->SelectedNodeList(), true, mGizmo.Position(), mGizmo.Rotation(), Delta, mRotateSpace));
-            break;
-        }
+    case CGizmo::EGizmoMode::Rotate:
+    {
+        CQuaternion Delta = CQuaternion::FromEuler(Value) * mpSelection->Front()->AbsoluteRotation().Inverse();
+        UndoStack().push(new CRotateNodeCommand(this, mpSelection->SelectedNodeList(), true, mGizmo.Position(), mGizmo.Rotation(), Delta, mRotateSpace));
+        break;
+    }
 
-        case CGizmo::EGizmoMode::Scale:
-        {
-            CVector3f Delta = Value / mpSelection->Front()->AbsoluteScale();
-            UndoStack().push(new CScaleNodeCommand(this, mpSelection->SelectedNodeList(), true, mGizmo.Position(), Delta));
-            break;
-        }
-        default: break;
+    case CGizmo::EGizmoMode::Scale:
+    {
+        CVector3f Delta = Value / mpSelection->Front()->AbsoluteScale();
+        UndoStack().push(new CScaleNodeCommand(this, mpSelection->SelectedNodeList(), true, mGizmo.Position(), Delta));
+        break;
+    }
+
+    default:
+        break;
     }
 
     UpdateGizmoUI();

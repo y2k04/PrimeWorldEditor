@@ -92,13 +92,9 @@ void WInstancesTab::OnTreeClick(QModelIndex Index)
         // Show/Hide Instance
         if (mpTypesModel->IndexType(SourceIndex) == CInstancesModel::EIndexType::Instance)
         {
-            CScriptObject *pObj = mpTypesModel->IndexObject(SourceIndex);
-
-            if (pObj)
+            if (const CScriptObject* pObj = mpTypesModel->IndexObject(SourceIndex))
             {
-                CScriptNode *pNode = mpScene->NodeForInstance(pObj);
-
-                if (pNode)
+                if (CScriptNode* pNode = mpScene->NodeForInstance(pObj))
                     pNode->SetVisible(!pNode->IsVisible());
             }
 
@@ -151,7 +147,7 @@ void WInstancesTab::OnTreeContextMenu(QPoint Pos)
     // Determine type
     mMenuIndexType = (IsLayers ? mpLayersModel->IndexType(mMenuIndex) : mpTypesModel->IndexType(mMenuIndex));
 
-    CScriptObject *pObject = nullptr;
+    const CScriptObject *pObject = nullptr;
     mpMenuObject = nullptr;
     mpMenuLayer = nullptr;
     mpMenuTemplate = nullptr;
