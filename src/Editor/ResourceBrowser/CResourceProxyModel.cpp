@@ -103,7 +103,7 @@ bool CResourceProxyModel::filterAcceptsRow(int SourceRow, const QModelIndex& rkS
     return true;
 }
 
-void CResourceProxyModel::SetTypeFilter(CResTypeInfo *pInfo, bool Allow)
+void CResourceProxyModel::SetTypeFilter(const CResTypeInfo *pInfo, bool Allow)
 {
     if (Allow)
         mTypeFilter.insert(pInfo);
@@ -111,7 +111,7 @@ void CResourceProxyModel::SetTypeFilter(CResTypeInfo *pInfo, bool Allow)
         mTypeFilter.remove(pInfo);
 }
 
-bool CResourceProxyModel::IsTypeAccepted(CResTypeInfo* pTypeInfo) const
+bool CResourceProxyModel::IsTypeAccepted(const CResTypeInfo* pTypeInfo) const
 {
     return mTypeFilter.isEmpty() || mTypeFilter.contains(pTypeInfo);
 }

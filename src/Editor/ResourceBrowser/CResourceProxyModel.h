@@ -25,10 +25,10 @@ public:
     bool lessThan(const QModelIndex& rkLeft, const QModelIndex& rkRight) const override;
     bool filterAcceptsRow(int SourceRow, const QModelIndex& rkSourceParent) const override;
 
-    void SetTypeFilter(CResTypeInfo *pInfo, bool Allow);
+    void SetTypeFilter(const CResTypeInfo *pInfo, bool Allow);
     void ClearTypeFilter() { mTypeFilter.clear(); }
     bool HasTypeFilter() const { return !mTypeFilter.isEmpty(); }
-    bool IsTypeAccepted(CResTypeInfo* pTypeInfo) const;
+    bool IsTypeAccepted(const CResTypeInfo* pTypeInfo) const;
 
     void SetSortMode(ESortMode Mode);
 
@@ -39,7 +39,7 @@ private:
     CResourceTableModel *mpModel = nullptr;
     TString mSearchString;
     ESortMode mSortMode{};
-    QSet<CResTypeInfo*> mTypeFilter;
+    QSet<const CResTypeInfo*> mTypeFilter;
 
     uint64_t mCompareID = 0;
     uint64_t mCompareMask = 0;
