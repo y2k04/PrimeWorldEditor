@@ -20,7 +20,7 @@ class CPoiMapModel : public QAbstractListModel
     CGameArea *mpArea = nullptr;
     TResPtr<CPoiToWorld> mpPoiToWorld;
 
-    QMap<const CScriptNode*, QList<CModelNode*>*> mModelMap;
+    QMap<const CScriptNode*, QList<CModelNode*>> mModelMap;
 
 public:
     explicit CPoiMapModel(CWorldEditor *pEditor, QObject *pParent = nullptr);
@@ -32,13 +32,13 @@ public:
     void AddPOI(const CScriptNode* pPOI);
     void AddMapping(const QModelIndex& rkIndex, CModelNode* pNode);
     void RemovePOI(const QModelIndex& rkIndex);
-    void RemoveMapping(const QModelIndex& rkIndex, CModelNode* pNode);
+    void RemoveMapping(const QModelIndex& rkIndex, const CModelNode* pNode);
     bool IsPoiTracked(const CScriptNode* pPOI) const;
-    bool IsModelMapped(const QModelIndex& rkIndex, CModelNode* pNode) const;
+    bool IsModelMapped(const QModelIndex& rkIndex, const CModelNode* pNode) const;
 
     CScriptNode* PoiNodePointer(const QModelIndex& rkIndex) const;
-    const QList<CModelNode*>& GetPoiMeshList(const QModelIndex& rkIndex) const;
-    const QList<CModelNode*>& GetPoiMeshList(const CScriptNode* pPOI) const;
+    const QList<CModelNode*>& GetPoiMeshList(const QModelIndex& rkIndex);
+    const QList<CModelNode*>& GetPoiMeshList(const CScriptNode* pPOI);
 
 public slots:
     void OnMapChange(CWorld*, CGameArea *pArea);

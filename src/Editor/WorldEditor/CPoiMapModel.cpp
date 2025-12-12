@@ -70,8 +70,7 @@ void CPoiMapModel::AddPOI(const CScriptNode* pPOI)
     const int NewIndex = static_cast<int>(mpPoiToWorld->NumMappedPOIs());
     beginInsertRows(QModelIndex(), NewIndex, NewIndex);
 
-    auto* pList = new QList<CModelNode*>();
-    mModelMap[pPOI] = pList;
+    mModelMap.insert(pPOI, {});
     mpPoiToWorld->AddPoi(pPOI->Instance()->InstanceID());
 
     endInsertRows();
@@ -82,9 +81,9 @@ void CPoiMapModel::AddMapping(const QModelIndex& rkIndex, CModelNode *pNode)
     const CScriptNode* pPOI = PoiNodePointer(rkIndex);
     AddPOI(pPOI);
 
-    QList<CModelNode*> *pList = mModelMap[pPOI];
-    if (!pList->contains(pNode))
-        pList->append(pNode);
+    auto& list = mModelMap[pPOI];
+    if (!list.contains(pNode))
+        list.append(pNode);
 
     mpPoiToWorld->AddPoiMeshMap(pPOI->Instance()->InstanceID(), pNode->FindMeshID());
 }
@@ -93,25 +92,23 @@ void CPoiMapModel::RemovePOI(const QModelIndex& rkIndex)
 {
     beginRemoveRows(QModelIndex(), rkIndex.row(), rkIndex.row());
     const CScriptNode* pPOI = PoiNodePointer(rkIndex);
+    const auto iter = mModelMap.find(pPOI);
 
-    if (mModelMap.contains(pPOI))
-    {
-        delete mModelMap[pPOI];
-        mModelMap.remove(pPOI);
-    }
+    if (iter != mModelMap.cend())
+        mModelMap.erase(iter);
 
     mpPoiToWorld->RemovePoi(pPOI->Instance()->InstanceID());
     endRemoveRows();
 }
 
-void CPoiMapModel::RemoveMapping(const QModelIndex& rkIndex, CModelNode *pNode)
+void CPoiMapModel::RemoveMapping(const QModelIndex& rkIndex, const CModelNode *pNode)
 {
     const CScriptNode* pPOI = PoiNodePointer(rkIndex);
+    const auto iter = mModelMap.find(pPOI);
 
-    if (mModelMap.contains(pPOI))
+    if (iter != mModelMap.cend())
     {
-        QList<CModelNode*> *pList = mModelMap[pPOI];
-        pList->removeOne(pNode);
+        iter->removeOne(pNode);
         mpPoiToWorld->RemovePoiMeshMap(pPOI->Instance()->InstanceID(), pNode->FindMeshID());
     }
     else
@@ -125,17 +122,16 @@ bool CPoiMapModel::IsPoiTracked(const CScriptNode* pPOI) const
     return mModelMap.contains(pPOI);
 }
 
-bool CPoiMapModel::IsModelMapped(const QModelIndex& rkIndex, CModelNode *pNode) const
+bool CPoiMapModel::IsModelMapped(const QModelIndex& rkIndex, const CModelNode *pNode) const
 {
     if (!pNode)
         return false;
 
     const CScriptNode* pPOI = PoiNodePointer(rkIndex);
-    if (mModelMap.contains(pPOI))
-    {
-        QList<CModelNode*> *pList = mModelMap[pPOI];
-        return pList->contains(pNode);
-    }
+    const auto iter = mModelMap.constFind(pPOI);
+
+    if (iter != mModelMap.cend())
+        return iter->contains(pNode);
 
     return false;
 }
@@ -153,15 +149,15 @@ CScriptNode* CPoiMapModel::PoiNodePointer(const QModelIndex& rkIndex) const
     return nullptr;
 }
 
-const QList<CModelNode*>& CPoiMapModel::GetPoiMeshList(const QModelIndex& rkIndex) const
+const QList<CModelNode*>& CPoiMapModel::GetPoiMeshList(const QModelIndex& rkIndex)
 {
     const CScriptNode* pPOI = PoiNodePointer(rkIndex);
     return GetPoiMeshList(pPOI);
 }
 
-const QList<CModelNode*>& CPoiMapModel::GetPoiMeshList(const CScriptNode *pPOI) const
+const QList<CModelNode*>& CPoiMapModel::GetPoiMeshList(const CScriptNode *pPOI)
 {
-    return *mModelMap[pPOI];
+    return mModelMap[pPOI];
 }
 
 void CPoiMapModel::OnMapChange(CWorld*, CGameArea *pArea)
@@ -188,25 +184,20 @@ void CPoiMapModel::OnMapChange(CWorld*, CGameArea *pArea)
 
             if (const auto* pPoiNode = mpEditor->Scene()->NodeForInstanceID(pkMap->PoiID))
             {
-                auto* pModelList = new QList<CModelNode*>();
+                QList<CModelNode*> modelList;
 
                 for (const auto modelID : pkMap->ModelIDs)
                 {
                     if (NodeMap.contains(modelID))
-                        pModelList->push_back(NodeMap[modelID]);
+                        modelList.push_back(NodeMap[modelID]);
                 }
 
-                mModelMap[pPoiNode] = pModelList;
+                mModelMap[pPoiNode] = std::move(modelList);
             }
         }
     }
     else
     {
-        QList<QList<CModelNode*>*> Lists = mModelMap.values();
-
-        for (auto* list : Lists)
-            delete list;
-
         mModelMap.clear();
     }
 
