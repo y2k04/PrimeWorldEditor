@@ -20,7 +20,7 @@ class CPoiMapModel : public QAbstractListModel
     CGameArea *mpArea = nullptr;
     TResPtr<CPoiToWorld> mpPoiToWorld;
 
-    QMap<CScriptNode*, QList<CModelNode*>*> mModelMap;
+    QMap<const CScriptNode*, QList<CModelNode*>*> mModelMap;
 
 public:
     explicit CPoiMapModel(CWorldEditor *pEditor, QObject *pParent = nullptr);
@@ -29,16 +29,16 @@ public:
     int rowCount(const QModelIndex& rkParent) const override;
     QVariant data(const QModelIndex& rkIndex, int Role) const override;
 
-    void AddPOI(CScriptNode *pPOI);
-    void AddMapping(const QModelIndex& rkIndex, CModelNode *pNode);
+    void AddPOI(const CScriptNode* pPOI);
+    void AddMapping(const QModelIndex& rkIndex, CModelNode* pNode);
     void RemovePOI(const QModelIndex& rkIndex);
-    void RemoveMapping(const QModelIndex& rkIndex, CModelNode *pNode);
-    bool IsPoiTracked(CScriptNode *pPOI) const;
-    bool IsModelMapped(const QModelIndex& rkIndex, CModelNode *pNode) const;
+    void RemoveMapping(const QModelIndex& rkIndex, CModelNode* pNode);
+    bool IsPoiTracked(const CScriptNode* pPOI) const;
+    bool IsModelMapped(const QModelIndex& rkIndex, CModelNode* pNode) const;
 
     CScriptNode* PoiNodePointer(const QModelIndex& rkIndex) const;
     const QList<CModelNode*>& GetPoiMeshList(const QModelIndex& rkIndex) const;
-    const QList<CModelNode*>& GetPoiMeshList(CScriptNode *pPOI) const;
+    const QList<CModelNode*>& GetPoiMeshList(const CScriptNode* pPOI) const;
 
 public slots:
     void OnMapChange(CWorld*, CGameArea *pArea);

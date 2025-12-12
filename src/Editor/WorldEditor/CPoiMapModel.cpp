@@ -62,7 +62,7 @@ QVariant CPoiMapModel::data(const QModelIndex& rkIndex, int Role) const
     return QVariant();
 }
 
-void CPoiMapModel::AddPOI(CScriptNode *pPOI)
+void CPoiMapModel::AddPOI(const CScriptNode* pPOI)
 {
     if (mModelMap.contains(pPOI))
         return;
@@ -79,7 +79,7 @@ void CPoiMapModel::AddPOI(CScriptNode *pPOI)
 
 void CPoiMapModel::AddMapping(const QModelIndex& rkIndex, CModelNode *pNode)
 {
-    CScriptNode *pPOI = PoiNodePointer(rkIndex);
+    const CScriptNode* pPOI = PoiNodePointer(rkIndex);
     AddPOI(pPOI);
 
     QList<CModelNode*> *pList = mModelMap[pPOI];
@@ -92,7 +92,7 @@ void CPoiMapModel::AddMapping(const QModelIndex& rkIndex, CModelNode *pNode)
 void CPoiMapModel::RemovePOI(const QModelIndex& rkIndex)
 {
     beginRemoveRows(QModelIndex(), rkIndex.row(), rkIndex.row());
-    CScriptNode *pPOI = PoiNodePointer(rkIndex);
+    const CScriptNode* pPOI = PoiNodePointer(rkIndex);
 
     if (mModelMap.contains(pPOI))
     {
@@ -106,7 +106,7 @@ void CPoiMapModel::RemovePOI(const QModelIndex& rkIndex)
 
 void CPoiMapModel::RemoveMapping(const QModelIndex& rkIndex, CModelNode *pNode)
 {
-    CScriptNode *pPOI = PoiNodePointer(rkIndex);
+    const CScriptNode* pPOI = PoiNodePointer(rkIndex);
 
     if (mModelMap.contains(pPOI))
     {
@@ -120,7 +120,7 @@ void CPoiMapModel::RemoveMapping(const QModelIndex& rkIndex, CModelNode *pNode)
     }
 }
 
-bool CPoiMapModel::IsPoiTracked(CScriptNode *pPOI) const
+bool CPoiMapModel::IsPoiTracked(const CScriptNode* pPOI) const
 {
     return mModelMap.contains(pPOI);
 }
@@ -130,12 +130,11 @@ bool CPoiMapModel::IsModelMapped(const QModelIndex& rkIndex, CModelNode *pNode) 
     if (!pNode)
         return false;
 
-    CScriptNode *pPOI = PoiNodePointer(rkIndex);
-
+    const CScriptNode* pPOI = PoiNodePointer(rkIndex);
     if (mModelMap.contains(pPOI))
     {
         QList<CModelNode*> *pList = mModelMap[pPOI];
-        return (pList->contains(pNode));
+        return pList->contains(pNode);
     }
 
     return false;
@@ -156,11 +155,11 @@ CScriptNode* CPoiMapModel::PoiNodePointer(const QModelIndex& rkIndex) const
 
 const QList<CModelNode*>& CPoiMapModel::GetPoiMeshList(const QModelIndex& rkIndex) const
 {
-    CScriptNode *pPOI = PoiNodePointer(rkIndex);
+    const CScriptNode* pPOI = PoiNodePointer(rkIndex);
     return GetPoiMeshList(pPOI);
 }
 
-const QList<CModelNode*>& CPoiMapModel::GetPoiMeshList(CScriptNode *pPOI) const
+const QList<CModelNode*>& CPoiMapModel::GetPoiMeshList(const CScriptNode *pPOI) const
 {
     return *mModelMap[pPOI];
 }
@@ -174,11 +173,11 @@ void CPoiMapModel::OnMapChange(CWorld*, CGameArea *pArea)
     if (mpPoiToWorld)
     {
         // Create an ID -> Model Node lookup map
-        QMap<uint32,CModelNode*> NodeMap;
+        QMap<uint32, CModelNode*> NodeMap;
 
         for (CSceneIterator It(mpEditor->Scene(), ENodeType::Model, true); !It.DoneIterating(); ++It)
         {
-            CModelNode *pNode = static_cast<CModelNode*>(*It);
+            auto* pNode = static_cast<CModelNode*>(*It);
             NodeMap[pNode->FindMeshID()] = pNode;
         }
 
@@ -186,9 +185,8 @@ void CPoiMapModel::OnMapChange(CWorld*, CGameArea *pArea)
         for (size_t iPoi = 0; iPoi < mpPoiToWorld->NumMappedPOIs(); iPoi++)
         {
             const CPoiToWorld::SPoiMap *pkMap = mpPoiToWorld->MapByIndex(iPoi);
-            CScriptNode *pPoiNode = mpEditor->Scene()->NodeForInstanceID(pkMap->PoiID);
 
-            if (pPoiNode)
+            if (const auto* pPoiNode = mpEditor->Scene()->NodeForInstanceID(pkMap->PoiID))
             {
                 auto* pModelList = new QList<CModelNode*>();
 
