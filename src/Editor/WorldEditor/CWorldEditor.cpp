@@ -137,11 +137,11 @@ CWorldEditor::CWorldEditor(QWidget *parent)
     mpOpenRecentMenu = new QMenu(this);
     ui->ActionOpenRecent->setMenu(mpOpenRecentMenu);
 
-    for (uint32 iAct = 0; iAct < mskMaxRecentProjects; iAct++)
+    for (int iAct = 0; iAct < mskMaxRecentProjects; iAct++)
     {
         QAction *pAction = new QAction(this);
         pAction->setVisible(false);
-        pAction->setData((int) iAct);
+        pAction->setData(iAct);
         connect(pAction, &QAction::triggered, this, &CWorldEditor::OpenRecentProject);
 
         mpOpenRecentMenu->addAction(pAction);
