@@ -12,8 +12,8 @@ class CBoneTransformData
 
 public:
     CBoneTransformData() = default;
-    explicit CBoneTransformData(CSkeleton *pSkel)            { ResizeToSkeleton(pSkel); }
-    void ResizeToSkeleton(CSkeleton *pSkel)                  { mBoneMatrices.resize(pSkel ? pSkel->MaxBoneID() + 1 : 0); }
+    explicit CBoneTransformData(const CSkeleton *pSkel)      { ResizeToSkeleton(pSkel); }
+    void ResizeToSkeleton(const CSkeleton *pSkel)            { mBoneMatrices.resize(pSkel ? pSkel->MaxBoneID() + 1 : 0); }
     CTransform4f& BoneMatrix(size_t BoneID)                  { return mBoneMatrices[BoneID]; }
     const CTransform4f& BoneMatrix(size_t BoneID) const      { return mBoneMatrices[BoneID]; }
     const void* Data() const                                 { return mBoneMatrices.data(); }
