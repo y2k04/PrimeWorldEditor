@@ -16,7 +16,7 @@ CCamera::CCamera()
 
 // todo: make it actually look at the target!
 // don't actually use this constructor, it's unfinished and won't work properly
-CCamera::CCamera(CVector3f Position, CVector3f /*Target*/)
+CCamera::CCamera(const CVector3f& Position, const CVector3f& /*Target*/)
     : mPosition(Position)
     , mYaw(-Math::skHalfPi)
 {
@@ -65,7 +65,7 @@ void CCamera::Zoom(float Amount)
     mFrustumPlanesDirty = true;
 }
 
-void CCamera::Snap(CVector3f Position)
+void CCamera::Snap(const CVector3f& Position)
 {
     mPosition = Position;
     mYaw = -Math::skHalfPi;
@@ -119,7 +119,7 @@ void CCamera::ProcessMouseInput(FKeyInputs KeyFlags, FMouseInputs MouseFlags, fl
     }
 }
 
-CRay CCamera::CastRay(CVector2f DeviceCoords) const
+CRay CCamera::CastRay(const CVector2f& DeviceCoords) const
 {
     const CMatrix4f InverseVP = (ViewMatrix().Transpose() * ProjectionMatrix().Transpose()).Inverse();
 

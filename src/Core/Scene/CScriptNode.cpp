@@ -392,7 +392,7 @@ SRayIntersection CScriptNode::RayNodeIntersectTest(const CRay& rkRay, uint32 Ass
 
             const CVector3f PlaneForward = -rkViewInfo.pCamera->Direction();
             const CVector3f PlaneRight = -rkViewInfo.pCamera->RightVector();
-            const CVector3f PlaneUp = rkViewInfo.pCamera->UpVector();
+            const CVector3f& PlaneUp = rkViewInfo.pCamera->UpVector();
             const CQuaternion PlaneRot = CQuaternion::FromAxes(PlaneRight, PlaneForward, PlaneUp);
 
             const CVector3f RotatedHitPoint = PlaneRot.Inverse() * RelHitPoint;

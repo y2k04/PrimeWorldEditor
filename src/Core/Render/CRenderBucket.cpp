@@ -19,8 +19,8 @@ void CRenderBucket::CSubBucket::Sort(const CCamera* pkCamera, bool DebugVisualiz
 {
     std::stable_sort(mRenderables.begin(), mRenderables.begin() + mSize,
                      [&, pkCamera](const auto& rkLeft, const auto& rkRight) {
-                         const CVector3f CamPos = pkCamera->Position();
-                         const CVector3f CamDir = pkCamera->Direction();
+                         const CVector3f& CamPos = pkCamera->Position();
+                         const CVector3f& CamDir = pkCamera->Direction();
 
                          const CVector3f DistL = rkLeft.AABox.ClosestPointAlongVector(CamDir) - CamPos;
                          const CVector3f DistR = rkRight.AABox.ClosestPointAlongVector(CamDir) - CamPos;

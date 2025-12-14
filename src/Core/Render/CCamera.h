@@ -54,15 +54,15 @@ class CCamera
 
 public:
     CCamera();
-    CCamera(CVector3f Position, CVector3f Target);
+    explicit CCamera(const CVector3f& Position, const CVector3f& Target);
 
     void Pan(float XAmount, float YAmount);
     void Rotate(float XAmount, float YAmount);
     void Zoom(float Amount);
-    void Snap(CVector3f Position);
+    void Snap(const CVector3f& Position);
     void ProcessKeyInput(FKeyInputs KeyFlags, double DeltaTime);
     void ProcessMouseInput(FKeyInputs KeyFlags, FMouseInputs MouseFlags, float XMovement, float YMovement);
-    CRay CastRay(CVector2f DeviceCoords) const;
+    CRay CastRay(const CVector2f& DeviceCoords) const;
     void LoadMatrices() const;
     CTransform4f GetCameraTransform() const;
 
@@ -73,10 +73,10 @@ public:
     void SetOrbitDistance(float Distance);
 
     // Inline Accessors
-    CVector3f Position() const                       { UpdateTransform(); return mPosition; }
-    CVector3f Direction() const                      { UpdateTransform(); return mDirection; }
-    CVector3f UpVector() const                       { UpdateTransform(); return mUpVector; }
-    CVector3f RightVector() const                    { UpdateTransform(); return mRightVector; }
+    const CVector3f& Position() const                { UpdateTransform(); return mPosition; }
+    const CVector3f& Direction() const               { UpdateTransform(); return mDirection; }
+    const CVector3f& UpVector() const                { UpdateTransform(); return mUpVector; }
+    const CVector3f& RightVector() const             { UpdateTransform(); return mRightVector; }
     float Yaw() const                                { return mYaw; }
     float Pitch() const                              { return mPitch; }
     float FieldOfView() const                        { return 55.f; }
