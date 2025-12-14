@@ -2,10 +2,11 @@
 #include "ui_CCharacterEditor.h"
 #include "Editor/UICommon.h"
 #include <Common/Macros.h>
-#include <Common/Math/MathUtil.h>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QTreeView>
+
+#include <algorithm>
 
 constexpr CVector3f skDefaultOrbitTarget{0, 0, 1};
 constexpr float skDefaultOrbitDistance = 4.f;
@@ -341,24 +342,27 @@ void CCharacterEditor::SetAnimTime(int Time)
 
 void CCharacterEditor::SetAnimTime(float Time)
 {
-    if (mBindPose) Time = 0.f;
+    if (mBindPose)
+        Time = 0.f;
+
     mAnimTime = Time;
 
     if (ui->AnimSlider != sender() || mBindPose)
     {
-        int IntTime = (int) (Time * 1000);
+        const auto IntTime = static_cast<int>(Time * 1000);
         ui->AnimSlider->setValue(IntTime);
     }
 
     mpCharNode->SetAnimTime(Time);
 
-    CAnimation *pAnim = CurrentAnimation();
-    uint32 NumKeys = 1, CurKey = 0;
+    const CAnimation* pAnim = CurrentAnimation();
+    uint32_t NumKeys = 1;
+    uint32_t CurKey = 0;
 
     if (pAnim)
     {
         NumKeys = pAnim->NumKeys();
-        CurKey = Math::Min<uint32>((uint32) (Time / pAnim->TickInterval()) + 1, NumKeys - 1);
+        CurKey = std::min(static_cast<uint32_t>(Time / pAnim->TickInterval()) + 1, NumKeys - 1);
     }
 
     ui->FrameLabel->setText(tr("Frame %1 / %2 (%3s/%4s)").arg(CurKey).arg(NumKeys - 1).arg(mAnimTime, 0, 'f', 3).arg(pAnim ? pAnim->Duration() : 0.f, 0, 'f', 3));
