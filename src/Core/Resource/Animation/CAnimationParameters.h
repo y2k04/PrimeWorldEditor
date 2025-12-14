@@ -58,19 +58,7 @@ public:
     void SetResource(const CAssetID& rkID);
     void SetUnknown(uint32 Index, uint32 Value);
 
-    bool operator==(const CAnimationParameters& other) const
-    {
-        return mGame == other.mGame &&
-               mCharacterID == other.mCharacterID &&
-               mCharIndex == other.mCharIndex &&
-               mAnimIndex == other.mAnimIndex &&
-               mUnknown2 == other.mUnknown2 &&
-               mUnknown3 == other.mUnknown3;
-    }
-    bool operator!=(const CAnimationParameters& other) const
-    {
-        return !operator==(other);
-    }
+    bool operator==(const CAnimationParameters&) const = default;
 };
 
 #endif // CANIMATIONPARAMETERS_H
