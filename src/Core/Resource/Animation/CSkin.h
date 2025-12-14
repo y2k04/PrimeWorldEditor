@@ -18,14 +18,14 @@ class CSkin : public CResource
     struct SVertGroup
     {
         SVertexWeights Weights;
-        uint32 NumVertices;
+        uint32_t NumVertices;
     };
     std::vector<SVertGroup> mVertGroups;
 
 public:
     explicit CSkin(CResourceEntry *pEntry = nullptr) : CResource(pEntry) {}
 
-    const SVertexWeights& WeightsForVertex(uint32 VertIdx)
+    const SVertexWeights& WeightsForVertex(uint32_t VertIdx) const
     {
         // Null weights bind everything to the root bone in case there is no matching vertex group
         static constexpr SVertexWeights skNullWeights{
@@ -33,7 +33,7 @@ public:
             {1.f, 0.f, 0.f, 0.f},
         };
 
-        uint32 Index = 0;
+        uint32_t Index = 0;
 
         for (const auto& group : mVertGroups)
         {
