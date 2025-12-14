@@ -98,14 +98,14 @@ void CStringEditor::InitUI()
     mpListModel = new CStringListModel(this);
     mpUI->StringNameListView->setModel(mpListModel);
     mpUI->StringNameListView->setItemDelegate(new CStringDelegate(this));
-    mpUI->AddStringButton->setShortcut(QKeySequence(Qt::Key_Alt, Qt::Key_Equal));
-    mpUI->RemoveStringButton->setShortcut(QKeySequence(Qt::Key_Alt, Qt::Key_Minus));
+    mpUI->AddStringButton->setShortcut(QKeySequence(Qt::ALT | Qt::Key_Equal));
+    mpUI->RemoveStringButton->setShortcut(QKeySequence(Qt::ALT | Qt::Key_Minus));
 
     // Register shortcuts
-    new QShortcut(QKeySequence(Qt::Key_Alt, Qt::Key_Down), this, [this] { IncrementStringIndex(); });
-    new QShortcut(QKeySequence(Qt::Key_Alt, Qt::Key_Up), this, [this] { DecrementStringIndex(); });
-    new QShortcut(QKeySequence(Qt::Key_Alt, Qt::Key_Right), this, [this] { IncrementLanguageIndex(); });
-    new QShortcut(QKeySequence(Qt::Key_Alt, Qt::Key_Left), this, [this] { DecrementLanguageIndex(); });
+    new QShortcut(QKeySequence(Qt::ALT | Qt::Key_Down), this, this, &CStringEditor::IncrementStringIndex);
+    new QShortcut(QKeySequence(Qt::ALT | Qt::Key_Up), this, this, &CStringEditor::DecrementStringIndex);
+    new QShortcut(QKeySequence(Qt::ALT | Qt::Key_Right), this, this, &CStringEditor::IncrementLanguageIndex);
+    new QShortcut(QKeySequence(Qt::ALT | Qt::Key_Left), this, this, &CStringEditor::DecrementLanguageIndex);
 
     // Set up language tabs
     mpUI->EditLanguageTabBar->setExpanding(false);
