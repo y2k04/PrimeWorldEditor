@@ -102,10 +102,10 @@ void CStringEditor::InitUI()
     mpUI->RemoveStringButton->setShortcut(QKeySequence(Qt::Key_Alt, Qt::Key_Minus));
 
     // Register shortcuts
-    new QShortcut(QKeySequence(Qt::Key_Alt, Qt::Key_Down), this, SLOT(IncrementStringIndex()));
-    new QShortcut(QKeySequence(Qt::Key_Alt, Qt::Key_Up), this, SLOT(DecrementStringIndex()));
-    new QShortcut(QKeySequence(Qt::Key_Alt, Qt::Key_Right), this, SLOT(IncrementLanguageIndex()));
-    new QShortcut(QKeySequence(Qt::Key_Alt, Qt::Key_Left), this, SLOT(DecrementLanguageIndex()));
+    new QShortcut(QKeySequence(Qt::Key_Alt, Qt::Key_Down), this, [this] { IncrementStringIndex(); });
+    new QShortcut(QKeySequence(Qt::Key_Alt, Qt::Key_Up), this, [this] { DecrementStringIndex(); });
+    new QShortcut(QKeySequence(Qt::Key_Alt, Qt::Key_Right), this, [this] { IncrementLanguageIndex(); });
+    new QShortcut(QKeySequence(Qt::Key_Alt, Qt::Key_Left), this, [this] { DecrementLanguageIndex(); });
 
     // Set up language tabs
     mpUI->EditLanguageTabBar->setExpanding(false);
