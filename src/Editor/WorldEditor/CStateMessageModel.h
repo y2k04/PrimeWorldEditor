@@ -21,11 +21,11 @@ public:
 private:
     struct SEntry
     {
-        uint32 ID = 0;
+        uint32_t ID = 0;
         QString Name;
 
         SEntry() = default;
-        SEntry(uint32 _ID, QString rkName)
+        SEntry(uint32_t _ID, QString rkName)
             : ID(_ID), Name(std::move(rkName)) {}
 
         bool operator<(const SEntry& rkOther) const
@@ -69,7 +69,7 @@ public:
 
         if (mType == EType::States)
         {
-            for (uint32 iState = 0; iState < pGame->NumStates(); iState++)
+            for (uint32_t iState = 0; iState < pGame->NumStates(); iState++)
             {
                 SState State = pGame->StateByIndex(iState);
                 mEntries.emplace_back(State.ID, TO_QSTRING(State.Name));
@@ -77,7 +77,7 @@ public:
         }
         else
         {
-            for (uint32 iMsg = 0; iMsg < pGame->NumMessages(); iMsg++)
+            for (uint32_t iMsg = 0; iMsg < pGame->NumMessages(); iMsg++)
             {
                 SMessage Message = pGame->MessageByIndex(iMsg);
                 mEntries.emplace_back(Message.ID, TO_QSTRING(Message.Name));
@@ -88,12 +88,12 @@ public:
         endResetModel();
     }
 
-    uint32 StateIndex(uint32 StateID) const
+    uint32_t StateIndex(uint32_t StateID) const
     {
         if (mType == EType::Messages)
-            return -1;
+            return UINT32_MAX;
 
-        for (int iState = 0; iState < mEntries.size(); iState++)
+        for (uint32_t iState = 0; iState < mEntries.size(); iState++)
         {
             if (mEntries[iState].ID == StateID)
                 return iState;
@@ -102,12 +102,12 @@ public:
         return UINT32_MAX;
     }
 
-    uint32 MessageIndex(uint32 MessageID) const
+    uint32_t MessageIndex(uint32_t MessageID) const
     {
         if (mType == EType::States)
-            return -1;
+            return UINT32_MAX;
 
-        for (int iMsg = 0; iMsg < mEntries.size(); iMsg++)
+        for (uint32_t iMsg = 0; iMsg < mEntries.size(); iMsg++)
         {
             if (mEntries[iMsg].ID == MessageID)
                 return iMsg;
@@ -121,12 +121,12 @@ public:
         mpScript = pScript;
     }
 
-    uint32 State(uint32 Index) const
+    uint32_t State(uint32_t Index) const
     {
         return (mType == EType::States ? mEntries[Index].ID : 0);
     }
 
-    uint32 Message(uint32 Index) const
+    uint32_t Message(uint32_t Index) const
     {
         return (mType == EType::Messages ? mEntries[Index].ID : 0);
     }
