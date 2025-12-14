@@ -72,16 +72,15 @@ public:
             for (uint32 iState = 0; iState < pGame->NumStates(); iState++)
             {
                 SState State = pGame->StateByIndex(iState);
-                mEntries.push_back(SEntry(State.ID, TO_QSTRING(State.Name)));
+                mEntries.emplace_back(State.ID, TO_QSTRING(State.Name));
             }
         }
-
         else
         {
             for (uint32 iMsg = 0; iMsg < pGame->NumMessages(); iMsg++)
             {
                 SMessage Message = pGame->MessageByIndex(iMsg);
-                mEntries.push_back(SEntry(Message.ID, TO_QSTRING(Message.Name)));
+                mEntries.emplace_back(Message.ID, TO_QSTRING(Message.Name));
             }
         }
 
@@ -91,7 +90,8 @@ public:
 
     uint32 StateIndex(uint32 StateID) const
     {
-        if (mType == EType::Messages) return -1;
+        if (mType == EType::Messages)
+            return -1;
 
         for (int iState = 0; iState < mEntries.size(); iState++)
         {
@@ -104,7 +104,8 @@ public:
 
     uint32 MessageIndex(uint32 MessageID) const
     {
-        if (mType == EType::States) return -1;
+        if (mType == EType::States)
+            return -1;
 
         for (int iMsg = 0; iMsg < mEntries.size(); iMsg++)
         {
