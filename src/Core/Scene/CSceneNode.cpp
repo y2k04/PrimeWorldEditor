@@ -9,10 +9,10 @@
 
 #include <algorithm>
 
-uint32 CSceneNode::smNumNodes = 0;
+uint32_t CSceneNode::smNumNodes = 0;
 CColor CSceneNode::skSelectionTint = CColor::Integral(39, 154, 167);
 
-CSceneNode::CSceneNode(CScene *pScene, uint32 NodeID, CSceneNode *pParent)
+CSceneNode::CSceneNode(CScene *pScene, uint32_t NodeID, CSceneNode *pParent)
     : _mID(NodeID)
     , mpParent(pParent)
     , mpScene(pScene)
@@ -168,7 +168,7 @@ void CSceneNode::BuildLightList(CGameArea *pArea)
     std::sort(LightEntries.begin(), LightEntries.end());
     mLightCount = (LightEntries.size() > 8) ? 8 : LightEntries.size();
 
-    for (uint32 iLight = 0; iLight < mLightCount; iLight++)
+    for (uint32_t iLight = 0; iLight < mLightCount; iLight++)
         mLights[iLight] = LightEntries[iLight].pLight;
 }
 
@@ -194,7 +194,7 @@ void CSceneNode::LoadLights(const SViewInfo& rkViewInfo)
         // World lighting: world ambient color, node dynamic lights
         CGraphics::sVertexBlock.COLOR0_Amb = mAmbientColor;
 
-        for (uint32 iLight = 0; iLight < mLightCount; iLight++)
+        for (uint32_t iLight = 0; iLight < mLightCount; iLight++)
             mLights[iLight]->Load();
         break;
     }
@@ -384,7 +384,7 @@ CVector3f CSceneNode::AbsoluteScale() const
     return ret;
 }
 
-CAABox CSceneNode::AABox() const
+const CAABox& CSceneNode::AABox() const
 {
     if (_mTransformDirty)
         ForceRecalculateTransform();

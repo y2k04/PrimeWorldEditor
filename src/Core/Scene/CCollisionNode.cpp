@@ -18,9 +18,12 @@ ENodeType CCollisionNode::NodeType() const
 
 void CCollisionNode::AddToRenderer(CRenderer *pRenderer, const SViewInfo& rkViewInfo)
 {
-    if (!mpCollision) return;
-    if (!rkViewInfo.ViewFrustum.BoxInFrustum(AABox())) return;
-    if (rkViewInfo.GameMode) return;
+    if (!mpCollision)
+        return;
+    if (!rkViewInfo.ViewFrustum.BoxInFrustum(AABox()))
+        return;
+    if (rkViewInfo.GameMode)
+        return;
 
     pRenderer->AddMesh(this, -1, AABox(), false, ERenderCommand::DrawMesh);
 
@@ -30,7 +33,8 @@ void CCollisionNode::AddToRenderer(CRenderer *pRenderer, const SViewInfo& rkView
 
 void CCollisionNode::Draw(FRenderOptions /*Options*/, int /*ComponentIndex*/, ERenderCommand /*Command*/, const SViewInfo& rkViewInfo)
 {
-    if (!mpCollision) return;
+    if (!mpCollision)
+        return;
 
     LoadModelMatrix();
 

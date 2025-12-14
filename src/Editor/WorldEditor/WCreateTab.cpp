@@ -41,13 +41,13 @@ bool WCreateTab::eventFilter(QObject *pObj, QEvent *pEvent)
 
         else if (pEvent->type() == QEvent::Drop)
         {
-            QDropEvent *pDropEvent = static_cast<QDropEvent*>(pEvent);
-            const CTemplateMimeData *pMimeData = qobject_cast<const CTemplateMimeData*>(pDropEvent->mimeData());
+            const auto* pDropEvent = static_cast<QDropEvent*>(pEvent);
+            const auto* pMimeData = qobject_cast<const CTemplateMimeData*>(pDropEvent->mimeData());
 
             if (pMimeData)
             {
-                CVector3f SpawnPoint = mpEditor->Viewport()->HoverPoint();
-                CCreateInstanceCommand *pCmd = new CCreateInstanceCommand(mpEditor, pMimeData->Template(), mpSpawnLayer, SpawnPoint);
+                const CVector3f& SpawnPoint = mpEditor->Viewport()->HoverPoint();
+                auto* pCmd = new CCreateInstanceCommand(mpEditor, pMimeData->Template(), mpSpawnLayer, SpawnPoint);
                 mpEditor->UndoStack().push(pCmd);
                 return true;
             }

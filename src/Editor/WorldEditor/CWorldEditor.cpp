@@ -911,8 +911,8 @@ void CWorldEditor::UpdateNewLinkLine()
     // Check if there is a sender+receiver
     if (mpLinkDialog->isVisible() && mpLinkDialog->Sender() && mpLinkDialog->Receiver() && !mpLinkDialog->IsPicking())
     {
-        CVector3f Start = mScene.NodeForInstance(mpLinkDialog->Sender())->CenterPoint();
-        CVector3f End = mScene.NodeForInstance(mpLinkDialog->Receiver())->CenterPoint();
+        const CVector3f& Start = mScene.NodeForInstance(mpLinkDialog->Sender())->CenterPoint();
+        const CVector3f& End = mScene.NodeForInstance(mpLinkDialog->Receiver())->CenterPoint();
         ui->MainViewport->SetLinkLineEnabled(true);
         ui->MainViewport->SetLinkLine(Start, End);
     }
@@ -958,8 +958,8 @@ void CWorldEditor::UpdateNewLinkLine()
                 const CSceneNode* pHoverNode = ui->MainViewport->HoverNode();
                 const CScriptObject* pInst = (pSender ? pSender : pReceiver);
 
-                CVector3f Start = mScene.NodeForInstance(pInst)->CenterPoint();
-                CVector3f End = (pHoverNode && pHoverNode->NodeType() == ENodeType::Script ? pHoverNode->CenterPoint() : ui->MainViewport->HoverPoint());
+                const CVector3f& Start = mScene.NodeForInstance(pInst)->CenterPoint();
+                const CVector3f& End = (pHoverNode && pHoverNode->NodeType() == ENodeType::Script ? pHoverNode->CenterPoint() : ui->MainViewport->HoverPoint());
                 ui->MainViewport->SetLinkLineEnabled(true);
                 ui->MainViewport->SetLinkLine(Start, End);
             }
