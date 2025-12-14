@@ -164,8 +164,7 @@ void CStringTable::MoveString(size_t StringIndex, size_t NewIndex)
     }
 
     // Update string name
-    const size_t MinIndex = std::min(StringIndex, NewIndex);
-    const size_t MaxIndex = std::max(StringIndex, NewIndex);
+    const auto [MinIndex, MaxIndex] = std::minmax(StringIndex, NewIndex);
 
     if (MinIndex < mStringNames.size())
     {
