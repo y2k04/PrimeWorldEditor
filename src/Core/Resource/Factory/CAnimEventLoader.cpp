@@ -1,6 +1,8 @@
-#include "CAnimEventLoader.h"
+#include "Core/Resource/Factory/CAnimEventLoader.h"
+
 #include "Core/CAudioManager.h"
 #include "Core/GameProject/CGameProject.h"
+#include "Core/Resource/CAudioGroup.h"
 
 void CAnimEventLoader::LoadEvents(IInputStream& rEVNT)
 {

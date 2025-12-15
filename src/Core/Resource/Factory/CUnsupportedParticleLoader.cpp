@@ -1,5 +1,7 @@
-#include "CUnsupportedParticleLoader.h"
+#include "Core/Resource/Factory/CUnsupportedParticleLoader.h"
+
 #include <Core/GameProject/CGameProject.h>
+#include <Core/Resource/CAudioGroup.h>
 
 // ************ PARAMETER LOADING ************
 bool CUnsupportedParticleLoader::ParseParticleParameter(IInputStream& rPART)

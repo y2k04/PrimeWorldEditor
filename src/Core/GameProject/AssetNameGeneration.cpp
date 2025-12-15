@@ -1,6 +1,8 @@
-#include "AssetNameGeneration.h"
-#include "CGameProject.h"
-#include "CResourceIterator.h"
+#include "Core/GameProject/AssetNameGeneration.h"
+
+#include "Core/GameProject/CGameProject.h"
+#include "Core/GameProject/CResourceIterator.h"
+#include "Core/Resource/CAudioGroup.h"
 #include "Core/Resource/CAudioMacro.h"
 #include "Core/Resource/CFont.h"
 #include "Core/Resource/CWorld.h"

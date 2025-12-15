@@ -1,12 +1,20 @@
-#include "CAudioManager.h"
+#include "Core/CAudioManager.h"
+
 #include "Core/GameProject/CGameProject.h"
 #include "Core/GameProject/CResourceIterator.h"
+#include "Core/Resource/CAudioGroup.h"
+#include "Core/Resource/CAudioLookupTable.h"
+#include "Core/Resource/CStringList.h"
+
+#include <algorithm>
 
 CAudioManager::CAudioManager(CGameProject *pProj)
     : mpProject(pProj)
 {
     ASSERT(mpProject);
 }
+
+CAudioManager::~CAudioManager() = default;
 
 void CAudioManager::LoadAssets()
 {
@@ -32,7 +40,7 @@ void CAudioManager::LoadAssets()
     {
         for (size_t iSnd = 0; iSnd < group->NumSoundDefineIDs(); iSnd++)
         {
-            const uint16 DefineID = group->SoundDefineIDByIndex(iSnd);
+            const uint16_t DefineID = group->SoundDefineIDByIndex(iSnd);
             ASSERT(mSfxIdMap.find(DefineID) == mSfxIdMap.cend());
             mSfxIdMap.insert_or_assign(DefineID, group);
         }
@@ -62,7 +70,7 @@ void CAudioManager::ClearAssets()
     mSfxIdMap.clear();
 }
 
-SSoundInfo CAudioManager::GetSoundInfo(uint32 SoundID) const
+SSoundInfo CAudioManager::GetSoundInfo(uint32_t SoundID) const
 {
     SSoundInfo Out;
     Out.SoundID = SoundID;
@@ -82,7 +90,7 @@ SSoundInfo CAudioManager::GetSoundInfo(uint32 SoundID) const
     return Out;
 }
 
-void CAudioManager::LogSoundInfo(uint32 SoundID) const
+void CAudioManager::LogSoundInfo(uint32_t SoundID) const
 {
     const SSoundInfo SoundInfo = GetSoundInfo(SoundID);
 

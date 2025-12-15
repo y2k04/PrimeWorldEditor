@@ -1,19 +1,23 @@
 #ifndef CAUDIOMANAGER
 #define CAUDIOMANAGER
 
-#include "Core/Resource/CAudioGroup.h"
-#include "Core/Resource/CAudioLookupTable.h"
-#include "Core/Resource/CStringList.h"
+#include <Common/TString.h>
 #include "Core/Resource/TResPtr.h"
-#include <algorithm>
+
 #include <unordered_map>
+#include <vector>
+
+class CAudioGroup;
+class CAudioLookupTable;
+class CGameProject;
+class CStringList;
 
 struct SSoundInfo
 {
-    CAudioGroup *pAudioGroup;
+    CAudioGroup* pAudioGroup;
     TString Name;
-    uint32 SoundID;
-    uint16 DefineID;
+    uint32_t SoundID;
+    uint16_t DefineID;
 };
 
 class CAudioManager
@@ -23,14 +27,16 @@ class CAudioManager
     std::vector<TResPtr<CAudioGroup>> mAudioGroups;
     TResPtr<CAudioLookupTable> mpAudioLookupTable;
     TResPtr<CStringList> mpSfxNameList;
-    std::unordered_map<uint16, CAudioGroup*> mSfxIdMap;
+    std::unordered_map<uint16_t, CAudioGroup*> mSfxIdMap;
 
 public:
-    explicit CAudioManager(CGameProject *pProj);
+    explicit CAudioManager(CGameProject* pProj);
+    ~CAudioManager();
+
     void LoadAssets();
     void ClearAssets();
-    SSoundInfo GetSoundInfo(uint32 SoundID) const;
-    void LogSoundInfo(uint32 SoundID) const;
+    SSoundInfo GetSoundInfo(uint32_t SoundID) const;
+    void LogSoundInfo(uint32_t SoundID) const;
 };
 
 #endif // CAUDIOMANAGER

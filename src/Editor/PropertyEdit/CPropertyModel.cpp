@@ -1,6 +1,8 @@
-#include "CPropertyModel.h"
+#include "Editor/PropertyEdit/CPropertyModel.h"
+
 #include "Editor/UICommon.h"
 #include <Core/GameProject/CGameProject.h>
+#include <Core/Resource/CAudioGroup.h>
 #include <Core/Resource/Script/Property/IProperty.h>
 #include <QFont>
 #include <QSize>
