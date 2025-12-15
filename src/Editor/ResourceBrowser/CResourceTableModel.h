@@ -1,13 +1,12 @@
 #ifndef CRESOURCETABLEMODEL
 #define CRESOURCETABLEMODEL
 
-#include "Editor/UICommon.h"
-#include <Core/GameProject/CResourceEntry.h>
-#include <Core/GameProject/CResourceIterator.h>
-#include <Core/GameProject/CResourceStore.h>
-#include <Core/Resource/CResource.h>
 #include <QAbstractTableModel>
-#include <QIcon>
+
+class CResourceBrowser;
+class CResourceEntry;
+class CVirtualDirectory;
+class TString;
 
 class CResourceTableModel : public QAbstractTableModel
 {
@@ -22,6 +21,7 @@ class CResourceTableModel : public QAbstractTableModel
 
 public:
     explicit CResourceTableModel(CResourceBrowser *pBrowser, QObject *pParent = nullptr);
+    ~CResourceTableModel() override;
 
     // Interface
     int rowCount(const QModelIndex& /*rkParent*/) const override;
@@ -50,8 +50,8 @@ protected:
 
 public:
     // Accessors
-    uint32 NumDirectories() const            { return mDirectories.size(); }
-    uint32 NumResources() const              { return mEntries.size(); }
+    uint32_t NumDirectories() const          { return mDirectories.size(); }
+    uint32_t NumResources() const            { return mEntries.size(); }
     CVirtualDirectory* CurrentDir() const    { return mpCurrentDir; }
     bool IsDisplayingAssetList() const       { return mIsAssetListMode; }
     bool IsDisplayingUserEntryList() const   { return mIsDisplayingUserEntryList; }

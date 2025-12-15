@@ -1,12 +1,15 @@
 #ifndef CRESOURCESELECTOR
 #define CRESOURCESELECTOR
 
-#include <Core/GameProject/CResourceEntry.h>
 #include <Core/Resource/CResTypeFilter.h>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QPushButton>
 #include <QWidget>
+
+class CResource;
+class CResourceEntry;
+class QFrame;
+class QHBoxLayout;
+class QPushButton;
+class QVBoxLayout;
 
 class CResourceSelector : public QWidget
 {
@@ -35,6 +38,7 @@ class CResourceSelector : public QWidget
 
 public:
     explicit CResourceSelector(QWidget *pParent = nullptr);
+    ~CResourceSelector() override;
 
     void SetFrameVisible(bool Visible);
     void SetEditable(bool Editable);

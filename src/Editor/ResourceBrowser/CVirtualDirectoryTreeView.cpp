@@ -1,6 +1,9 @@
-#include "CVirtualDirectoryTreeView.h"
-#include "CResourceBrowser.h"
-#include "CVirtualDirectoryModel.h"
+#include "Editor/ResourceBrowser/CVirtualDirectoryTreeView.h"
+
+#include "Editor/ResourceBrowser/CResourceBrowser.h"
+#include "Editor/ResourceBrowser/CVirtualDirectoryModel.h"
+#include <Core/GameProject/CVirtualDirectory.h>
+
 #include <QDragEnterEvent>
 
 CVirtualDirectoryTreeView::CVirtualDirectoryTreeView(QWidget *pParent)
@@ -22,12 +25,16 @@ CVirtualDirectoryTreeView::CVirtualDirectoryTreeView(QWidget *pParent)
     connect(pBrowser, &CResourceBrowser::DirectoryMoved, this, &CVirtualDirectoryTreeView::OnDirectoryMoved);
 }
 
+CVirtualDirectoryTreeView::~CVirtualDirectoryTreeView() = default;
+
 void CVirtualDirectoryTreeView::dragEnterEvent(QDragEnterEvent *pEvent)
 {
     // need to reimplement this to fix a bug in QAbstractItemView
     if (dragDropMode() == QAbstractItemView::InternalMove &&
-            (pEvent->source() != this || ((pEvent->possibleActions() & Qt::MoveAction) == 0)) )
+        (pEvent->source() != this || ((pEvent->possibleActions() & Qt::MoveAction) == 0)))
+    {
         return;
+    }
 
     if (pEvent->possibleActions() & model()->supportedDropActions())
     {

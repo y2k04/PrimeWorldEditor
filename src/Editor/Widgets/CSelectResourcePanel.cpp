@@ -1,8 +1,10 @@
-#include "CSelectResourcePanel.h"
+#include "Editor/Widgets/CSelectResourcePanel.h"
 #include "ui_CSelectResourcePanel.h"
+
 #include "Editor/CEditorApplication.h"
+#include "Editor/Widgets/CResourceSelector.h"
 #include <Common/Math/MathUtil.h>
-#include <QDebug>
+
 #include <QScreen>
 
 CSelectResourcePanel::CSelectResourcePanel(CResourceSelector *pSelector)

@@ -1,11 +1,15 @@
 #ifndef CRESOURCETABLECONTEXTMENU_H
 #define CRESOURCETABLECONTEXTMENU_H
 
-#include "CResourceTableModel.h"
-#include "CResourceProxyModel.h"
-
 #include <QMenu>
-#include <QTableView>
+#include <QModelIndex>
+
+class CResourceBrowser;
+class CResourceEntry;
+class CResourceProxyModel;
+class CResourceTableModel;
+class CVirtualDirectory;
+class QTableView;
 
 class CResourceTableContextMenu : public QMenu
 {
@@ -24,6 +28,7 @@ class CResourceTableContextMenu : public QMenu
 
 public:
     CResourceTableContextMenu(CResourceBrowser *pBrowser, QTableView *pView, CResourceTableModel *pModel, CResourceProxyModel *pProxy);
+    ~CResourceTableContextMenu() override;
 
 public slots:
     void InitMenu();

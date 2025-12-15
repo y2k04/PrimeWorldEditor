@@ -1,15 +1,16 @@
 #ifndef CSELECTRESOURCEPANEL_H
 #define CSELECTRESOURCEPANEL_H
 
-#include <QWidget>
-#include "CFilteredResourceModel.h"
-#include "CResourceSelector.h"
+#include "Editor/Widgets/CFilteredResourceModel.h"
 
+#include <QFrame>
 #include <memory>
 
 namespace Ui {
 class CSelectResourcePanel;
 }
+
+class CResourceSelector;
 
 class CSelectResourcePanel : public QFrame
 {

@@ -1,6 +1,10 @@
-#include "CResourceTableView.h"
-#include "CResourceBrowser.h"
-#include "CResourceProxyModel.h"
+#include "Editor/ResourceBrowser/CResourceTableView.h"
+
+#include "Editor/CEditorApplication.h"
+#include "Editor/ResourceBrowser/CResourceBrowser.h"
+#include "Editor/ResourceBrowser/CResourceProxyModel.h"
+#include "Editor/ResourceBrowser/CResourceTableModel.h"
+
 #include <QAction>
 #include <QDragEnterEvent>
 
@@ -16,6 +20,8 @@ CResourceTableView::CResourceTableView(QWidget *pParent)
 #endif
 }
 
+CResourceTableView::~CResourceTableView() = default;
+
 void CResourceTableView::setModel(QAbstractItemModel *pModel)
 {
     if (qobject_cast<CResourceProxyModel*>(pModel) != nullptr)
@@ -26,8 +32,10 @@ void CResourceTableView::dragEnterEvent(QDragEnterEvent *pEvent)
 {
     // need to reimplement this to fix a bug in QAbstractItemView
     if (dragDropMode() == QAbstractItemView::InternalMove &&
-            (pEvent->source() != this || ((pEvent->possibleActions() & Qt::MoveAction) == 0)) )
+        (pEvent->source() != this || ((pEvent->possibleActions() & Qt::MoveAction) == 0)))
+    {
         return;
+    }
 
     if (pEvent->possibleActions() & model()->supportedDropActions())
     {

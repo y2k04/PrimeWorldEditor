@@ -2,8 +2,9 @@
 #define CRESOURCETABLEVIEW_H
 
 #include <QTableView>
-#include "CResourceTableModel.h"
-#include "CResourceProxyModel.h"
+
+class CResourceProxyModel;
+class CResourceTableModel;
 
 class CResourceTableView : public QTableView
 {
@@ -15,6 +16,7 @@ class CResourceTableView : public QTableView
 
 public:
     explicit CResourceTableView(QWidget *pParent = nullptr);
+    ~CResourceTableView() override;
 
     void setModel(QAbstractItemModel *pModel) override;
     void dragEnterEvent(QDragEnterEvent *pEvent) override;

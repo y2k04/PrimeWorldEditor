@@ -1,20 +1,24 @@
-#include "CResourceSelector.h"
-#include "CSelectResourcePanel.h"
+#include "Editor/Widgets/CResourceSelector.h"
+
 #include "Editor/CEditorApplication.h"
 #include "Editor/UICommon.h"
 #include "Editor/ResourceBrowser/CResourceBrowser.h"
 #include "Editor/ResourceBrowser/CResourceMimeData.h"
+#include "Editor/Widgets/CSelectResourcePanel.h"
 
+#include <Core/GameProject/CResourceEntry.h>
 #include <Core/GameProject/CResourceStore.h>
 #include <Core/Resource/CResource.h>
 
 #include <QAction>
 #include <QClipboard>
 #include <QDrag>
-#include <QDragEnterEvent>
-#include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QFrame>
+#include <QHBoxLayout>
+#include <QLabel>
 #include <QMenu>
+#include <QPushButton>
 
 CResourceSelector::CResourceSelector(QWidget *pParent)
     : QWidget(pParent)
@@ -77,6 +81,8 @@ CResourceSelector::CResourceSelector(QWidget *pParent)
 
     UpdateUI();
 }
+
+CResourceSelector::~CResourceSelector() = default;
 
 void CResourceSelector::SetFrameVisible(bool Visible)
 {

@@ -2,8 +2,9 @@
 #define CVIRTUALDIRECTORYTREEVIEW_H
 
 #include <QTreeView>
-#include "CVirtualDirectoryModel.h"
-#include <Core/GameProject/CVirtualDirectory.h>
+
+class CVirtualDirectory;
+class CVirtualDirectoryModel;
 
 class CVirtualDirectoryTreeView : public QTreeView
 {
@@ -14,6 +15,7 @@ class CVirtualDirectoryTreeView : public QTreeView
 
 public:
     explicit CVirtualDirectoryTreeView(QWidget *pParent = nullptr);
+    ~CVirtualDirectoryTreeView() override;
 
     void dragEnterEvent(QDragEnterEvent *pEvent) override;
     void setModel(QAbstractItemModel *pModel) override;

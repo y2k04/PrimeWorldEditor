@@ -1,9 +1,13 @@
-#include "CResourceBrowser.h"
+#include "Editor/ResourceBrowser/CResourceBrowser.h"
 #include "ui_CResourceBrowser.h"
-#include "CProgressDialog.h"
-#include "CResourceDelegate.h"
-#include "CResourceTableContextMenu.h"
+
 #include "Editor/CEditorApplication.h"
+#include "Editor/CProgressDialog.h"
+#include "Editor/ResourceBrowser/CResourceDelegate.h"
+#include "Editor/ResourceBrowser/CResourceProxyModel.h"
+#include "Editor/ResourceBrowser/CResourceTableContextMenu.h"
+#include "Editor/ResourceBrowser/CResourceTableModel.h"
+#include "Editor/ResourceBrowser/CVirtualDirectoryModel.h"
 #include "Editor/Undo/CMoveDirectoryCommand.h"
 #include "Editor/Undo/CMoveResourceCommand.h"
 #include "Editor/Undo/CRenameDirectoryCommand.h"
@@ -13,14 +17,14 @@
 #include "Editor/Undo/ICreateDeleteResourceCommand.h"
 #include <Core/GameProject/AssetNameGeneration.h>
 #include <Core/GameProject/CAssetNameMap.h>
+#include <Core/GameProject/CResourceIterator.h>
 
 #include <QButtonGroup>
 #include <QCheckBox>
-#include <QFileDialog>
 #include <QInputDialog>
 #include <QKeyEvent>
 #include <QMenu>
-#include <QMessageBox>
+#include <QVBoxLayout>
 #include <QtConcurrent/QtConcurrentRun>
 
 CResourceBrowser::CResourceBrowser(QWidget *pParent)
@@ -290,7 +294,7 @@ void CResourceBrowser::CreateAddMenu()
     if (mpStore)
     {
         mpAddMenu = new QMenu(this);
-        mpAddMenu->addAction(tr("New Folder"), this, &CResourceBrowser::CreateDirectory);
+        mpAddMenu->addAction(tr("New Folder"), this, &CResourceBrowser::CreateDir);
         mpAddMenu->addSeparator();
 
         QMenu* pCreateMenu = new QMenu(tr("Create..."), mpAddMenu);
@@ -551,6 +555,11 @@ void CResourceBrowser::keyPressEvent(QKeyEvent* event)
     }
 }
 
+bool CResourceBrowser::InAssetListMode() const
+{
+    return mAssetListMode || mSearching || mpModel->IsDisplayingUserEntryList();
+}
+
 void CResourceBrowser::RefreshResources()
 {
     // Fill resource table
@@ -655,7 +664,7 @@ void CResourceBrowser::OnCreateAssetAction()
     }
 }
 
-bool CResourceBrowser::CreateDirectory()
+bool CResourceBrowser::CreateDir()
 {
     if (mpSelectedDir)
     {

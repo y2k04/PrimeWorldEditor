@@ -1,6 +1,10 @@
-#include "CResourceTableModel.h"
-#include "CResourceBrowser.h"
-#include "CResourceMimeData.h"
+#include "Editor/ResourceBrowser/CResourceTableModel.h"
+
+#include "Editor/UICommon.h"
+#include "Editor/ResourceBrowser/CResourceBrowser.h"
+#include "Editor/ResourceBrowser/CResourceMimeData.h"
+#include <Core/GameProject/CResourceEntry.h>
+#include <Common/TString.h>
 
 #include <algorithm>
 
@@ -14,6 +18,8 @@ CResourceTableModel::CResourceTableModel(CResourceBrowser *pBrowser, QObject *pP
     connect(pBrowser, &CResourceBrowser::ResourceMoved, this, &CResourceTableModel::OnResourceMoved);
     connect(pBrowser, &CResourceBrowser::DirectoryMoved, this, &CResourceTableModel::OnDirectoryMoved);
 }
+
+CResourceTableModel::~CResourceTableModel() = default;
 
 // ************ INTERFACE ************
 int CResourceTableModel::rowCount(const QModelIndex&) const

@@ -1,6 +1,9 @@
-#include "CVirtualDirectoryModel.h"
-#include "CResourceBrowser.h"
-#include "CResourceMimeData.h"
+#include "Editor/ResourceBrowser/CVirtualDirectoryModel.h"
+
+#include "Editor/UICommon.h"
+#include "Editor/ResourceBrowser/CResourceBrowser.h"
+#include "Editor/ResourceBrowser/CResourceMimeData.h"
+#include <Core/GameProject/CVirtualDirectory.h>
 
 CVirtualDirectoryModel::CVirtualDirectoryModel(CResourceBrowser *pBrowser, QObject *pParent)
     : QAbstractItemModel(pParent)
@@ -14,6 +17,8 @@ CVirtualDirectoryModel::CVirtualDirectoryModel(CResourceBrowser *pBrowser, QObje
     connect(pBrowser, &CResourceBrowser::DirectoryAboutToBeDeleted, this, &CVirtualDirectoryModel::OnDirectoryAboutToBeDeleted);
     connect(pBrowser, &CResourceBrowser::DirectoryDeleted, this, &CVirtualDirectoryModel::FinishModelChanges);
 }
+
+CVirtualDirectoryModel::~CVirtualDirectoryModel() = default;
 
 QModelIndex CVirtualDirectoryModel::index(int Row, int Column, const QModelIndex& rkParent) const
 {

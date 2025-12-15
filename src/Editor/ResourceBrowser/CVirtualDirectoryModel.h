@@ -1,13 +1,14 @@
 #ifndef CVIRTUALDIRECTORYMODEL
 #define CVIRTUALDIRECTORYMODEL
 
-#include "Editor/UICommon.h"
-#include <Core/GameProject/CVirtualDirectory.h>
 #include <QAbstractItemModel>
 #include <QIcon>
 
 #include <optional>
 #include <utility>
+
+class CResourceBrowser;
+class CVirtualDirectory;
 
 class CVirtualDirectoryModel : public QAbstractItemModel
 {
@@ -20,6 +21,7 @@ class CVirtualDirectoryModel : public QAbstractItemModel
 
 public:
     explicit CVirtualDirectoryModel(CResourceBrowser *pBrowser, QObject *pParent = nullptr);
+    ~CVirtualDirectoryModel() override;
 
     QModelIndex index(int Row, int Column, const QModelIndex& rkParent) const override;
     QModelIndex parent(const QModelIndex& rkChild) const override;

@@ -1,10 +1,15 @@
-#include "CResourceTableContextMenu.h"
-#include "CResourceBrowser.h"
-#include "Editor/CEditorApplication.h"
+#include "Editor/ResourceBrowser/CResourceTableContextMenu.h"
 
+#include "Editor/CEditorApplication.h"
+#include "Editor/UICommon.h"
+#include "Editor/ResourceBrowser/CResourceBrowser.h"
+#include "Editor/ResourceBrowser/CResourceTableModel.h"
+#include "Editor/ResourceBrowser/CResourceProxyModel.h"
+#include <Core/GameProject/CResourceIterator.h>
 #include <Core/Resource/Scan/CScan.h>
 
 #include <QClipboard>
+#include <QTableView>
 
 CResourceTableContextMenu::CResourceTableContextMenu(CResourceBrowser *pBrowser, QTableView *pView, CResourceTableModel *pModel, CResourceProxyModel *pProxy)
     : QMenu(pView)
@@ -16,6 +21,8 @@ CResourceTableContextMenu::CResourceTableContextMenu(CResourceBrowser *pBrowser,
     // Connect to the view
     connect(pView, &QTableView::customContextMenuRequested, this, &CResourceTableContextMenu::ShowMenu);
 }
+
+CResourceTableContextMenu::~CResourceTableContextMenu() = default;
 
 void CResourceTableContextMenu::InitMenu()
 {

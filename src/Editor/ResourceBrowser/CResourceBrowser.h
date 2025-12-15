@@ -1,22 +1,29 @@
 #ifndef CRESOURCEBROWSER_H
 #define CRESOURCEBROWSER_H
 
-#include "CResourceDelegate.h"
-#include "CResourceProxyModel.h"
-#include "CResourceTableModel.h"
-#include "CVirtualDirectoryModel.h"
+#include <Common/CAssetID.h>
+#include <Core/Resource/EResType.h>
 
-#include <QCheckBox>
 #include <QMenu>
-#include <QTimer>
 #include <QUndoStack>
-#include <QVBoxLayout>
 
 #include <memory>
 
 namespace Ui {
 class CResourceBrowser;
 }
+
+class CResTypeInfo;
+class CResourceBrowserDelegate;
+class CResourceEntry;
+class CResourceStore;
+class CResourceProxyModel;
+class CResourceTableModel;
+class CVirtualDirectory;
+class CVirtualDirectoryModel;
+
+class QCheckBox;
+class QVBoxLayout;
 
 class CResourceBrowser : public QWidget
 {
@@ -84,11 +91,11 @@ public:
     void keyPressEvent(QKeyEvent* event) override;
 
     // Accessors
-    CResourceStore* CurrentStore() const     { return mpStore; }
-    CResourceEntry* SelectedEntry() const    { return mpSelectedEntry; }
-    bool InAssetListMode() const             { return mAssetListMode || mSearching || mpModel->IsDisplayingUserEntryList(); }
+    CResourceStore* CurrentStore() const  { return mpStore; }
+    CResourceEntry* SelectedEntry() const { return mpSelectedEntry; }
+    bool InAssetListMode() const;
 
-    void SetInspectedEntry(CResourceEntry *pEntry)   { mpInspectedEntry = pEntry; }
+    void SetInspectedEntry(CResourceEntry *pEntry) { mpInspectedEntry = pEntry; }
 
 public slots:
     void RefreshResources();
@@ -99,7 +106,7 @@ public slots:
     void OnClearButtonPressed();
     void OnSortModeChanged(int Index);
     void OnCreateAssetAction();
-    bool CreateDirectory();
+    bool CreateDir();
     bool Delete(QList<CResourceEntry*> Resources, QList<CVirtualDirectory*> Directories);
     void OnSearchStringChanged(const QString& SearchString);
     void OnDirectorySelectionChanged(const QModelIndex& rkNewIndex);
