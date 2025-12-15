@@ -1,7 +1,7 @@
 #ifndef CSANDWORMEXTRA_H
 #define CSANDWORMEXTRA_H
 
-#include "CScriptExtra.h"
+#include "Core/ScriptExtra/CScriptExtra.h"
 
 class CSandwormExtra : public CScriptExtra
 {

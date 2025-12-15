@@ -1,9 +1,13 @@
 #ifndef CWAYPOINTEXTRA_H
 #define CWAYPOINTEXTRA_H
 
-#include "CScriptExtra.h"
-#include "CSplinePathExtra.h"
+#include "Core/ScriptExtra/CScriptExtra.h"
 #include <Common/CColor.h>
+
+#include <list>
+
+class CLink;
+class CSplinePathExtra;
 
 class CWaypointExtra : public CScriptExtra
 {
@@ -22,6 +26,7 @@ class CWaypointExtra : public CScriptExtra
 public:
     explicit CWaypointExtra(CScriptObject *pInstance, CScene *pScene, CScriptNode *pParent = nullptr);
     ~CWaypointExtra() override;
+
     void CheckColor();
     void AddToSplinePath(CSplinePathExtra *pPath);
     void RemoveFromSplinePath(const CSplinePathExtra *pPath);

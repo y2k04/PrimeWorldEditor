@@ -1,14 +1,20 @@
 #ifndef CSCRIPTNODE_H
 #define CSCRIPTNODE_H
 
-#include "CSceneNode.h"
-#include "CScriptAttachNode.h"
-#include "CModelNode.h"
-#include "CCollisionNode.h"
-#include "Core/Resource/Script/CScriptObject.h"
-#include "Core/CLightParameters.h"
+#include "Core/Resource/TResPtr.h"
+#include "Core/Resource/Script/CScriptTemplate.h"
+#include "Core/Scene/CSceneNode.h"
 
+#include <memory>
+#include <vector>
+
+class CCollisionNode;
+class CLightParameters;
+class CModelNode;
+class CResource;
+class CScriptAttachNode;
 class CScriptExtra;
+class CScriptObject;
 
 class CScriptNode : public CSceneNode
 {
@@ -36,7 +42,9 @@ public:
     };
     EGameModeVisibility mGameModeVisibility{EGameModeVisibility::Untested};
 
-    CScriptNode(CScene *pScene, uint32 NodeID, CSceneNode *pParent = nullptr, CScriptObject *pObject = nullptr);
+    explicit CScriptNode(CScene *pScene, uint32 NodeID, CSceneNode *pParent = nullptr, CScriptObject *pObject = nullptr);
+    ~CScriptNode() override;
+
     ENodeType NodeType() const override;
     void PostLoad() override;
     void OnTransformed() override;

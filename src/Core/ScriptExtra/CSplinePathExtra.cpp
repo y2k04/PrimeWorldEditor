@@ -1,7 +1,9 @@
-#include "CSplinePathExtra.h"
-#include "CWaypointExtra.h"
+#include "Core/ScriptExtra/CSplinePathExtra.h"
+
 #include "Core/Resource/Script/CLink.h"
 #include "Core/Scene/CScene.h"
+#include "Core/Scene/CScriptNode.h"
+#include "Core/ScriptExtra/CWaypointExtra.h"
 
 #include <algorithm>
 

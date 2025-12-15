@@ -1,4 +1,6 @@
-#include "CSpacePirateExtra.h"
+#include "Core/ScriptExtra/CSpacePirateExtra.h"
+
+#include "Core/Resource/Script/CScriptObject.h"
 
 CSpacePirateExtra::CSpacePirateExtra(CScriptObject* pInstance, CScene* pScene, CScriptNode* pParent)
     : CScriptExtra(pInstance, pScene ,pParent)

@@ -1,13 +1,24 @@
-#include "CScriptExtra.h"
+#include "Core/ScriptExtra/CScriptExtra.h"
 
-#include "CWaypointExtra.h"
-#include "CDamageableTriggerExtra.h"
-#include "CSpacePirateExtra.h"
-#include "CPointOfInterestExtra.h"
-#include "CDoorExtra.h"
-#include "CRadiusSphereExtra.h"
-#include "CSplinePathExtra.h"
-#include "CSandwormExtra.h"
+#include "Core/Scene/CScriptNode.h"
+#include "Core/ScriptExtra/CDamageableTriggerExtra.h"
+#include "Core/ScriptExtra/CDoorExtra.h"
+#include "Core/ScriptExtra/CPointOfInterestExtra.h"
+#include "Core/ScriptExtra/CRadiusSphereExtra.h"
+#include "Core/ScriptExtra/CSandwormExtra.h"
+#include "Core/ScriptExtra/CSpacePirateExtra.h"
+#include "Core/ScriptExtra/CSplinePathExtra.h"
+#include "Core/ScriptExtra/CWaypointExtra.h"
+
+CScriptExtra::CScriptExtra(CScriptObject* pInstance, CScene* pScene, CScriptNode* pParent)
+    : CSceneNode(pScene, UINT32_MAX, pParent)
+    , mpScriptNode(pParent)
+    , mpInstance(pInstance)
+    , mGame(pInstance->Template()->Game())
+{
+}
+
+CScriptExtra::~CScriptExtra() = default;
 
 CScriptExtra* CScriptExtra::CreateExtra(CScriptNode *pNode)
 {

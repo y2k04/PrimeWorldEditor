@@ -1,4 +1,8 @@
-#include "CSandwormExtra.h"
+#include "Core/ScriptExtra/CSandwormExtra.h"
+
+#include "Core/Resource/Script/CScriptObject.h"
+#include "Core/Scene/CScriptAttachNode.h"
+#include "Core/Scene/CScriptNode.h"
 
 CSandwormExtra::CSandwormExtra(CScriptObject* pInstance, CScene* pScene, CScriptNode* pParent)
     : CScriptExtra(pInstance, pScene, pParent)

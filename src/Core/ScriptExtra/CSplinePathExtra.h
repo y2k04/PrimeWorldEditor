@@ -1,8 +1,9 @@
 #ifndef CSPLINEPATHEXTRA_H
 #define CSPLINEPATHEXTRA_H
 
-#include "CScriptExtra.h"
+#include "Core/ScriptExtra/CScriptExtra.h"
 #include <Common/CColor.h>
+
 #include <list>
 #include <set>
 

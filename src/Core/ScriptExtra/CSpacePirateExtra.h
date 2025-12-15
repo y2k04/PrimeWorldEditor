@@ -1,8 +1,8 @@
 #ifndef CSPACEPIRATEEXTRA_H
 #define CSPACEPIRATEEXTRA_H
 
-#include "CScriptExtra.h"
-#include "Core/Resource/Script/Property/IProperty.h"
+#include <Core/Resource/Script/Property/TPropertyRef.h>
+#include "Core/ScriptExtra/CScriptExtra.h"
 
 enum class EVulnerabilityTypeMP1
 {

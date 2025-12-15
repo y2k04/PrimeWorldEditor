@@ -1,5 +1,6 @@
-#include "CScriptNode.h"
-#include "CScene.h"
+#include "Core/Scene/CScriptNode.h"
+
+#include "Core/CLightParameters.h"
 #include "Core/GameProject/CResourceStore.h"
 #include "Core/Render/CDrawUtil.h"
 #include "Core/Render/CGraphics.h"
@@ -7,7 +8,13 @@
 #include "Core/Resource/Animation/CAnimSet.h"
 #include "Core/Resource/Script/CGameTemplate.h"
 #include "Core/Resource/Script/CScriptLayer.h"
+#include "Core/Resource/Script/CScriptObject.h"
+#include "Core/Scene/CCollisionNode.h"
+#include "Core/Scene/CModelNode.h"
+#include "Core/Scene/CScene.h"
+#include "Core/Scene/CScriptAttachNode.h"
 #include "Core/ScriptExtra/CScriptExtra.h"
+
 #include <Common/Macros.h>
 #include <Common/Math/MathUtil.h>
 
@@ -72,6 +79,8 @@ CScriptNode::CScriptNode(CScene *pScene, uint32 NodeID, CSceneNode *pParent, CSc
 
     mpExtra = CScriptExtra::CreateExtra(this);
 }
+
+CScriptNode::~CScriptNode() = default;
 
 ENodeType CScriptNode::NodeType() const
 {

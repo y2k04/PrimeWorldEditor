@@ -1,7 +1,9 @@
-#include "CScriptAttachNode.h"
-#include "CScriptNode.h"
+#include "Core/Scene/CScriptAttachNode.h"
+
 #include "Core/Render/CRenderer.h"
+#include "Core/Resource/Script/CScriptObject.h"
 #include "Core/Resource/Script/Property/IProperty.h"
+#include "Core/Scene/CScriptNode.h"
 #include <Common/Macros.h>
 
 CScriptAttachNode::CScriptAttachNode(CScene *pScene, const SAttachment& rkAttachment, CScriptNode *pParent)

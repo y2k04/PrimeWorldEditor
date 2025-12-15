@@ -2,8 +2,9 @@
 #define CSCRIPTEXTRA_H
 
 #include "Core/Scene/CSceneNode.h"
-#include "Core/Scene/CScriptNode.h"
-#include <Common/Macros.h>
+
+class CScriptNode;
+class CScriptObject;
 
 /**
  * CScriptExtra is a class that allows for additional coded behavior on any given
@@ -26,15 +27,9 @@ protected:
     EGame mGame;
 
 public:
-    explicit CScriptExtra(CScriptObject *pInstance, CScene *pScene, CScriptNode *pParent = nullptr)
-        : CSceneNode(pScene, UINT32_MAX, pParent)
-        , mpScriptNode(pParent)
-        , mpInstance(pInstance)
-        , mGame(pInstance->Template()->Game())
-    {
-    }
+    explicit CScriptExtra(CScriptObject* pInstance, CScene* pScene, CScriptNode* pParent = nullptr);
+    ~CScriptExtra() override;
 
-    ~CScriptExtra() override = default;
     CScriptObject* Instance() const  { return mpInstance; }
     EGame Game() const               { return mGame; }
 

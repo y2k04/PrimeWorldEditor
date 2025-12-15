@@ -1,7 +1,7 @@
 #ifndef CDOOREXTRA_H
 #define CDOOREXTRA_H
 
-#include "CScriptExtra.h"
+#include "Core/ScriptExtra/CScriptExtra.h"
 
 class CDoorExtra : public CScriptExtra
 {

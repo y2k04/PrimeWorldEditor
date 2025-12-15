@@ -1,8 +1,11 @@
-#include "CWaypointExtra.h"
-#include "Core/Resource/Script/CLink.h"
+#include "Core/ScriptExtra/CWaypointExtra.h"
+
 #include "Core/Render/CDrawUtil.h"
 #include "Core/Render/CRenderer.h"
+#include "Core/Resource/Script/CLink.h"
 #include "Core/Scene/CScene.h"
+#include "Core/Scene/CScriptNode.h"
+#include "Core/ScriptExtra/CSplinePathExtra.h"
 
 CWaypointExtra::CWaypointExtra(CScriptObject *pInstance, CScene *pScene, CScriptNode *pParent)
     : CScriptExtra(pInstance, pScene, pParent)

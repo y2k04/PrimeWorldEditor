@@ -1,7 +1,7 @@
 #ifndef CDAMAGEABLETRIGGEREXTRA_H
 #define CDAMAGEABLETRIGGEREXTRA_H
 
-#include "CScriptExtra.h"
+#include "Core/ScriptExtra/CScriptExtra.h"
 #include <array>
 #include <memory>
 

@@ -1,12 +1,12 @@
 #ifndef CRADIUSSPHEREEXTRA_H
 #define CRADIUSSPHEREEXTRA_H
 
-#include "CScriptExtra.h"
+#include "Core/ScriptExtra/CScriptExtra.h"
 
 class CRadiusSphereExtra : public CScriptExtra
 {
     // Sphere visualization for objects that have a float radius property.
-    uint32 mObjectType;
+    uint32_t mObjectType;
     CFloatRef mRadius;
 
 public:

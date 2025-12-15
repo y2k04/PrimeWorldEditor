@@ -1,6 +1,8 @@
-#include "CRadiusSphereExtra.h"
+#include "Core/ScriptExtra/CRadiusSphereExtra.h"
+
 #include "Core/Render/CDrawUtil.h"
 #include "Core/Render/CRenderer.h"
+#include "Core/Resource/Script/CScriptObject.h"
 
 CRadiusSphereExtra::CRadiusSphereExtra(CScriptObject* pInstance, CScene* pScene, CScriptNode* pParent)
     : CScriptExtra(pInstance, pScene, pParent)
