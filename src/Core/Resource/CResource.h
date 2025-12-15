@@ -1,16 +1,16 @@
 #ifndef CRESOURCE_H
 #define CRESOURCE_H
 
-#include "CResTypeInfo.h"
-#include "EResType.h"
 #include "Core/GameProject/CDependencyTree.h"
 #include "Core/GameProject/CResourceEntry.h"
-#include "Core/GameProject/CResourceStore.h"
+#include "Core/Resource/CResTypeInfo.h"
+#include "Core/Resource/EResType.h"
 #include <Common/CAssetID.h>
-#include <Common/CFourCC.h>
+#include <Common/EGame.h>
 #include <Common/TString.h>
-#include <Common/Serialization/IArchive.h>
 #include <memory>
+
+class IArchive;
 
 // This macro creates functions that allow us to easily identify this resource type.
 // Must be included on every CResource subclass.
@@ -41,7 +41,7 @@ public:
     {
     }
 
-    virtual ~CResource() {}
+    virtual ~CResource() = default;
     virtual std::unique_ptr<CDependencyTree> BuildDependencyTree() const { return std::make_unique<CDependencyTree>(); }
     virtual void Serialize(IArchive& /*rArc*/) {}
     virtual void InitializeNewResource()       {}

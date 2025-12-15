@@ -1,7 +1,9 @@
 #ifndef TRESPTR_H
 #define TRESPTR_H
 
-#include "CResource.h"
+#include <Common/Serialization/IArchive.h>
+#include "Core/GameProject/CResourceStore.h"
+#include "Core/Resource/CResource.h"
 
 template <typename ResType>
 class TResPtr

@@ -2,6 +2,7 @@
 
 #include "Core/CLightParameters.h"
 #include "Core/GameProject/CResourceStore.h"
+#include "Core/Render/CCamera.h"
 #include "Core/Render/CDrawUtil.h"
 #include "Core/Render/CGraphics.h"
 #include "Core/Render/CRenderer.h"

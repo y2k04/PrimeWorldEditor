@@ -1,8 +1,9 @@
-#include "CShader.h"
-#include "Core/Render/CGraphics.h"
+#include "Core/OpenGL/CShader.h"
+
 #include <Common/BasicTypes.h>
-#include <Common/Log.h>
 #include <Common/TString.h>
+#include "Core/GameProject/CResourceStore.h"
+#include "Core/Render/CGraphics.h"
 
 #include <fstream>
 

@@ -1,18 +1,19 @@
 #ifndef CRESOURCEENTRY_H
 #define CRESOURCEENTRY_H
 
-#include "CResourceStore.h"
-#include "CVirtualDirectory.h"
-#include "Core/Resource/CResTypeInfo.h"
 #include "Core/Resource/EResType.h"
 #include <Common/CAssetID.h>
 #include <Common/CFourCC.h>
 #include <Common/Flags.h>
+
 #include <memory>
 
 class CDependencyTree;
 class CGameProject;
 class CResource;
+class CResourceStore;
+class CResTypeInfo;
+class CVirtualDirectory;
 class IInputStream;
 
 enum class EResEntryFlag
@@ -61,7 +62,7 @@ public:
 
     bool HasRawVersion() const;
     bool HasCookedVersion() const;
-    bool HasMetadataFile() const;
+
     TString RawAssetPath(bool Relative = false) const;
     TString RawExtension() const;
     TString CookedAssetPath(bool Relative = false) const;
@@ -97,7 +98,7 @@ public:
     bool IsMarkedForDeletion() const         { return HasFlag(EResEntryFlag::MarkedForDeletion); }
 
     bool IsLoaded() const                    { return mpResource != nullptr; }
-    bool IsCategorized() const               { return mpDirectory && !mpDirectory->FullPath().CaseInsensitiveCompare( mpStore->DefaultResourceDirPath() ); }
+    bool IsCategorized() const;
     bool IsNamed() const                     { return mName != mID.ToString(); }
     CResource* Resource() const              { return mpResource.get(); }
     CResTypeInfo* TypeInfo() const           { return mpTypeInfo; }
@@ -105,10 +106,10 @@ public:
     CDependencyTree* Dependencies() const    { return mpDependencies.get(); }
     CAssetID ID() const                      { return mID; }
     CVirtualDirectory* Directory() const     { return mpDirectory; }
-    TString DirectoryPath() const            { return mpDirectory->FullPath(); }
+    TString DirectoryPath() const;
     const TString& Name() const              { return mName; }
     const TString& UppercaseName() const     { return mCachedUppercaseName; }
-    EResourceType ResourceType() const       { return mpTypeInfo->Type(); }
+    EResourceType ResourceType() const;
 
 protected:
     CResource* InternalLoad(IInputStream& rInput);

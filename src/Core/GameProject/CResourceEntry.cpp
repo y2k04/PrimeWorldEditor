@@ -1,7 +1,10 @@
-#include "CResourceEntry.h"
-#include "CGameProject.h"
-#include "CResourceStore.h"
+#include "Core/GameProject/CResourceEntry.h"
+
+#include "Core/GameProject/CGameProject.h"
+#include "Core/GameProject/CResourceStore.h"
+#include "Core/GameProject/CVirtualDirectory.h"
 #include "Core/Resource/CResource.h"
+#include "Core/Resource/CResTypeInfo.h"
 #include "Core/Resource/Cooker/CResourceCooker.h"
 #include "Core/Resource/Factory/CResourceFactory.h"
 #include <Common/FileIO.h>
@@ -754,4 +757,19 @@ void CResourceEntry::ClearFlag(EResEntryFlag Flag)
         mFlags.ClearFlag(Flag);
         mMetadataDirty = true;
     }
+}
+
+bool CResourceEntry::IsCategorized() const
+{
+    return mpDirectory && !mpDirectory->FullPath().CaseInsensitiveCompare(mpStore->DefaultResourceDirPath());
+}
+
+TString CResourceEntry::DirectoryPath() const
+{
+    return mpDirectory->FullPath();
+}
+
+EResourceType CResourceEntry::ResourceType() const
+{
+    return mpTypeInfo->Type();
 }
