@@ -1,15 +1,21 @@
-#include "CStringCooker.h"
+#include "Core/Resource/Cooker/CStringCooker.h"
+
 #include <Common/NBasics.h>
+#include "Core/Resource/StringTable/CStringTable.h"
+
 #include <algorithm>
+
+CStringCooker::CStringCooker(CStringTable* pStringTable)
+    : mpStringTable(pStringTable) {}
 
 void CStringCooker::WritePrimeDemoSTRG(IOutputStream& STRG)
 {
-    const uint32 StartOffset = STRG.Tell();
+    const uint32_t StartOffset = STRG.Tell();
     const size_t NumStrings = mpStringTable->NumStrings();
 
     // Start writing the file...
     STRG.WriteLong(0); // Dummy file size
-    const uint32 TableStart = STRG.Tell();
+    const uint32_t TableStart = STRG.Tell();
     STRG.WriteLong(NumStrings);
 
     // Dummy string offsets
@@ -17,7 +23,7 @@ void CStringCooker::WritePrimeDemoSTRG(IOutputStream& STRG)
         STRG.WriteLong(0);
 
     // Write strings
-    std::vector<uint32> StringOffsets(NumStrings);
+    std::vector<uint32_t> StringOffsets(NumStrings);
 
     for (size_t StringIdx = 0; StringIdx < NumStrings; StringIdx++)
     {
@@ -26,7 +32,7 @@ void CStringCooker::WritePrimeDemoSTRG(IOutputStream& STRG)
     }
 
     // Fill in offsets
-    const uint32 FileSize = STRG.Tell() - StartOffset;
+    const uint32_t FileSize = STRG.Tell() - StartOffset;
     STRG.GoTo(StartOffset);
     STRG.WriteULong(FileSize);
     STRG.Skip(4);
@@ -40,11 +46,11 @@ void CStringCooker::WritePrimeSTRG(IOutputStream& STRG)
     // Magic/Version
     STRG.WriteULong(0x87654321);
     STRG.WriteULong(mpStringTable->Game() >= EGame::EchoesDemo ? 1 : 0);
-    STRG.WriteULong(static_cast<uint32>(mpStringTable->NumLanguages()));
-    STRG.WriteULong(static_cast<uint32>(mpStringTable->NumStrings()));
+    STRG.WriteULong(static_cast<uint32_t>(mpStringTable->NumLanguages()));
+    STRG.WriteULong(static_cast<uint32_t>(mpStringTable->NumStrings()));
 
     // Language info
-    const uint32 LanguagesStart = STRG.Tell();
+    const uint32_t LanguagesStart = STRG.Tell();
 
     for (size_t i = 0; i < mpStringTable->NumLanguages(); i++)
     {
@@ -65,15 +71,15 @@ void CStringCooker::WritePrimeSTRG(IOutputStream& STRG)
     }
 
     // Strings
-    const uint32 StringDataStart = STRG.Tell();
-    std::vector<uint32> LanguageOffsets(mpStringTable->NumLanguages());
-    std::vector<uint32> LanguageSizes(mpStringTable->NumLanguages());
+    const uint32_t StringDataStart = STRG.Tell();
+    std::vector<uint32_t> LanguageOffsets(mpStringTable->NumLanguages());
+    std::vector<uint32_t> LanguageSizes(mpStringTable->NumLanguages());
 
     for (size_t LanguageIdx = 0; LanguageIdx < mpStringTable->NumLanguages(); LanguageIdx++)
     {
         const CStringTable::SLanguageData& kLanguage = mpStringTable->mLanguages[LanguageIdx];
 
-        const uint32 LanguageStart = STRG.Tell();
+        const uint32_t LanguageStart = STRG.Tell();
         LanguageOffsets[LanguageIdx] = LanguageStart - StringDataStart;
 
         if (mpStringTable->Game() == EGame::Prime)
@@ -82,7 +88,7 @@ void CStringCooker::WritePrimeSTRG(IOutputStream& STRG)
         }
 
         // Fill dummy string offsets
-        const uint32 StringOffsetBase = STRG.Tell();
+        const uint32_t StringOffsetBase = STRG.Tell();
 
         for (size_t StringIdx = 0; StringIdx < mpStringTable->NumStrings(); StringIdx++)
         {
@@ -90,7 +96,7 @@ void CStringCooker::WritePrimeSTRG(IOutputStream& STRG)
         }
 
         // Write strings
-        std::vector<uint32> StringOffsets(mpStringTable->NumStrings());
+        std::vector<uint32_t> StringOffsets(mpStringTable->NumStrings());
 
         for (size_t i = 0; i < mpStringTable->NumStrings(); i++)
         {
@@ -99,7 +105,7 @@ void CStringCooker::WritePrimeSTRG(IOutputStream& STRG)
         }
 
         // Go back and fill in size/offsets
-        const uint32 LanguageEnd = STRG.Tell();
+        const uint32_t LanguageEnd = STRG.Tell();
         LanguageSizes[LanguageIdx] = LanguageEnd - StringOffsetBase;
         STRG.GoTo(LanguageStart);
 
@@ -116,7 +122,7 @@ void CStringCooker::WritePrimeSTRG(IOutputStream& STRG)
         STRG.GoTo(LanguageEnd);
     }
 
-    const uint32 STRGEnd = STRG.Tell();
+    const uint32_t STRGEnd = STRG.Tell();
 
     // Fill in missing language data
     STRG.GoTo(LanguagesStart);
@@ -140,8 +146,8 @@ void CStringCooker::WriteCorruptionSTRG(IOutputStream& STRG)
     // Magic/Version
     STRG.WriteULong(0x87654321);
     STRG.WriteULong(3);
-    STRG.WriteULong(static_cast<uint32>(mpStringTable->NumLanguages()));
-    STRG.WriteULong(static_cast<uint32>(mpStringTable->NumStrings()));
+    STRG.WriteULong(static_cast<uint32_t>(mpStringTable->NumLanguages()));
+    STRG.WriteULong(static_cast<uint32_t>(mpStringTable->NumStrings()));
 
     // Name Table
     WriteNameTable(STRG);
@@ -152,8 +158,8 @@ void CStringCooker::WriteCorruptionSTRG(IOutputStream& STRG)
     struct SCookedLanguageData
     {
         ELanguage Language;
-        std::vector<uint> StringOffsets;
-        uint32 TotalSize;
+        std::vector<uint32_t> StringOffsets;
+        uint32_t TotalSize;
     };
     std::vector<SCookedLanguageData> CookedLanguageData( mpStringTable->NumLanguages() );
     size_t EnglishIdx = UINT32_MAX;
@@ -180,7 +186,7 @@ void CStringCooker::WriteCorruptionSTRG(IOutputStream& STRG)
     }
 
     // Language Info
-    const uint32 LanguageInfoStart = STRG.Tell();
+    const uint32_t LanguageInfoStart = STRG.Tell();
 
     for (size_t LanguageIdx = 0; LanguageIdx < mpStringTable->NumLanguages(); LanguageIdx++)
     {
@@ -192,7 +198,7 @@ void CStringCooker::WriteCorruptionSTRG(IOutputStream& STRG)
     }
 
     // Strings
-    const uint32 StringsStart = STRG.Tell();
+    const uint32_t StringsStart = STRG.Tell();
 
     for (size_t StringIdx = 0; StringIdx < mpStringTable->NumStrings(); StringIdx++)
     {
@@ -219,7 +225,7 @@ void CStringCooker::WriteCorruptionSTRG(IOutputStream& STRG)
         }
     }
 
-    const uint32 STRGEnd = STRG.Tell();
+    const uint32_t STRGEnd = STRG.Tell();
 
     // Fill in missing language data
     STRG.GoTo(LanguageInfoStart);
@@ -241,13 +247,13 @@ void CStringCooker::WriteNameTable(IOutputStream& STRG)
     // Build a list of name entries to put in the map
     struct SNameEntry
     {
-        uint32 Offset;
-        uint32 Index;
+        uint32_t Offset;
+        uint32_t Index;
         TString Name;
     };
     std::vector<SNameEntry> NameEntries;
 
-    for (uint32 StringIdx = 0; StringIdx < mpStringTable->NumStrings(); StringIdx++)
+    for (uint32_t StringIdx = 0; StringIdx < mpStringTable->NumStrings(); StringIdx++)
     {
         SNameEntry Entry;
         Entry.Offset = 0;
@@ -265,10 +271,10 @@ void CStringCooker::WriteNameTable(IOutputStream& STRG)
     });
 
     // Write out name entries
-    const uint32 NameTableStart = STRG.Tell();
-    STRG.WriteULong(static_cast<uint32>(NameEntries.size()));
+    const uint32_t NameTableStart = STRG.Tell();
+    STRG.WriteULong(static_cast<uint32_t>(NameEntries.size()));
     STRG.WriteULong(0); // Dummy name table size
-    const uint32 NameTableOffsetsStart = STRG.Tell();
+    const uint32_t NameTableOffsetsStart = STRG.Tell();
 
     for (const auto& entry : NameEntries)
     {
@@ -277,7 +283,7 @@ void CStringCooker::WriteNameTable(IOutputStream& STRG)
     }
 
     // Write out names
-    std::vector<uint32> NameOffsets(NameEntries.size());
+    std::vector<uint32_t> NameOffsets(NameEntries.size());
 
     for (size_t NameIdx = 0; NameIdx < NameEntries.size(); NameIdx++)
     {
@@ -286,14 +292,14 @@ void CStringCooker::WriteNameTable(IOutputStream& STRG)
     }
 
     // Fill out sizes and offsets
-    const uint32 NameTableEnd = STRG.Tell();
-    const uint32 NameTableSize = NameTableEnd - NameTableOffsetsStart;
+    const uint32_t NameTableEnd = STRG.Tell();
+    const uint32_t NameTableSize = NameTableEnd - NameTableOffsetsStart;
 
     STRG.GoTo(NameTableStart);
     STRG.Skip(4);
     STRG.WriteULong(NameTableSize);
 
-    for (const uint32 offset : NameOffsets)
+    for (const uint32_t offset : NameOffsets)
     {
         STRG.WriteULong(offset);
         STRG.Skip(4);

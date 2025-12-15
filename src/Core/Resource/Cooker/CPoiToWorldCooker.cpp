@@ -1,6 +1,9 @@
-#include "CPoiToWorldCooker.h"
+#include "Core/Resource/Cooker/CPoiToWorldCooker.h"
 
-bool CPoiToWorldCooker::CookEGMC(CPoiToWorld *pPoiToWorld, IOutputStream& rOut)
+#include <Common/FileIO.h>
+#include "Core/Resource/CPoiToWorld.h"
+
+bool CPoiToWorldCooker::CookEGMC(const CPoiToWorld* pPoiToWorld, IOutputStream& rOut)
 {
     // Create mappings list
     struct SPoiMapping
@@ -12,7 +15,7 @@ bool CPoiToWorldCooker::CookEGMC(CPoiToWorld *pPoiToWorld, IOutputStream& rOut)
 
     for (size_t iPoi = 0; iPoi < pPoiToWorld->NumMappedPOIs(); iPoi++)
     {
-        const CPoiToWorld::SPoiMap *pkMap = pPoiToWorld->MapByIndex(iPoi);
+        const CPoiToWorld::SPoiMap* pkMap = pPoiToWorld->MapByIndex(iPoi);
 
         for (const auto meshID : pkMap->ModelIDs)
         {

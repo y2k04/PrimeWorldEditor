@@ -1,17 +1,19 @@
 #ifndef CTWEAKCOOKER_H
 #define CTWEAKCOOKER_H
 
-#include "CTweakData.h"
+#include <vector>
+
+class CTweakData;
+class IOutputStream;
 
 /** Class responsible for cooking tweak data */
 class CTweakCooker
 {
-    /** Private constructor */
-    CTweakCooker() = default;
-
 public:
+    CTweakCooker() = delete;
+
     /** Cooker entry point */
-    static bool CookCTWK(CTweakData* pTweakData, IOutputStream& CTWK);
+    static bool CookCTWK(const CTweakData* pTweakData, IOutputStream& CTWK);
     static bool CookNTWK(const std::vector<CTweakData*>& kTweaks, IOutputStream& NTWK);
 };
 

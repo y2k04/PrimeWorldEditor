@@ -1,8 +1,13 @@
-#include "CScanCooker.h"
-#include "Core/Resource/Cooker/CScriptCooker.h"
-#include "Core/GameProject/DependencyListBuilders.h"
+#include "Core/Resource/Cooker/CScanCooker.h"
 
-bool CScanCooker::CookSCAN(CScan* pScan, IOutputStream& SCAN)
+#include <Common/CFourCC.h>
+#include "Core/GameProject/DependencyListBuilders.h"
+#include "Core/Resource/Cooker/CScriptCooker.h"
+#include "Core/Resource/Scan/CScan.h"
+
+#include <vector>
+
+bool CScanCooker::CookSCAN(const CScan* pScan, IOutputStream& SCAN)
 {
     // File header
     if (pScan->Game() <= EGame::Prime)
@@ -18,15 +23,15 @@ bool CScanCooker::CookSCAN(CScan* pScan, IOutputStream& SCAN)
     }
     else
     {
-        SCAN.WriteFourCC( FOURCC('SCAN') ); // SCAN magic
+        SCAN.WriteFourCC(FOURCC('SCAN'));   // SCAN magic
         SCAN.WriteLong(2);                  // Version number; must be 2
         SCAN.WriteByte(1) ;                 // Layer version number; must be 1
         SCAN.WriteLong(1);                  // Instance count
 
         // Scans in MP2/3 are saved with the script object data format
         // Write a dummy script object header here
-        SCAN.WriteLong( FOURCC('SNFO') );   // ScannableObjectInfo object ID
-        const uint32 ScanInstanceSizeOffset = SCAN.Tell();
+        SCAN.WriteLong(FOURCC('SNFO'));     // ScannableObjectInfo object ID
+        const uint32_t ScanInstanceSizeOffset = SCAN.Tell();
         SCAN.WriteShort(0);                 // Object size
         SCAN.WriteLong(0);                  // Instance ID
         SCAN.WriteShort(0);                 // Link count
@@ -35,8 +40,8 @@ bool CScanCooker::CookSCAN(CScan* pScan, IOutputStream& SCAN)
         CScriptCooker Cooker(pScan->Game());
         Cooker.WriteProperty(SCAN, ScanProperties.Property(), ScanProperties.DataPointer(), false);
 
-        const uint32 ScanInstanceEnd = SCAN.Tell();
-        const uint32 ScanInstanceSize = ScanInstanceEnd - ScanInstanceSizeOffset - 2;
+        const uint32_t ScanInstanceEnd = SCAN.Tell();
+        const uint32_t ScanInstanceSize = ScanInstanceEnd - ScanInstanceSizeOffset - 2;
         SCAN.GoTo(ScanInstanceSizeOffset);
         SCAN.WriteUShort(static_cast<uint16>(ScanInstanceSize));
         SCAN.GoTo(ScanInstanceEnd);
@@ -47,12 +52,12 @@ bool CScanCooker::CookSCAN(CScan* pScan, IOutputStream& SCAN)
         std::vector<CAssetID> Dependencies;
         CAssetDependencyListBuilder Builder(pScan->Entry());
         Builder.BuildDependencyList(Dependencies);
-        SCAN.WriteULong(static_cast<uint32>(Dependencies.size()));
+        SCAN.WriteULong(static_cast<uint32_t>(Dependencies.size()));
 
         for (const CAssetID& kID : Dependencies)
         {
             CResourceEntry* pEntry = pScan->Entry()->ResourceStore()->FindEntry(kID);
-            ASSERT( pEntry != nullptr );
+            ASSERT(pEntry != nullptr);
 
             pEntry->CookedExtension().Write(SCAN);
             kID.Write(SCAN);

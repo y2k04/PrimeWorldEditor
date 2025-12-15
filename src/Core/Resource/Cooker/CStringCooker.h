@@ -2,15 +2,16 @@
 #define CSTRINGCOOKER_H
 
 #include "Core/Resource/TResPtr.h"
-#include "Core/Resource/StringTable/CStringTable.h"
+
+class CStringTable;
+class IOutputStream;
 
 /** Cooker class for writing game-compatible STRG assets */
 class CStringCooker
 {
     TResPtr<CStringTable> mpStringTable;
 
-    explicit CStringCooker(CStringTable* pStringTable)
-        : mpStringTable(pStringTable) {}
+    explicit CStringCooker(CStringTable* pStringTable);
 
 public:
     void WritePrimeDemoSTRG(IOutputStream& STRG);

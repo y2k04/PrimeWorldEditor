@@ -1,38 +1,43 @@
 #ifndef CAREACOOKER_H
 #define CAREACOOKER_H
 
-#include "CSectionMgrOut.h"
-#include "Core/Resource/Area/CGameArea.h"
+
 #include <Common/EGame.h>
-#include <Common/FileIO.h>
+#include <Common/FileIO/CVectorOutStream.h>
+#include <Core/Resource/TResPtr.h>
+
+#include <vector>
+
+class CGameArea;
+class IOutputStream;
 
 class CAreaCooker
 {
     TResPtr<CGameArea> mpArea;
     EGame mVersion{};
 
-    std::vector<uint32> mSectionSizes;
+    std::vector<uint32_t> mSectionSizes;
 
-    uint32 mGeometrySecNum = UINT32_MAX;
-    uint32 mSCLYSecNum = UINT32_MAX;
-    uint32 mSCGNSecNum = UINT32_MAX;
-    uint32 mCollisionSecNum = UINT32_MAX;
-    uint32 mUnknownSecNum = UINT32_MAX;
-    uint32 mLightsSecNum = UINT32_MAX;
-    uint32 mVISISecNum = UINT32_MAX;
-    uint32 mPATHSecNum = UINT32_MAX;
-    uint32 mAROTSecNum = UINT32_MAX;
-    uint32 mFFFFSecNum = UINT32_MAX;
-    uint32 mPTLASecNum = UINT32_MAX;
-    uint32 mEGMCSecNum = UINT32_MAX;
-    uint32 mDepsSecNum = UINT32_MAX;
-    uint32 mModulesSecNum = UINT32_MAX;
+    uint32_t mGeometrySecNum = UINT32_MAX;
+    uint32_t mSCLYSecNum = UINT32_MAX;
+    uint32_t mSCGNSecNum = UINT32_MAX;
+    uint32_t mCollisionSecNum = UINT32_MAX;
+    uint32_t mUnknownSecNum = UINT32_MAX;
+    uint32_t mLightsSecNum = UINT32_MAX;
+    uint32_t mVISISecNum = UINT32_MAX;
+    uint32_t mPATHSecNum = UINT32_MAX;
+    uint32_t mAROTSecNum = UINT32_MAX;
+    uint32_t mFFFFSecNum = UINT32_MAX;
+    uint32_t mPTLASecNum = UINT32_MAX;
+    uint32_t mEGMCSecNum = UINT32_MAX;
+    uint32_t mDepsSecNum = UINT32_MAX;
+    uint32_t mModulesSecNum = UINT32_MAX;
 
     struct SCompressedBlock
     {
-        uint32 CompressedSize = 0;
-        uint32 DecompressedSize = 0;
-        uint32 NumSections = 0;
+        uint32_t CompressedSize = 0;
+        uint32_t DecompressedSize = 0;
+        uint32_t NumSections = 0;
     };
 
     SCompressedBlock mCurBlock;
@@ -67,7 +72,7 @@ class CAreaCooker
 
 public:
     static bool CookMREA(CGameArea *pArea, IOutputStream& rOut);
-    static uint32 GetMREAVersion(EGame Version);
+    static uint32_t GetMREAVersion(EGame Version);
 };
 
 #endif // CAREACOOKER_H
