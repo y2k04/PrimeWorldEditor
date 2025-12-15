@@ -1,21 +1,21 @@
-#include "CProjectSettingsDialog.h"
+#include "Editor/CProjectSettingsDialog.h"
 #include "ui_CProjectSettingsDialog.h"
-#include "CEditorApplication.h"
-#include "CExportGameDialog.h"
-#include "CProgressDialog.h"
-#include "NDolphinIntegration.h"
-#include "UICommon.h"
+
+#include "Editor/CEditorApplication.h"
+#include "Editor/CExportGameDialog.h"
+#include "Editor/CProgressDialog.h"
+#include "Editor/NDolphinIntegration.h"
+#include "Editor/UICommon.h"
 #include "Editor/ResourceBrowser/CResourceBrowser.h"
 #include <Common/Macros.h>
 #include <Core/GameProject/CGameExporter.h>
+#include <Core/GameProject/CGameProject.h>
 #include <Core/GameProject/COpeningBanner.h>
-
+#include <Core/Resource/CWorld.h>
 #include <nod/nod.hpp>
 
 #include <QFileDialog>
 #include <QFuture>
-#include <QFutureWatcher>
-#include <QMessageBox>
 #include <QtConcurrentRun>
 
 CProjectSettingsDialog::CProjectSettingsDialog(QWidget *pParent)

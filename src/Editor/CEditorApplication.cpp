@@ -17,6 +17,7 @@
 #include <Common/Macros.h>
 #include <Common/CTimer.h>
 #include <Core/GameProject/CGameProject.h>
+#include <Core/Resource/CWorld.h>
 
 #include <QFuture>
 #include <QtConcurrentRun>

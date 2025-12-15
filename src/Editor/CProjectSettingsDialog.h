@@ -1,9 +1,7 @@
 #ifndef CPROJECTSETTINGSDIALOG_H
 #define CPROJECTSETTINGSDIALOG_H
 
-#include "Editor/WorldEditor/CWorldEditor.h"
-#include <Core/GameProject/CGameProject.h>
-#include <Core/Resource/CWorld.h>
+#include <Core/Resource/TResPtr.h>
 #include <QDialog>
 #include <QList>
 
@@ -12,6 +10,10 @@
 namespace Ui {
 class CProjectSettingsDialog;
 }
+
+class CGameProject;
+class CResourceEntry;
+class CWorld;
 
 class CProjectSettingsDialog : public QDialog
 {
