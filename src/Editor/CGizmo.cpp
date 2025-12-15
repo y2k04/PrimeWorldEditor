@@ -1,9 +1,10 @@
-#include "CGizmo.h"
+#include "Editor/CGizmo.h"
+
 #include <Common/Math/MathUtil.h>
 #include <Core/GameProject/CResourceStore.h>
 #include <Core/Render/CDrawUtil.h>
+#include <Core/Render/CGraphics.h>
 #include <Core/Render/CRenderer.h>
-#include <Common/Log.h>
 
 #include <QApplication>
 #include <QScreen>

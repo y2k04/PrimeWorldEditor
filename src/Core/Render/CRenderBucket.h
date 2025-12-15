@@ -1,14 +1,11 @@
 #ifndef CRENDERBUCKET_H
 #define CRENDERBUCKET_H
 
-#include "CCamera.h"
-#include "CDrawUtil.h"
-#include "CGraphics.h"
-#include "FRenderOptions.h"
-#include "SRenderablePtr.h"
-#include <Common/BasicTypes.h>
-#include <algorithm>
 #include <vector>
+
+class CCamera;
+struct SRenderablePtr;
+struct SViewInfo;
 
 class CRenderBucket
 {
@@ -17,11 +14,12 @@ class CRenderBucket
     class CSubBucket
     {
         std::vector<SRenderablePtr> mRenderables;
-        uint32 mEstSize = 0;
-        uint32 mSize = 0;
+        uint32_t mEstSize = 0;
+        uint32_t mSize = 0;
 
     public:
-        CSubBucket() = default;
+        CSubBucket();
+        ~CSubBucket();
 
         void Add(const SRenderablePtr &rkPtr);
         void Sort(const CCamera *pkCamera, bool DebugVisualization);
@@ -33,7 +31,8 @@ class CRenderBucket
     CSubBucket mTransparentSubBucket;
 
 public:
-    CRenderBucket() = default;
+    CRenderBucket();
+    ~CRenderBucket();
 
     void Add(const SRenderablePtr& rkPtr, bool Transparent);
     void Clear();

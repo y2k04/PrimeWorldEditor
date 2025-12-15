@@ -1,20 +1,20 @@
 #ifndef CRENDERBUFFER_H
 #define CRENDERBUFFER_H
 
-#include <Common/BasicTypes.h>
+#include <cstdint>
 #include <GL/glew.h>
 
 class CRenderbuffer
 {
     GLuint mRenderbuffer = 0;
-    uint mWidth = 0;
-    uint mHeight = 0;
+    uint32_t mWidth = 0;
+    uint32_t mHeight = 0;
     bool mEnableMultisampling = false;
     bool mInitialized = false;
 
 public:
     CRenderbuffer() = default;
-    CRenderbuffer(uint Width, uint Height)
+    CRenderbuffer(uint32_t Width, uint32_t Height)
         : mWidth(Width)
         , mHeight(Height)
     {
@@ -33,7 +33,7 @@ public:
         InitStorage();
     }
 
-    void Resize(uint Width, uint Height)
+    void Resize(uint32_t Width, uint32_t Height)
     {
         mWidth = Width;
         mHeight = Height;
@@ -44,7 +44,9 @@ public:
 
     void Bind()
     {
-        if (!mInitialized) Init();
+        if (!mInitialized)
+            Init();
+
         glBindRenderbuffer(GL_RENDERBUFFER, mRenderbuffer);
     }
 

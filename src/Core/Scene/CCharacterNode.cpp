@@ -1,6 +1,7 @@
-#include "CCharacterNode.h"
+#include "Core/Scene/CCharacterNode.h"
+
+#include "Core/Render/CGraphics.h"
 #include "Core/Render/CRenderer.h"
-#include <Common/CTimer.h>
 
 CCharacterNode::CCharacterNode(CScene *pScene, uint32 NodeID, CAnimSet *pChar /*= 0*/, CSceneNode *pParent /*= 0*/)
     : CSceneNode(pScene, NodeID, pParent)

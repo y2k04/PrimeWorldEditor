@@ -1,5 +1,6 @@
-#include "CCollisionEditor.h"
+#include "Editor/CollisionEditor/CCollisionEditor.h"
 #include "ui_CCollisionEditor.h"
+
 #include "Editor/UICommon.h"
 
 #include <QLabel>

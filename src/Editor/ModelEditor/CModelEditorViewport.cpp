@@ -1,5 +1,7 @@
-#include "CModelEditorViewport.h"
+#include "Editor/ModelEditor/CModelEditorViewport.h"
+
 #include <Core/Render/CDrawUtil.h>
+#include <Core/Render/CGraphics.h>
 
 CModelEditorViewport::CModelEditorViewport(QWidget *pParent)
     : CBasicViewport(pParent), mpRenderer{std::make_unique<CRenderer>()}

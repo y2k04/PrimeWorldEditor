@@ -3,8 +3,8 @@
 
 #include <Common/CTimer.h>
 #include <Common/Math/CRay.h>
-#include <Common/Math/CVector2i.h>
 #include <Common/Math/CVector2f.h>
+#include <Core/Render/CCamera.h>
 #include <Core/Render/CRenderer.h>
 #include <Core/Render/SViewInfo.h>
 

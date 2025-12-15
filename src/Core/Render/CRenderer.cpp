@@ -1,13 +1,15 @@
-#include "CRenderer.h"
+#include "Core/Render/CRenderer.h"
 
-#include "CDrawUtil.h"
-#include "CGraphics.h"
-#include "Core/GameProject/CResourceStore.h"
+#include "Core/Render/CCamera.h"
+#include "Core/Render/CDrawUtil.h"
+#include "Core/Render/CGraphics.h"
+#include "Core/Render/SRenderablePtr.h"
+#include "Core/Render/SViewInfo.h"
 #include "Core/Resource/Factory/CTextureDecoder.h"
 #include <Common/Math/CTransform4f.h>
 
 // ************ STATIC MEMBER INITIALIZATION ************
-uint32 CRenderer::sNumRenderers = 0;
+uint32_t CRenderer::sNumRenderers = 0;
 
 // ************ INITIALIZATION ************
 CRenderer::CRenderer()
@@ -89,14 +91,14 @@ void CRenderer::SetClearColor(const CColor& rkClear)
     glClearColor(mClearColor.R, mClearColor.G, mClearColor.B, mClearColor.A);
 }
 
-void CRenderer::SetViewportSize(uint32 Width, uint32 Height)
+void CRenderer::SetViewportSize(uint32_t Width, uint32_t Height)
 {
     mViewportWidth = Width;
     mViewportHeight = Height;
     mBloomHScale = static_cast<float>(Width) / 640.0f;
     mBloomVScale = static_cast<float>(Height) / 528.0f;
-    mBloomWidth  = static_cast<uint32>(320.0f * mBloomHScale);
-    mBloomHeight = static_cast<uint32>(224.0f * mBloomVScale);
+    mBloomWidth  = static_cast<uint32_t>(320.0f * mBloomHScale);
+    mBloomHeight = static_cast<uint32_t>(224.0f * mBloomVScale);
     mBloomHScale = 1.f / mBloomHScale;
     mBloomVScale = 1.f / mBloomVScale;
 }
@@ -170,8 +172,8 @@ void CRenderer::RenderBloom()
         CColor::Integral(17, 17, 17),
     };
 
-    const uint32 BloomWidth  = (mBloomMode == EBloomMode::Bloom ? mBloomWidth  : mViewportWidth);
-    const uint32 BloomHeight = (mBloomMode == EBloomMode::Bloom ? mBloomHeight : mViewportHeight);
+    const uint32_t BloomWidth  = (mBloomMode == EBloomMode::Bloom ? mBloomWidth  : mViewportWidth);
+    const uint32_t BloomHeight = (mBloomMode == EBloomMode::Bloom ? mBloomHeight : mViewportHeight);
     const float BloomHScale = (mBloomMode == EBloomMode::Bloom ? mBloomHScale : 0);
     const float BloomVScale = (mBloomMode == EBloomMode::Bloom ? mBloomVScale : 0);
 
@@ -368,4 +370,4 @@ void CRenderer::InitFramebuffer()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-uint32 gDrawCount;
+uint32_t gDrawCount;

@@ -1,6 +1,7 @@
 #ifndef CGRIDRENDERABLE
 #define CGRIDRENDERABLE
 
+#include <Core/Render/CDrawUtil.h>
 #include <Core/Render/CRenderer.h>
 #include <Core/Render/IRenderable.h>
 

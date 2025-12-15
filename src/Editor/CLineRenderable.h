@@ -4,6 +4,7 @@
 #include <Common/CColor.h>
 #include <Common/Math/CVector3f.h>
 #include <Core/Render/CDrawUtil.h>
+#include "Core/Render/CGraphics.h"
 #include <Core/Render/CRenderer.h>
 #include <Core/Render/IRenderable.h>
 

@@ -1,5 +1,6 @@
 #include "Core/ScriptExtra/CDoorExtra.h"
 
+#include "Core/Render/CGraphics.h"
 #include "Core/Render/CRenderer.h"
 #include "Core/Resource/Script/CScriptObject.h"
 #include "Core/Resource/Script/CScriptTemplate.h"

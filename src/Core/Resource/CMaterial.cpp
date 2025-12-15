@@ -1,6 +1,8 @@
-#include "CMaterial.h"
+#include "Core/Resource/CMaterial.h"
+
 #include "Core/GameProject/CResourceStore.h"
 #include "Core/Render/CDrawUtil.h"
+#include "Core/Render/CGraphics.h"
 #include "Core/Render/CRenderer.h"
 #include "Core/OpenGL/GLCommon.h"
 #include "Core/OpenGL/CShaderGenerator.h"

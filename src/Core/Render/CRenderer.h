@@ -1,25 +1,21 @@
 #ifndef CRENDERER_H
 #define CRENDERER_H
 
-#include "CCamera.h"
-#include "CGraphics.h"
-#include "CRenderBucket.h"
-#include "EDepthGroup.h"
-#include "ERenderCommand.h"
-#include "FRenderOptions.h"
-#include "SRenderablePtr.h"
-#include "SViewInfo.h"
 #include "Core/OpenGL/CFramebuffer.h"
-#include "Core/Resource/CFont.h"
-#include "Core/Resource/CLight.h"
-#include "Core/Resource/CTexture.h"
-#include "Core/Scene/CSceneNode.h"
+#include "Core/Render/CRenderBucket.h"
+#include "Core/Render/EDepthGroup.h"
+#include "Core/Render/ERenderCommand.h"
+#include "Core/Render/FRenderOptions.h"
 
 #include <Common/CColor.h>
 #include <Common/Math/CAABox.h>
-#include <Common/Math/CMatrix4f.h>
 
 #include <array>
+
+class CAABox;
+class CModel;
+class IRenderable;
+struct SViewInfo;
 
 enum class EBloomMode
 {
@@ -54,12 +50,12 @@ class CRenderer
     EBloomMode mBloomMode{EBloomMode::NoBloom};
     bool mDrawGrid = true;
     CColor mClearColor;
-    uint32 mContextIndex = UINT32_MAX;
+    uint32_t mContextIndex = UINT32_MAX;
     bool mInitialized = false;
-    uint32 mViewportWidth = 0;
-    uint32 mViewportHeight = 0;
-    uint32 mBloomWidth = 0;
-    uint32 mBloomHeight = 0;
+    uint32_t mViewportWidth = 0;
+    uint32_t mViewportHeight = 0;
+    uint32_t mBloomWidth = 0;
+    uint32_t mBloomHeight = 0;
     float mBloomHScale = 0.0f;
     float mBloomVScale = 0.0f;
 
@@ -74,7 +70,7 @@ class CRenderer
     CRenderBucket mUIBucket;
 
     // Static Members
-    static uint32 sNumRenderers;
+    static uint32_t sNumRenderers;
 
 public:
     // Initialization
@@ -91,7 +87,7 @@ public:
     void ToggleAlphaDisabled(bool Enable);
     void SetBloom(EBloomMode BloomMode);
     void SetClearColor(const CColor& rkClear);
-    void SetViewportSize(uint32 Width, uint32 Height);
+    void SetViewportSize(uint32_t Width, uint32_t Height);
 
     // Render
     void RenderBuckets(const SViewInfo& rkViewInfo);
@@ -107,6 +103,6 @@ private:
     void InitFramebuffer();
 };
 
-extern uint32 gDrawCount;
+extern uint32_t gDrawCount;
 
 #endif // RENDERMANAGER_H

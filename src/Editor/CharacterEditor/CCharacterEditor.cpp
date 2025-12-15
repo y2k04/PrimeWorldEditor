@@ -1,7 +1,9 @@
-#include "CCharacterEditor.h"
+#include "Editor/CharacterEditor/CCharacterEditor.h"
 #include "ui_CCharacterEditor.h"
-#include "Editor/UICommon.h"
+
 #include <Common/Macros.h>
+#include "Editor/UICommon.h"
+
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QTreeView>

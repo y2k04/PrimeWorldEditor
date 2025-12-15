@@ -1,6 +1,7 @@
 #include "Core/ScriptExtra/CDamageableTriggerExtra.h"
 
 #include "Core/Render/CDrawUtil.h"
+#include "Core/Render/CGraphics.h"
 #include "Core/Render/CRenderer.h"
 #include "Core/Resource/Script/CScriptObject.h"
 #include "Core/Scene/CScriptNode.h"

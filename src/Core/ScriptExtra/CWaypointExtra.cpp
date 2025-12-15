@@ -1,6 +1,7 @@
 #include "Core/ScriptExtra/CWaypointExtra.h"
 
 #include "Core/Render/CDrawUtil.h"
+#include "Core/Render/CGraphics.h"
 #include "Core/Render/CRenderer.h"
 #include "Core/Resource/Script/CLink.h"
 #include "Core/Scene/CScene.h"
