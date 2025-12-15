@@ -1,11 +1,11 @@
 #ifndef CSCRIPTLAYER_H
 #define CSCRIPTLAYER_H
 
-#include "CScriptObject.h"
-#include "Core/Resource/CDependencyGroup.h"
-#include <Common/BasicTypes.h>
+#include "Core/Resource/Area/CGameArea.h"
+#include "Core/Resource/Script/CScriptObject.h"
+
 #include <algorithm>
-#include <string>
+#include <cstdint>
 #include <vector>
 
 class CScriptLayer
@@ -15,6 +15,7 @@ class CScriptLayer
     bool mActive = true;
     bool mVisible = true;
     std::vector<CScriptObject*> mInstances;
+
 public:
     explicit CScriptLayer(CGameArea *pArea)
         : mpArea(pArea)
@@ -28,7 +29,7 @@ public:
     }
 
     // Data Manipulation
-    void AddInstance(CScriptObject *pObject, uint32 Index = UINT32_MAX)
+    void AddInstance(CScriptObject *pObject, uint32_t Index = UINT32_MAX)
     {
         if (Index != UINT32_MAX && Index < mInstances.size())
         {
@@ -58,7 +59,7 @@ public:
         mInstances.erase(mInstances.begin() + Index);
     }
 
-    void RemoveInstanceByID(uint32 ID)
+    void RemoveInstanceByID(uint32_t ID)
     {
         const auto it = std::find_if(mInstances.cbegin(), mInstances.cend(),
                                      [ID](const auto* instance) { return instance->InstanceID() == ID; });
@@ -82,7 +83,7 @@ public:
     size_t NumInstances() const  { return mInstances.size(); }
     CScriptObject* InstanceByIndex(size_t Index) const { return mInstances[Index]; }
 
-    CScriptObject* InstanceByID(uint32 ID) const
+    CScriptObject* InstanceByID(uint32_t ID) const
     {
         const auto it = std::find_if(mInstances.begin(), mInstances.end(),
                                      [ID](const auto* instance) { return instance->InstanceID() == ID; });
@@ -97,9 +98,9 @@ public:
     void SetActive(bool Active)    { mActive = Active; }
     void SetVisible(bool Visible)  { mVisible = Visible; }
 
-    uint32 AreaIndex() const
+    uint32_t AreaIndex() const
     {
-        for (uint32 iLyr = 0; iLyr < mpArea->NumScriptLayers(); iLyr++)
+        for (uint32_t iLyr = 0; iLyr < mpArea->NumScriptLayers(); iLyr++)
         {
             if (mpArea->ScriptLayer(iLyr) == this)
                 return iLyr;

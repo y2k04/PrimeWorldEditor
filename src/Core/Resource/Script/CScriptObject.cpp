@@ -1,9 +1,13 @@
-#include "CScriptObject.h"
-#include "CScriptLayer.h"
-#include "CGameTemplate.h"
-#include "Core/Resource/Animation/CAnimSet.h"
+#include "Core/Resource/Script/CScriptObject.h"
 
-CScriptObject::CScriptObject(uint32 InstanceID, CGameArea *pArea, CScriptLayer *pLayer, CScriptTemplate *pTemplate)
+#include "Core/Resource/Animation/CAnimSet.h"
+#include "Core/Resource/Area/CGameArea.h"
+#include "Core/Resource/Collision/CCollisionMeshGroup.h"
+#include "Core/Resource/Script/CGameTemplate.h"
+#include "Core/Resource/Script/CScriptLayer.h"
+#include "Core/Resource/Script/CScriptTemplate.h"
+
+CScriptObject::CScriptObject(uint32_t InstanceID, CGameArea *pArea, CScriptLayer *pLayer, CScriptTemplate *pTemplate)
     : mpTemplate(pTemplate)
     , mpArea(pArea)
     , mpLayer(pLayer)
@@ -13,7 +17,7 @@ CScriptObject::CScriptObject(uint32 InstanceID, CGameArea *pArea, CScriptLayer *
 
     // Init properties
     CStructProperty* pProperties = pTemplate->Properties();
-    uint32 PropertiesSize = pProperties->DataSize();
+    uint32_t PropertiesSize = pProperties->DataSize();
 
     mPropertyData.resize( PropertiesSize );
     void* pData = mPropertyData.data();
@@ -93,7 +97,7 @@ bool CScriptObject::IsEditorProperty(const IProperty *pProp) const
            pProp->Parent() == mLightParameters.Property();
 }
 
-void CScriptObject::SetLayer(CScriptLayer *pLayer, uint32 NewLayerIndex)
+void CScriptObject::SetLayer(CScriptLayer *pLayer, uint32_t NewLayerIndex)
 {
     ASSERT(pLayer != nullptr);
 
@@ -105,12 +109,12 @@ void CScriptObject::SetLayer(CScriptLayer *pLayer, uint32 NewLayerIndex)
     }
 }
 
-uint32 CScriptObject::LayerIndex() const
+uint32_t CScriptObject::LayerIndex() const
 {
     if (!mpLayer)
         return UINT32_MAX;
 
-    for (uint32 iInst = 0; iInst < mpLayer->NumInstances(); iInst++)
+    for (uint32_t iInst = 0; iInst < mpLayer->NumInstances(); iInst++)
     {
         if (mpLayer->InstanceByIndex(iInst) == this)
             return iInst;
@@ -179,7 +183,7 @@ bool CScriptObject::HasNearVisibleActivation() const
     return false;
 }
 
-void CScriptObject::AddLink(ELinkType Type, CLink *pLink, uint32 Index)
+void CScriptObject::AddLink(ELinkType Type, CLink *pLink, uint32_t Index)
 {
     std::vector<CLink*> *pLinkVec = (Type == ELinkType::Incoming ? &mInLinks : &mOutLinks);
 
@@ -229,4 +233,14 @@ void CScriptObject::BreakAllLinks()
 
     mInLinks.clear();
     mOutLinks.clear();
+}
+
+CGameTemplate* CScriptObject::GameTemplate() const
+{
+    return mpTemplate->GameTemplate();
+}
+
+uint32_t CScriptObject::ObjectTypeID() const
+{
+    return mpTemplate->ObjectID();
 }

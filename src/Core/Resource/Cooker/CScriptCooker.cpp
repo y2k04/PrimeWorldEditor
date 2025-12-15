@@ -1,5 +1,7 @@
-#include "CScriptCooker.h"
+#include "Core/Resource/Cooker/CScriptCooker.h"
+
 #include "Core/Resource/Script/CLink.h"
+#include "Core/Resource/Script/CScriptTemplate.h"
 #include <Core/Resource/Script/Property/CArrayProperty.h>
 #include <Core/Resource/Script/Property/CAssetProperty.h>
 #include <Core/Resource/Script/Property/CEnumProperty.h>

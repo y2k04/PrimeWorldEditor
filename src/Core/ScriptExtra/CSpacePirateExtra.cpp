@@ -1,6 +1,7 @@
 #include "Core/ScriptExtra/CSpacePirateExtra.h"
 
 #include "Core/Resource/Script/CScriptObject.h"
+#include "Core/Resource/Script/CScriptTemplate.h"
 
 CSpacePirateExtra::CSpacePirateExtra(CScriptObject* pInstance, CScene* pScene, CScriptNode* pParent)
     : CScriptExtra(pInstance, pScene ,pParent)
@@ -10,10 +11,10 @@ CSpacePirateExtra::CSpacePirateExtra(CScriptObject* pInstance, CScene* pScene, C
 
     if (pVulnerabilities)
     {
-        mPowerVulnerability     = TEnumRef<EVulnerabilityTypeMP1>(pInstance, pVulnerabilities->ChildByID(0));
-        mWaveVulnerability      = TEnumRef<EVulnerabilityTypeMP1>(pInstance, pVulnerabilities->ChildByID(2));
-        mIceVulnerability       = TEnumRef<EVulnerabilityTypeMP1>(pInstance, pVulnerabilities->ChildByID(1));
-        mPlasmaVulnerability    = TEnumRef<EVulnerabilityTypeMP1>(pInstance, pVulnerabilities->ChildByID(3));
+        mPowerVulnerability  = TEnumRef<EVulnerabilityTypeMP1>(pInstance, pVulnerabilities->ChildByID(0));
+        mWaveVulnerability   = TEnumRef<EVulnerabilityTypeMP1>(pInstance, pVulnerabilities->ChildByID(2));
+        mIceVulnerability    = TEnumRef<EVulnerabilityTypeMP1>(pInstance, pVulnerabilities->ChildByID(1));
+        mPlasmaVulnerability = TEnumRef<EVulnerabilityTypeMP1>(pInstance, pVulnerabilities->ChildByID(3));
     }
 }
 

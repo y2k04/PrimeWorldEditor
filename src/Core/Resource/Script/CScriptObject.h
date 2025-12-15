@@ -1,14 +1,20 @@
 #ifndef CSCRIPTOBJECT_H
 #define CSCRIPTOBJECT_H
 
-#include "CScriptTemplate.h"
-#include "Core/Resource/Area/CGameArea.h"
-#include "Core/Resource/Collision/CCollisionMeshGroup.h"
-#include "Core/Resource/Model/CModel.h"
-#include "Core/Resource/Script/Property/Properties.h"
+#include <Common/Math/CVector3f.h>
+#include "Core/Resource/TResPtr.h"
+#include "Core/Resource/Script/EVolumeShape.h"
+#include "Core/Resource/Script/Property/TPropertyRef.h"
 
-class CScriptLayer;
+#include <cstdint>
+#include <vector>
+
+class CCollisionMeshGroup;
+class CGameArea;
+class CGameTemplate;
 class CLink;
+class CScriptLayer;
+class CScriptTemplate;
 
 enum class ELinkType
 {
@@ -18,15 +24,15 @@ enum class ELinkType
 
 class CInstanceID
 {
-    uint32 mId = 0;
+    uint32_t mId = 0;
 public:
-    constexpr operator uint32() const { return mId; }
+    constexpr operator uint32_t() const { return mId; }
     constexpr CInstanceID() = default;
-    constexpr CInstanceID(uint32 id) : mId(id) {}
-    constexpr CInstanceID& operator=(uint32 id) { mId = id; return *this; }
-    [[nodiscard]] constexpr uint8 Layer() const { return uint8((mId >> 26u) & 0x3fu); }
-    [[nodiscard]] constexpr uint16 Area() const { return uint16((mId >> 16u) & 0x3ffu); }
-    [[nodiscard]] constexpr uint16 Id() const { return uint16(mId & 0xffffu); }
+    constexpr CInstanceID(uint32_t id) : mId(id) {}
+    constexpr CInstanceID& operator=(uint32_t id) { mId = id; return *this; }
+    [[nodiscard]] constexpr uint8_t Layer() const { return uint8_t((mId >> 26u) & 0x3fu); }
+    [[nodiscard]] constexpr uint16_t Area() const { return uint16_t((mId >> 16u) & 0x3ffu); }
+    [[nodiscard]] constexpr uint16_t Id() const { return uint16_t(mId & 0xffffu); }
 };
 
 class CScriptObject
@@ -37,7 +43,7 @@ class CScriptObject
     CScriptTemplate *mpTemplate;
     CGameArea *mpArea;
     CScriptLayer *mpLayer;
-    uint32 mVersion = 0;
+    uint32_t mVersion = 0;
 
     CInstanceID mInstanceID;
     std::vector<CLink*> mOutLinks;
@@ -53,8 +59,8 @@ class CScriptObject
 
     TResPtr<CResource> mpDisplayAsset;
     TResPtr<CCollisionMeshGroup> mpCollision;
-    uint32 mActiveCharIndex = 0;
-    uint32 mActiveAnimIndex = 0;
+    uint32_t mActiveCharIndex = 0;
+    uint32_t mActiveAnimIndex = 0;
     bool mHasInGameModel = false;
 
     EVolumeShape mVolumeShape{};
@@ -64,7 +70,7 @@ class CScriptObject
     mutable bool mIsCheckingNearVisibleActivation = false;
 
 public:
-    CScriptObject(uint32 InstanceID, CGameArea *pArea, CScriptLayer *pLayer, CScriptTemplate *pTemplate);
+    CScriptObject(uint32_t InstanceID, CGameArea *pArea, CScriptLayer *pLayer, CScriptTemplate *pTemplate);
     ~CScriptObject();
 
     void CopyProperties(CScriptObject* pObject);
@@ -73,21 +79,21 @@ public:
     void EvaluateCollisionModel();
     void EvaluateVolume();
     bool IsEditorProperty(const IProperty *pProp) const;
-    void SetLayer(CScriptLayer *pLayer, uint32 NewLayerIndex = UINT32_MAX);
-    uint32 LayerIndex() const;
+    void SetLayer(CScriptLayer *pLayer, uint32_t NewLayerIndex = UINT32_MAX);
+    uint32_t LayerIndex() const;
     bool HasNearVisibleActivation() const;
 
-    void AddLink(ELinkType Type, CLink *pLink, uint32 Index = UINT32_MAX);
+    void AddLink(ELinkType Type, CLink *pLink, uint32_t Index = UINT32_MAX);
     void RemoveLink(ELinkType Type, CLink *pLink);
     void BreakAllLinks();
 
     // Accessors
     CScriptTemplate* Template() const                               { return mpTemplate; }
-    CGameTemplate* GameTemplate() const                             { return mpTemplate->GameTemplate(); }
+    CGameTemplate* GameTemplate() const;
     CGameArea* Area() const                                         { return mpArea; }
     CScriptLayer* Layer() const                                     { return mpLayer; }
-    uint32 Version() const                                          { return mVersion; }
-    uint32 ObjectTypeID() const                                     { return mpTemplate->ObjectID(); }
+    uint32_t Version() const                                        { return mVersion; }
+    uint32_t ObjectTypeID() const;
     CInstanceID InstanceID() const                                  { return mInstanceID; }
     size_t NumLinks(ELinkType Type) const                           { return (Type == ELinkType::Incoming ? mInLinks.size() : mOutLinks.size()); }
     CLink* Link(ELinkType Type, size_t Index) const                 { return (Type == ELinkType::Incoming ? mInLinks[Index] : mOutLinks[Index]); }
@@ -101,8 +107,8 @@ public:
     bool HasInGameModel() const                 { return mHasInGameModel; }
     CStructRef LightParameters() const          { return mLightParameters; }
     CResource* DisplayAsset() const             { return mpDisplayAsset; }
-    uint32 ActiveCharIndex() const              { return mActiveCharIndex; }
-    uint32 ActiveAnimIndex() const              { return mActiveAnimIndex; }
+    uint32_t ActiveCharIndex() const            { return mActiveCharIndex; }
+    uint32_t ActiveAnimIndex() const            { return mActiveAnimIndex; }
     CCollisionMeshGroup* Collision() const      { return mpCollision; }
     EVolumeShape VolumeShape() const            { return mVolumeShape; }
     float VolumeScale() const                   { return mVolumeScale; }
