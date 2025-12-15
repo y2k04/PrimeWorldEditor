@@ -1,15 +1,17 @@
 #ifndef CSKELETON_H
 #define CSKELETON_H
 
-#include "CAnimation.h"
-#include "Core/Render/FRenderOptions.h"
 #include "Core/Resource/CResource.h"
-#include <Common/BasicTypes.h>
+#include "Core/Render/FRenderOptions.h"
+#include "Core/Resource/Animation/CAnimation.h"
 #include <Common/TString.h>
+#include <Common/Math/CQuaternion.h>
 #include <Common/Math/CRay.h>
 #include <Common/Math/CVector3f.h>
+
 #include <memory>
 #include <string_view>
+#include <vector>
 
 class CBoneTransformData;
 class CBone;

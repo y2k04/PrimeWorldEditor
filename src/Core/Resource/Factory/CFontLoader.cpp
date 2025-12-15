@@ -1,5 +1,7 @@
-#include "CFontLoader.h"
+#include "Core/Resource/Factory/CFontLoader.h"
+
 #include <Common/Log.h>
+#include "Core/Resource/CFont.h"
 
 CFontLoader::CFontLoader() = default;
 
@@ -16,10 +18,10 @@ void CFontLoader::LoadFont(IInputStream& rFONT)
     mpFont->mFontName = rFONT.ReadString();
     mpFont->mpFontTexture = gpResourceStore->LoadResource(CAssetID(rFONT, mVersion), EResourceType::Texture);
     mpFont->mTextureFormat = rFONT.ReadULong();
-    const uint32 NumGlyphs = rFONT.ReadULong();
+    const uint32_t NumGlyphs = rFONT.ReadULong();
     mpFont->mGlyphs.reserve(NumGlyphs);
 
-    for (uint32 iGlyph = 0; iGlyph < NumGlyphs; iGlyph++)
+    for (uint32_t iGlyph = 0; iGlyph < NumGlyphs; iGlyph++)
     {
         CFont::SGlyph Glyph;
         Glyph.Character = rFONT.ReadUShort();
@@ -58,10 +60,10 @@ void CFontLoader::LoadFont(IInputStream& rFONT)
         mpFont->mGlyphs.insert_or_assign(Glyph.Character, Glyph);
     }
 
-    const uint32 NumKerningPairs = rFONT.ReadULong();
+    const uint32_t NumKerningPairs = rFONT.ReadULong();
     mpFont->mKerningTable.reserve(NumKerningPairs);
 
-    for (uint32 iKern = 0; iKern < NumKerningPairs; iKern++)
+    for (uint32_t iKern = 0; iKern < NumKerningPairs; iKern++)
     {
         auto& Pair = mpFont->mKerningTable.emplace_back();
         Pair.CharacterA = rFONT.ReadUShort();
@@ -82,7 +84,7 @@ std::unique_ptr<CFont> CFontLoader::LoadFONT(IInputStream& rFONT, CResourceEntry
         return nullptr;
     }
 
-    const uint32 FileVersion = rFONT.ReadULong();
+    const uint32_t FileVersion = rFONT.ReadULong();
     const EGame Version = GetFormatVersion(FileVersion);
     if (Version == EGame::Invalid)
     {
@@ -100,7 +102,7 @@ std::unique_ptr<CFont> CFontLoader::LoadFONT(IInputStream& rFONT, CResourceEntry
     return ptr;
 }
 
-EGame CFontLoader::GetFormatVersion(uint32 Version)
+EGame CFontLoader::GetFormatVersion(uint32_t Version)
 {
     switch (Version)
     {

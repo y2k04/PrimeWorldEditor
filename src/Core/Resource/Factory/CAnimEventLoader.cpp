@@ -3,6 +3,7 @@
 #include "Core/CAudioManager.h"
 #include "Core/GameProject/CGameProject.h"
 #include "Core/Resource/CAudioGroup.h"
+#include "Core/Resource/Animation/CAnimEventData.h"
 
 void CAnimEventLoader::LoadEvents(IInputStream& rEVNT)
 {

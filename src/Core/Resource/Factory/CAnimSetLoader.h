@@ -1,10 +1,16 @@
 #ifndef CCHARACTERLOADER_H
 #define CCHARACTERLOADER_H
 
-#include "Core/Resource/Animation/CAnimSet.h"
-#include "Core/Resource/Animation/CSourceAnimData.h"
 #include <Common/EGame.h>
+#include <Core/Resource/TResPtr.h>
+
 #include <memory>
+
+class CAnimSet;
+class CResourceEntry;
+class CSourceAnimData;
+class IInputStream;
+struct SSetCharacter;
 
 class CAnimSetLoader
 {

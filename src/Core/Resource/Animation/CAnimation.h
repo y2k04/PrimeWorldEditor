@@ -3,11 +3,14 @@
 
 #include "Core/Resource/CResource.h"
 #include "Core/Resource/TResPtr.h"
-#include "Core/Resource/Animation/CAnimEventData.h"
-#include <Common/Math/CQuaternion.h>
-#include <Common/Math/CVector3f.h>
+
 #include <array>
+#include <cstdint>
 #include <vector>
+
+class CAnimEventData;
+class CQuaternion;
+class CVector3f;
 
 class CAnimation : public CResource
 {
@@ -20,7 +23,7 @@ class CAnimation : public CResource
 
     float mDuration = 0.0f;
     float mTickInterval = 0.0333333f;
-    uint32 mNumKeys = 0;
+    uint32_t mNumKeys = 0;
 
     std::vector<TScaleChannel> mScaleChannels;
     std::vector<TRotationChannel> mRotationChannels;
@@ -28,9 +31,9 @@ class CAnimation : public CResource
 
     struct SBoneChannelInfo
     {
-        uint8 ScaleChannelIdx = 0xFF;
-        uint8 RotationChannelIdx = 0xFF;
-        uint8 TranslationChannelIdx = 0xFF;
+        uint8_t ScaleChannelIdx = 0xFF;
+        uint8_t RotationChannelIdx = 0xFF;
+        uint8_t TranslationChannelIdx = 0xFF;
     };
     std::array<SBoneChannelInfo, 100> mBoneInfo;
 
@@ -38,12 +41,14 @@ class CAnimation : public CResource
 
 public:
     explicit CAnimation(CResourceEntry *pEntry = nullptr);
+    ~CAnimation() override;
+
     std::unique_ptr<CDependencyTree> BuildDependencyTree() const override;
-    void EvaluateTransform(float Time, uint32 BoneID, CVector3f *pOutTranslation, CQuaternion *pOutRotation, CVector3f *pOutScale) const;
-    bool HasTranslation(uint32 BoneID) const;
+    void EvaluateTransform(float Time, uint32_t BoneID, CVector3f *pOutTranslation, CQuaternion *pOutRotation, CVector3f *pOutScale) const;
+    bool HasTranslation(uint32_t BoneID) const;
 
     float Duration() const               { return mDuration; }
-    uint32 NumKeys() const               { return mNumKeys; }
+    uint32_t NumKeys() const             { return mNumKeys; }
     float TickInterval() const           { return mTickInterval; }
     CAnimEventData* EventData() const    { return mpEventData; }
 };

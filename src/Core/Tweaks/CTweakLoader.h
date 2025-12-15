@@ -1,16 +1,20 @@
 #ifndef CTWEAKLOADER_H
 #define CTWEAKLOADER_H
 
-#include "CTweakData.h"
+#include <Common/EGame.h>
 #include <memory>
+#include <vector>
+
+class CResourceEntry;
+class CTweakData;
+class IInputStream;
 
 /** Class responsible for loading tweak data */
 class CTweakLoader
 {
-    /** Private constructor */
-    CTweakLoader() = default;
-
 public:
+    CTweakLoader() = delete;
+
     /** Loader entry point */
     static std::unique_ptr<CTweakData> LoadCTWK(IInputStream& CTWK, CResourceEntry* pEntry);
     static void LoadNTWK(IInputStream& NTWK, EGame Game, std::vector<CTweakData*>& OutTweaks);

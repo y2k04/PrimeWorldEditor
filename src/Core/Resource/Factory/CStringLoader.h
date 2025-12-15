@@ -1,11 +1,12 @@
 #ifndef CSTRINGLOADER_H
 #define CSTRINGLOADER_H
 
-#include "Core/GameProject/CResourceStore.h"
-#include "Core/Resource/TResPtr.h"
-#include "Core/Resource/StringTable/CStringTable.h"
 #include <Common/EGame.h>
 #include <memory>
+
+class CResourceEntry;
+class CStringTable;
+class IInputStream;
 
 class CStringLoader
 {

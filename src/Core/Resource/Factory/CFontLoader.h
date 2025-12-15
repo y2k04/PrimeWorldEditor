@@ -1,10 +1,14 @@
 #ifndef CFONTLOADER_H
 #define CFONTLOADER_H
 
-#include "Core/GameProject/CResourceStore.h"
-#include "Core/Resource/CFont.h"
 #include <Common/EGame.h>
+#include <Core/Resource/TResPtr.h>
+
 #include <memory>
+
+class CFont;
+class CResourceEntry;
+class IInputStream;
 
 class CFontLoader
 {
@@ -16,7 +20,7 @@ class CFontLoader
 
 public:
     static std::unique_ptr<CFont> LoadFONT(IInputStream& rFONT, CResourceEntry *pEntry);
-    static EGame GetFormatVersion(uint32 Version);
+    static EGame GetFormatVersion(uint32_t Version);
 };
 
 #endif // CFONTLOADER_H

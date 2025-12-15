@@ -1,5 +1,7 @@
-#include "CSkinLoader.h"
+#include "Core/Resource/Factory/CSkinLoader.h"
+
 #include <Common/Macros.h>
+#include "Core/Resource/Animation/CSkin.h"
 
 // ************ STATIC ************
 std::unique_ptr<CSkin> CSkinLoader::LoadCSKR(IInputStream& rCSKR, CResourceEntry *pEntry)
@@ -13,18 +15,18 @@ std::unique_ptr<CSkin> CSkinLoader::LoadCSKR(IInputStream& rCSKR, CResourceEntry
     if (rCSKR.PeekLong() == FOURCC('SKIN'))
         return pSkin;
 
-    const uint32 NumVertexGroups = rCSKR.ReadULong();
+    const uint32_t NumVertexGroups = rCSKR.ReadULong();
     pSkin->mVertGroups.resize(NumVertexGroups);
 
     for (size_t iGrp = 0; iGrp < NumVertexGroups; iGrp++)
     {
         CSkin::SVertGroup& rGroup = pSkin->mVertGroups[iGrp];
-        const uint32 NumWeights = rCSKR.ReadULong();
+        const uint32_t NumWeights = rCSKR.ReadULong();
         ASSERT(NumWeights <= 4);
 
         for (size_t iWgt = 0; iWgt < NumWeights; iWgt++)
         {
-            rGroup.Weights.Indices[iWgt] = static_cast<uint8>(rCSKR.ReadULong());
+            rGroup.Weights.Indices[iWgt] = static_cast<uint8_t>(rCSKR.ReadULong());
             rGroup.Weights.Weights[iWgt] = rCSKR.ReadFloat();
         }
 

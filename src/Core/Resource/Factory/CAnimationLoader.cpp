@@ -1,8 +1,13 @@
-#include "CAnimationLoader.h"
-#include <Common/Macros.h>
+#include "Core/Resource/Factory/CAnimationLoader.h"
+
 #include <Common/Log.h>
-#include <cmath>
+#include <Common/Macros.h>
+#include <Common/Math/CQuaternion.h>
 #include <Common/Math/MathUtil.h>
+#include "Core/Resource/Animation/CAnimation.h"
+#include "Core/Resource/Animation/CAnimEventData.h"
+
+#include <cmath>
 
 bool CAnimationLoader::UncompressedCheckEchoes()
 {

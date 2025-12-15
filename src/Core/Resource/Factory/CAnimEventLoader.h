@@ -1,9 +1,10 @@
 #ifndef CANIMEVENTLOADER_H
 #define CANIMEVENTLOADER_H
 
-#include "Core/Resource/Animation/CAnimEventData.h"
 #include "Core/Resource/TResPtr.h"
 #include <memory>
+
+class CAnimEventData;
 
 class CAnimEventLoader
 {

@@ -1,11 +1,13 @@
 #ifndef CWORLDLOADER_H
 #define CWORLDLOADER_H
 
-#include "Core/GameProject/CResourceStore.h"
-#include "Core/Resource/CWorld.h"
 #include <Common/EGame.h>
-#include <Common/FileIO.h>
+#include <Core/Resource/TResPtr.h>
 #include <memory>
+
+class CResourceEntry;
+class CWorld;
+class IInputStream;
 
 class CWorldLoader
 {

@@ -1,12 +1,18 @@
 #ifndef CSCRIPTLOADER_H
 #define CSCRIPTLOADER_H
 
-#include "Core/GameProject/CResourceStore.h"
-#include "Core/Resource/Area/CGameArea.h"
-#include "Core/Resource/Script/CScriptObject.h"
-#include "Core/Resource/Script/CScriptLayer.h"
-#include "Core/Resource/Script/CGameTemplate.h"
+#include <Common/EGame.h>
+#include "Core/Resource/Script/Property/TPropertyRef.h"
+
 #include <memory>
+
+class CGameArea;
+class CGameTemplate;
+class CScriptLayer;
+class CScriptObject;
+class CStructProperty;
+class IInputStream;
+class IProperty;
 
 class CScriptLoader
 {

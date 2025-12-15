@@ -1,6 +1,9 @@
-#include "CSkeletonLoader.h"
+#include "Core/Resource/Factory/CSkeletonLoader.h"
+
 #include <Common/Macros.h>
 #include <Common/Log.h>
+#include <Common/Math/CQuaternion.h>
+#include "Core/Resource/Animation/CSkeleton.h"
 
 #include <vector>
 

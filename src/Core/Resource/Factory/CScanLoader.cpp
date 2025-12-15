@@ -1,7 +1,8 @@
-#include "CScanLoader.h"
-#include "Core/GameProject/CResourceStore.h"
-#include "CScriptLoader.h"
-#include <Common/Log.h>
+#include "Core/Resource/Factory/CScanLoader.h"
+
+#include <Common/CFourCC.h>
+#include "Core/Resource/Factory/CScriptLoader.h"
+#include "Core/Resource/Scan/CScan.h"
 
 std::unique_ptr<CScan> CScanLoader::LoadScanMP1(IInputStream& SCAN, CResourceEntry* pEntry)
 {

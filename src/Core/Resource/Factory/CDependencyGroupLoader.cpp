@@ -1,7 +1,9 @@
-#include "CDependencyGroupLoader.h"
-#include <Common/Macros.h>
+#include "Core/Resource/Factory/CDependencyGroupLoader.h"
 
-EGame CDependencyGroupLoader::VersionTest(IInputStream& rDGRP, uint32 DepCount)
+#include <Common/Macros.h>
+#include "Core/Resource/CDependencyGroup.h"
+
+static EGame VersionTest(IInputStream& rDGRP, uint32 DepCount)
 {
     // Only difference between versions is asset ID length. Just check for EOF with 32-bit ID length.
     const uint32 Start = rDGRP.Tell();

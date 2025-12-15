@@ -1,6 +1,10 @@
-#include "CAnimSetLoader.h"
-#include "CAnimEventLoader.h"
+#include "Core/Resource/Factory/CAnimSetLoader.h"
+
 #include "Core/GameProject/CResourceStore.h"
+#include "Core/Resource/Animation/CAnimSet.h"
+#include "Core/Resource/Animation/CSourceAnimData.h"
+#include "Core/Resource/Factory/CAnimEventLoader.h"
+
 #include <Common/Log.h>
 
 CAnimSetLoader::CAnimSetLoader() = default;

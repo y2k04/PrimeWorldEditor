@@ -1,6 +1,8 @@
-#include "CStringLoader.h"
+#include "Core/Resource/Factory/CStringLoader.h"
+
 #include <Common/Log.h>
 #include <Common/Math/MathUtil.h>
+#include "Core/Resource/StringTable/CStringTable.h"
 
 void CStringLoader::LoadPrimeDemoSTRG(IInputStream& STRG)
 {

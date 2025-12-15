@@ -1,10 +1,13 @@
 #ifndef CAUDIOGROUPLOADER_H
 #define CAUDIOGROUPLOADER_H
 
-#include "Core/Resource/CAudioGroup.h"
-#include "Core/Resource/CAudioLookupTable.h"
-#include "Core/Resource/CStringList.h"
 #include <memory>
+
+class CAudioGroup;
+class CAudioLookupTable;
+class CResourceEntry;
+class CStringList;
+class IInputStream;
 
 class CAudioGroupLoader
 {

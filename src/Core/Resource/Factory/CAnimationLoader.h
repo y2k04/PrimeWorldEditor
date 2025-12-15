@@ -2,10 +2,16 @@
 #define CANIMATIONLOADER_H
 
 #include "Core/Resource/TResPtr.h"
-#include "Core/Resource/Animation/CAnimation.h"
+
 #include <Common/EGame.h>
 #include <array>
+#include <cstdint>
 #include <memory>
+
+class CAnimation;
+class CQuaternion;
+class CResourceEntry;
+class IInputStream;
 
 class CAnimationLoader
 {
@@ -16,21 +22,21 @@ class CAnimationLoader
     // Compression data
     std::vector<bool> mKeyFlags;
     float mTranslationMultiplier = 0.0f;
-    uint32 mRotationDivisor = 0;
+    uint32_t mRotationDivisor = 0;
     float mScaleMultiplier = 0.0f;
 
     struct SCompressedChannel
     {
-        uint32 BoneID;
-        uint16 NumRotationKeys;
-        std::array<int16, 3> Rotation;
-        std::array<uint8, 3> RotationBits;
-        uint16 NumTranslationKeys;
-        std::array<int16, 3> Translation;
-        std::array<uint8, 3> TranslationBits;
-        uint16 NumScaleKeys;
-        std::array<int16, 3> Scale;
-        std::array<uint8, 3> ScaleBits;
+        uint32_t BoneID;
+        uint16_t NumRotationKeys;
+        std::array<int16_t, 3> Rotation;
+        std::array<uint8_t, 3> RotationBits;
+        uint16_t NumTranslationKeys;
+        std::array<int16_t, 3> Translation;
+        std::array<uint8_t, 3> TranslationBits;
+        uint16_t NumScaleKeys;
+        std::array<int16_t, 3> Scale;
+        std::array<uint8_t, 3> ScaleBits;
     };
     std::vector<SCompressedChannel> mCompressedChannels;
 
@@ -40,7 +46,7 @@ class CAnimationLoader
     void ReadUncompressedANIM();
     void ReadCompressedANIM();
     void ReadCompressedAnimationData();
-    CQuaternion DequantizeRotation(bool Sign, int16 X, int16 Y, int16 Z) const;
+    CQuaternion DequantizeRotation(bool Sign, int16_t X, int16_t Y, int16_t Z) const;
 
 public:
     static std::unique_ptr<CAnimation> LoadANIM(IInputStream& rANIM, CResourceEntry *pEntry);

@@ -1,7 +1,59 @@
-#include "CAssetNameMap.h"
+#include "Core/GameProject/CAssetNameMap.h"
+
+#include <Common/Serialization/XML.h>
+#include "Core/GameProject/CResourceIterator.h"
+#include "Core/GameProject/CResourceEntry.h"
+#include "Core/GameProject/CResourceStore.h"
 
 constexpr char gkAssetMapPath[] = "resources/gameinfo/AssetNameMap";
 constexpr char gkAssetMapExt[] = "xml";
+
+struct CAssetNameMap::SAssetNameInfo
+{
+    TString Name;
+    TString Directory;
+    CFourCC Type; // This is mostly just needed to verify no name conflicts
+    bool AutoGenName;
+    bool AutoGenDir;
+
+    TString FullPath() const
+    {
+        return Directory + Name + '.' + Type.ToString();
+    }
+
+    void Serialize(IArchive& rArc)
+    {
+        rArc << SerialParameter("Name", Name)
+             << SerialParameter("Directory", Directory)
+             << SerialParameter("Type", Type)
+             << SerialParameter("AutoGenName", AutoGenName)
+             << SerialParameter("AutoGenDir", AutoGenDir);
+    }
+
+    bool operator<(const SAssetNameInfo& rkOther) const
+    {
+        return FullPath().ToUpper() < rkOther.FullPath().ToUpper();
+    }
+
+    bool operator==(const SAssetNameInfo& rkOther) const
+    {
+        return FullPath().CaseInsensitiveCompare(rkOther.FullPath());
+    }
+};
+
+CAssetNameMap::CAssetNameMap(EIDLength IDLength)
+    : mIDLength(IDLength)
+{
+    ASSERT(mIDLength != kInvalidIDLength);
+}
+
+CAssetNameMap::CAssetNameMap(EGame Game) 
+    : mIDLength(CAssetID::GameIDLength(Game))
+{
+    ASSERT(mIDLength != kInvalidIDLength);
+}
+
+CAssetNameMap::~CAssetNameMap() = default;
 
 bool CAssetNameMap::LoadAssetNames(TString Path /*= ""*/)
 {
@@ -58,7 +110,6 @@ bool CAssetNameMap::GetNameInfo(CAssetID ID, TString& rOutDirectory, TString& rO
         rOutAutoGenName = rInfo.AutoGenName;
         return true;
     }
-
     else
     {
         EGame Game = (ID.Length() == EIDLength::k32Bit ? EGame::Prime : EGame::Corruption);

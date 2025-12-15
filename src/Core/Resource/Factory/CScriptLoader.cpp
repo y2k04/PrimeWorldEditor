@@ -1,13 +1,14 @@
 #include "CScriptLoader.h"
 #include "Core/GameProject/CResourceStore.h"
+#include "Core/Resource/Area/CGameArea.h"
 #include "Core/Resource/Script/CGameTemplate.h"
+#include "Core/Resource/Script/CScriptObject.h"
+#include "Core/Resource/Script/CScriptLayer.h"
 #include "Core/Resource/Script/NGameList.h"
 #include "Core/Resource/Script/Property/CArrayProperty.h"
 #include "Core/Resource/Script/Property/CAssetProperty.h"
 #include "Core/Resource/Script/Property/CEnumProperty.h"
 #include "Core/Resource/Script/Property/CFlagsProperty.h"
-#include <Common/Log.h>
-#include <sstream>
 
 // Whether to ensure the values of enum/flag properties are valid
 #define VALIDATE_PROPERTY_VALUES 1

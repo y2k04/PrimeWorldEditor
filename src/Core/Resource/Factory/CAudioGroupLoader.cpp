@@ -1,4 +1,8 @@
-#include "CAudioGroupLoader.h"
+#include "Core/Resource/Factory/CAudioGroupLoader.h"
+
+#include "Core/Resource/CAudioGroup.h"
+#include "Core/Resource/CAudioLookupTable.h"
+#include "Core/Resource/CStringList.h"
 
 std::unique_ptr<CAudioGroup> CAudioGroupLoader::LoadAGSC(IInputStream& rAGSC, CResourceEntry *pEntry)
 {

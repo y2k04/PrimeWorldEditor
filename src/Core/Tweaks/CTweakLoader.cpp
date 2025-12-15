@@ -1,6 +1,10 @@
-#include "CTweakLoader.h"
+#include "Core/Tweaks/CTweakLoader.h"
+
 #include "Core/Resource/Factory/CScriptLoader.h"
 #include "Core/Resource/Script/NGameList.h"
+#include "Core/Tweaks/CTweakData.h"
+
+#include <unordered_map>
 
 std::unique_ptr<CTweakData> CTweakLoader::LoadCTWK(IInputStream& CTWK, CResourceEntry* pEntry)
 {

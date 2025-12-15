@@ -9,6 +9,8 @@
 #include "Core/Resource/Factory/CScriptLoader.h"
 #include "Core/Resource/Factory/CSectionMgrIn.h"
 #include "Core/Resource/Script/CLink.h"
+#include "Core/Resource/Script/CScriptLayer.h"
+#include "Core/Resource/Script/CScriptTemplate.h"
 
 #include <Common/CFourCC.h>
 

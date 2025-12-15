@@ -1,10 +1,15 @@
 #ifndef CSKELETONLOADER_H
 #define CSKELETONLOADER_H
 
-#include "Core/Resource/Animation/CSkeleton.h"
 #include "Core/Resource/TResPtr.h"
 #include <Common/EGame.h>
+
 #include <memory>
+
+class CBone;
+class CResourceEntry;
+class CSkeleton;
+class IInputStream;
 
 class CSkeletonLoader
 {

@@ -1,13 +1,14 @@
 #ifndef CSKINLOADER_H
 #define CSKINLOADER_H
 
-#include "Core/Resource/Animation/CSkin.h"
 #include "Core/Resource/TResPtr.h"
 #include <memory>
 
+class CSkin;
+
 class CSkinLoader
 {
-    CSkinLoader() = default;
+    CSkinLoader() = delete;
 
 public:
     static std::unique_ptr<CSkin> LoadCSKR(IInputStream& rCSKR, CResourceEntry *pEntry);

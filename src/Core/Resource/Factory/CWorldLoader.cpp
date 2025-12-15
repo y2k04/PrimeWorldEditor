@@ -1,7 +1,8 @@
-#include "CWorldLoader.h"
+#include "Core/Resource/Factory/CWorldLoader.h"
+
 #include "Core/GameProject/CGameProject.h"
 #include "Core/GameProject/CResourceStore.h"
-#include <Common/Log.h>
+#include "Core/Resource/CWorld.h"
 
 CWorldLoader::CWorldLoader() = default;
 
@@ -27,7 +28,6 @@ void CWorldLoader::LoadPrimeMLVL(IInputStream& rMLVL)
 
         mpWorld->mpDefaultSkybox = gpResourceStore->LoadResource(rMLVL.ReadULong(), EResourceType::Model);
     }
-
     else
     {
         mpWorld->mpWorldName = gpResourceStore->LoadResource(rMLVL.ReadULongLong(), EResourceType::StringTable);

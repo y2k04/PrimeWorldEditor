@@ -1,6 +1,9 @@
-#include "CAnimation.h"
-#include <Common/Math/CTransform4f.h>
+#include "Core/Resource/Animation/CAnimation.h"
+
+#include <Common/Math/CQuaternion.h>
 #include <Common/Math/MathUtil.h>
+#include <Common/Math/CVector3f.h>
+#include "Core/Resource/Animation/CAnimEventData.h"
 
 #include <cfloat>
 
@@ -9,6 +12,8 @@ CAnimation::CAnimation(CResourceEntry *pEntry /*= 0*/)
 {
 }
 
+CAnimation::~CAnimation() = default;
+
 std::unique_ptr<CDependencyTree> CAnimation::BuildDependencyTree() const
 {
     auto pTree = std::make_unique<CDependencyTree>();
@@ -16,7 +21,7 @@ std::unique_ptr<CDependencyTree> CAnimation::BuildDependencyTree() const
     return pTree;
 }
 
-void CAnimation::EvaluateTransform(float Time, uint32 BoneID, CVector3f *pOutTranslation, CQuaternion *pOutRotation, CVector3f *pOutScale) const
+void CAnimation::EvaluateTransform(float Time, uint32_t BoneID, CVector3f *pOutTranslation, CQuaternion *pOutRotation, CVector3f *pOutScale) const
 {
     const bool kInterpolate = true;
     if (!pOutTranslation && !pOutRotation && !pOutScale) return;
@@ -54,7 +59,7 @@ void CAnimation::EvaluateTransform(float Time, uint32 BoneID, CVector3f *pOutTra
     }
 }
 
-bool CAnimation::HasTranslation(uint32 BoneID) const
+bool CAnimation::HasTranslation(uint32_t BoneID) const
 {
     return (mBoneInfo[BoneID].TranslationChannelIdx != 0xFF);
 }

@@ -1,51 +1,22 @@
 #ifndef CASSETNAMEMAP
 #define CASSETNAMEMAP
 
-#include "CResourceIterator.h"
-#include "CResourceStore.h"
 #include <Common/CAssetID.h>
-#include <Common/Serialization/XML.h>
+#include <Common/TString.h>
+
 #include <map>
-#include <memory>
+#include <set>
+
+class CResourceStore;
+class IArchive;
 
 class CAssetNameMap
 {
-    struct SAssetNameInfo
-    {
-        TString Name;
-        TString Directory;
-        CFourCC Type; // This is mostly just needed to verify no name conflicts
-        bool AutoGenName;
-        bool AutoGenDir;
-
-        TString FullPath() const
-        {
-            return Directory + Name + '.' + Type.ToString();
-        }
-
-        void Serialize(IArchive& rArc)
-        {
-            rArc << SerialParameter("Name", Name)
-                 << SerialParameter("Directory", Directory)
-                 << SerialParameter("Type", Type)
-                 << SerialParameter("AutoGenName", AutoGenName)
-                 << SerialParameter("AutoGenDir", AutoGenDir);
-        }
-
-        bool operator<(const SAssetNameInfo& rkOther) const
-        {
-            return FullPath().ToUpper() < rkOther.FullPath().ToUpper();
-        }
-
-        bool operator==(const SAssetNameInfo& rkOther) const
-        {
-            return FullPath().CaseInsensitiveCompare(rkOther.FullPath());
-        }
-    };
+    struct SAssetNameInfo;
 
     std::set<SAssetNameInfo> mUsedSet; // Used to prevent name conflicts
     std::map<CAssetID, SAssetNameInfo> mMap;
-    bool mIsValid;
+    bool mIsValid = true;
     EIDLength mIDLength;
 
     // Private Methods
@@ -53,8 +24,10 @@ class CAssetNameMap
     void PostLoadValidate();
 
 public:
-    CAssetNameMap(EIDLength IDLength) : mIsValid(true), mIDLength(IDLength)                       { ASSERT(mIDLength != kInvalidIDLength); }
-    CAssetNameMap(EGame Game)         : mIsValid(true), mIDLength( CAssetID::GameIDLength(Game) ) { ASSERT(mIDLength != kInvalidIDLength); }
+    explicit CAssetNameMap(EIDLength IDLength);
+    explicit CAssetNameMap(EGame Game);
+    ~CAssetNameMap();
+
     bool LoadAssetNames(TString Path = "");
     bool SaveAssetNames(TString Path = "");
     bool GetNameInfo(CAssetID ID, TString& rOutDirectory, TString& rOutName, bool& rOutAutoGenDir, bool& rOutAutoGenName);

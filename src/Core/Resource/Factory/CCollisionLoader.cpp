@@ -1,29 +1,11 @@
-#include "CCollisionLoader.h"
+#include "Core/Resource/Factory/CCollisionLoader.h"
+
 #include <Common/Log.h>
-#include <iostream>
+#include "Core/Resource/Collision/CCollisionMesh.h"
+#include "Core/Resource/Collision/CCollisionMeshGroup.h"
+#include "Core/Resource/Collision/CCollidableOBBTree.h"
 
-CCollisionLoader::CCollisionLoader()
-{
-}
-
-#if 0
-CCollisionMesh::CCollisionOctree* CCollisionLoader::ParseOctree(IInputStream& /*rSrc*/)
-{
-    return nullptr;
-}
-
-CCollisionMesh::CCollisionOctree::SBranch* CCollisionLoader::ParseOctreeBranch(IInputStream& /*rSrc*/)
-{
-    return nullptr;
-}
-
-CCollisionMesh::CCollisionOctree::SLeaf* CCollisionLoader::ParseOctreeLeaf(IInputStream& /*rSrc*/)
-{
-    return nullptr;
-}
-#endif
-
-std::unique_ptr<SOBBTreeNode> CCollisionLoader::ParseOBBNode(IInputStream& DCLN) const
+static std::unique_ptr<SOBBTreeNode> ParseOBBNode(IInputStream& DCLN)
 {
     std::unique_ptr<SOBBTreeNode> pOut;
 
@@ -54,6 +36,8 @@ std::unique_ptr<SOBBTreeNode> CCollisionLoader::ParseOBBNode(IInputStream& DCLN)
     pOut->Radii = Radius;
     return pOut;
 }
+
+CCollisionLoader::CCollisionLoader() = default;
 
 void CCollisionLoader::LoadCollisionMaterial(IInputStream& Src, CCollisionMaterial& OutMaterial)
 {
@@ -268,7 +252,7 @@ std::unique_ptr<CCollisionMeshGroup> CCollisionLoader::LoadDCLN(IInputStream& rD
 
         // Parse OBB tree
         auto* pOBBTree = static_cast<CCollidableOBBTree*>(Loader.mpMesh);
-        pOBBTree->mpOBBTree = Loader.ParseOBBNode(rDCLN);
+        pOBBTree->mpOBBTree = ParseOBBNode(rDCLN);
     }
 
     return ptr;
