@@ -1,10 +1,13 @@
-#include "CDependencyTree.h"
+#include "Core/GameProject/CDependencyTree.h"
+
 #include "Core/GameProject/CGameProject.h"
+#include "Core/Resource/CAudioGroup.h"
 #include "Core/Resource/Animation/CAnimSet.h"
 #include "Core/Resource/Script/CGameTemplate.h"
 #include "Core/Resource/Script/CScriptLayer.h"
 #include "Core/Resource/Script/CScriptObject.h"
 #include "Core/Resource/Script/NGameList.h"
+
 #include <algorithm>
 #include <array>
 

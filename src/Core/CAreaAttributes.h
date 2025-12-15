@@ -1,8 +1,10 @@
 #ifndef CAREAATTRIBUTES_H
 #define CAREAATTRIBUTES_H
 
-#include "Core/Resource/Script/CScriptObject.h"
-#include "Core/Resource/Script/Property/Properties.h"
+#include <Common/EGame.h>
+#include "Core/Resource/Script/Property/TPropertyRef.h"
+
+class CScriptObject;
 
 class CAreaAttributes
 {
@@ -15,6 +17,7 @@ class CAreaAttributes
 public:
     explicit CAreaAttributes(CScriptObject *pObj);
     ~CAreaAttributes();
+
     void SetObject(CScriptObject *pObj);
     bool IsLayerEnabled() const;
     bool IsSkyEnabled() const;

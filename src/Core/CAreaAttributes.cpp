@@ -1,6 +1,8 @@
-#include "CAreaAttributes.h"
+#include "Core/CAreaAttributes.h"
+
 #include "Core/Resource/Script/CGameTemplate.h"
 #include "Core/Resource/Script/CScriptLayer.h"
+#include "Core/Resource/Script/CScriptObject.h"
 
 CAreaAttributes::CAreaAttributes(CScriptObject *pObj)
 {
