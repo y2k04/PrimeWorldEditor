@@ -1,9 +1,11 @@
 #ifndef CPROPERTYDELEGATE_H
 #define CPROPERTYDELEGATE_H
 
-#include "CPropertyModel.h"
-#include "Editor/WorldEditor/CWorldEditor.h"
+#include "Core/Resource/Script/Property/IProperty.h"
 #include <QStyledItemDelegate>
+
+class CPropertyModel;
+class IEditor;
 
 class CPropertyDelegate : public QStyledItemDelegate
 {
@@ -17,6 +19,7 @@ class CPropertyDelegate : public QStyledItemDelegate
 
 public:
     explicit CPropertyDelegate(QObject* pParent = nullptr);
+    ~CPropertyDelegate() override;
 
     void SetEditor(IEditor* pEditor);
     void SetPropertyModel(CPropertyModel* pModel);

@@ -1,7 +1,8 @@
-#include "CPropertyDelegate.h"
-#include "CPropertyRelay.h"
+#include "Editor/PropertyEdit/CPropertyDelegate.h"
 
 #include "Editor/UICommon.h"
+#include "Editor/PropertyEdit/CPropertyModel.h"
+#include "Editor/PropertyEdit/CPropertyRelay.h"
 #include "Editor/Undo/CEditScriptPropertyCommand.h"
 #include "Editor/Undo/CEditIntrinsicPropertyCommand.h"
 #include "Editor/Undo/CResizeScriptArrayCommand.h"
@@ -9,6 +10,7 @@
 #include "Editor/Widgets/WColorPicker.h"
 #include "Editor/Widgets/WDraggableSpinBox.h"
 #include "Editor/Widgets/WIntegralSpinBox.h"
+#include "Editor/WorldEditor/CWorldEditor.h"
 
 #include <Core/Resource/Animation/CAnimSet.h>
 #include <Core/Resource/Script/Property/Properties.h>
@@ -31,6 +33,8 @@ CPropertyDelegate::CPropertyDelegate(QObject* pParent)
 {
     mpEditor = UICommon::FindAncestor<IEditor>(pParent);
 }
+
+CPropertyDelegate::~CPropertyDelegate() = default;
 
 void CPropertyDelegate::SetEditor(IEditor* pEditor)
 {

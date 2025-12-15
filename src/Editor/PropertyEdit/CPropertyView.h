@@ -1,10 +1,14 @@
 #ifndef CPROPERTYVIEW_H
 #define CPROPERTYVIEW_H
 
-#include "CPropertyModel.h"
-#include "CPropertyDelegate.h"
-#include <Core/Resource/Script/CScriptObject.h>
+#include <Core/Resource/Script/Property/TPropertyRef.h>
 #include <QTreeView>
+
+class CPropertyDelegate;
+class CPropertyModel;
+class CScriptObject;
+class IEditor;
+class IProperty;
 
 class CPropertyView : public QTreeView
 {
@@ -23,6 +27,7 @@ class CPropertyView : public QTreeView
 
 public:
     explicit CPropertyView(QWidget* pParent = nullptr);
+    ~CPropertyView() override;
 
     void setModel(QAbstractItemModel* pModel) override;
     bool event(QEvent* pEvent) override;

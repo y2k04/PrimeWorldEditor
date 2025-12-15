@@ -3,7 +3,10 @@
 #include "Editor/CGeneratePropertyNamesDialog.h"
 #include "Editor/UICommon.h"
 #include "Editor/PropertyEdit/CPropertyDelegate.h"
+#include "Editor/PropertyEdit/CPropertyModel.h"
 #include "Editor/WorldEditor/CTemplateEditDialog.h"
+#include "Editor/WorldEditor/CWorldEditor.h"
+#include <Core/Resource/Script/CScriptObject.h>
 
 #include <QEvent>
 #include <QMenu>
@@ -49,6 +52,8 @@ CPropertyView::CPropertyView(QWidget *pParent)
     connect(mpModel, &CPropertyModel::rowsInserted, [this](const QModelIndex& index, int, int) { SetPersistentEditors(index); });
     connect(mpModel, &CPropertyModel::PropertyModified, this, &CPropertyView::OnPropertyModified);
 }
+
+CPropertyView::~CPropertyView() = default;
 
 void CPropertyView::setModel(QAbstractItemModel *pModel)
 {
