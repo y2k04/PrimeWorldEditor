@@ -1,6 +1,8 @@
 #include "Editor/ScanEditor/CScanEditor.h"
 #include "ui_CScanEditor.h"
 
+#include <Core/Resource/Scan/CScan.h>
+
 #include "Editor/UICommon.h"
 
 CScanEditor::CScanEditor(CScan* pScan, QWidget* pParent)

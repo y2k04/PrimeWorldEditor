@@ -2,13 +2,13 @@
 #define CSCANEDITOR_H
 
 #include "Editor/IEditor.h"
-#include <Core/Resource/Scan/CScan.h>
-
 #include <memory>
 
 namespace Ui {
 class CScanEditor;
 }
+
+class CScan;
 
 class CScanEditor : public IEditor
 {
