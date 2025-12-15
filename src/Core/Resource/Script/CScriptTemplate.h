@@ -1,18 +1,25 @@
 #ifndef CSCRIPTTEMPLATE_H
 #define CSCRIPTTEMPLATE_H
 
-#include "Core/Resource/Script/Property/Properties.h"
-#include "EVolumeShape.h"
-#include "Core/Resource/Model/CModel.h"
-#include "Core/Resource/Collision/CCollisionMeshGroup.h"
-#include <Common/BasicTypes.h>
-#include <Common/CFourCC.h>
+#include <Common/EGame.h>
+#include <Common/TString.h>
+#include <Common/Serialization/IArchive.h>
+#include "Core/Resource/Script/EVolumeShape.h"
+
 #include <list>
+#include <memory>
 #include <vector>
 
+class CBoolProperty;
+class CCollisionMeshGroup;
 class CGameTemplate;
+class CResource;
 class CScriptObject;
-typedef TString TIDString;
+class CStringProperty;
+class CStructProperty;
+class CVectorProperty;
+
+using TIDString = TString;
 
 enum class EAttachType {
     Attach,
@@ -62,14 +69,14 @@ public:
         } AssetSource;
 
         TIDString AssetLocation;
-        int32 ForceNodeIndex; // Force animsets to use specific node instead of one from property
+        int32_t ForceNodeIndex; // Force animsets to use specific node instead of one from property
 
         void Serialize(IArchive& Arc)
         {
             Arc << SerialParameter("Type", AssetType, SH_Attribute)
                 << SerialParameter("Source", AssetSource, SH_Attribute)
                 << SerialParameter("Location", AssetLocation, SH_Attribute)
-                << SerialParameter("ForceCharacterIndex", ForceNodeIndex, SH_Attribute | SH_Optional, (int32) -1);
+                << SerialParameter("ForceCharacterIndex", ForceNodeIndex, SH_Attribute | SH_Optional, (int32_t) -1);
         }
     };
 
@@ -89,7 +96,7 @@ private:
     TIDString mVolumeConditionIDString;
 
     TString mSourceFile;
-    uint32 mObjectID = 0;
+    uint32_t mObjectID = 0;
 
     // Editor Properties
     TIDString mNameIDString;
@@ -99,7 +106,7 @@ private:
     TIDString mActiveIDString;
     TIDString mLightParametersIDString;
 
-    CGameTemplate* mpGame;
+    CGameTemplate* mpGame = nullptr;
     std::list<CScriptObject*> mObjectList;
 
     CStringProperty* mpNameProperty = nullptr;
@@ -110,7 +117,7 @@ private:
     CStructProperty* mpLightParametersProperty = nullptr;
 
     struct SVolumeCondition {
-        uint32 Value;
+        uint32_t Value;
         EVolumeShape Shape;
         float Scale;
 
@@ -127,11 +134,11 @@ private:
 
 public:
     // Default constructor. Don't use. This is only here so the serializer doesn't complain
-    CScriptTemplate() { ASSERT(false); }
+    CScriptTemplate();
     // Old constructor
     explicit CScriptTemplate(CGameTemplate *pGame);
     // New constructor
-    CScriptTemplate(CGameTemplate* pGame, uint32 ObjectID, const TString& kFilePath);
+    CScriptTemplate(CGameTemplate* pGame, uint32_t ObjectID, const TString& kFilePath);
     ~CScriptTemplate();
     void Serialize(IArchive& rArc);
     void Save(bool Force = false);
@@ -140,16 +147,16 @@ public:
     // Property Fetching
     EVolumeShape VolumeShape(CScriptObject *pObj);
     float VolumeScale(CScriptObject *pObj);
-    CResource* FindDisplayAsset(void* pPropertyData, uint32& rOutCharIndex, uint32& rOutAnimIndex, bool& rOutIsInGame);
+    CResource* FindDisplayAsset(void* pPropertyData, uint32_t& rOutCharIndex, uint32_t& rOutAnimIndex, bool& rOutIsInGame);
     CCollisionMeshGroup* FindCollision(void* pPropertyData);
 
     // Accessors
     CGameTemplate* GameTemplate() const              { return mpGame; }
-    const TString& Name() const                      { return mpProperties->Name(); }
+    const TString& Name() const;
     ERotationType RotationType() const               { return mRotationType; }
     EScaleType ScaleType() const                     { return mScaleType; }
     float PreviewScale() const                       { return mPreviewScale; }
-    uint32 ObjectID() const                          { return mObjectID; }
+    uint32_t ObjectID() const                        { return mObjectID; }
     bool IsVisible() const                           { return mVisible; }
     const TString& SourceFile() const                { return mSourceFile; }
     CStructProperty* Properties() const              { return mpProperties.get(); }
@@ -166,17 +173,17 @@ public:
 
     void SetVisible(bool Visible)    { mVisible = Visible; }
     void MarkDirty()                 { mDirty = true; }
-    bool IsDirty() const             { return mDirty || mpProperties->IsDirty(); }
+    bool IsDirty() const;
 
     // Object Tracking
-    uint32 NumObjects() const;
+    uint32_t NumObjects() const;
     const std::list<CScriptObject*>& ObjectList() const;
     void AddObject(CScriptObject *pObject);
     void RemoveObject(const CScriptObject *pObject);
     void SortObjects();
 
 private:
-    int32 CheckVolumeConditions(CScriptObject *pObj, bool LogErrors);
+    int32_t CheckVolumeConditions(CScriptObject *pObj, bool LogErrors);
 };
 
 #endif // CSCRIPTTEMPLATE_H

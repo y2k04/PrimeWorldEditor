@@ -1,12 +1,17 @@
-#include "CScriptTemplate.h"
-#include "CScriptObject.h"
-#include "CGameTemplate.h"
+#include "Core/Resource/Script/CScriptTemplate.h"
+
 #include "Core/GameProject/CResourceStore.h"
 #include "Core/Resource/Animation/CAnimSet.h"
-#include <Common/Log.h>
+#include "Core/Resource/Script/CGameTemplate.h"
+#include "Core/Resource/Script/CScriptObject.h"
+#include "Core/Resource/Script/Property/Properties.h"
 
 #include <algorithm>
-#include <string>
+
+CScriptTemplate::CScriptTemplate()
+{
+    ASSERT(false);
+}
 
 // Old constructor
 CScriptTemplate::CScriptTemplate(CGameTemplate *pGame)
@@ -270,6 +275,15 @@ CCollisionMeshGroup* CScriptTemplate::FindCollision(void* pPropertyData)
     return nullptr;
 }
 
+const TString& CScriptTemplate::Name() const
+{
+    return mpProperties->Name();
+}
+
+bool CScriptTemplate::IsDirty() const
+{
+    return mDirty || mpProperties->IsDirty();
+}
 
 // ************ OBJECT TRACKING ************
 uint32 CScriptTemplate::NumObjects() const
