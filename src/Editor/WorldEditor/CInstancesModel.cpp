@@ -1,8 +1,14 @@
-#include "CInstancesModel.h"
+#include "Editor/WorldEditor/CInstancesModel.h"
+
 #include "Editor/UICommon.h"
+#include "Editor/WorldEditor/CWorldEditor.h"
+#include <Core/Resource/Script/CGameTemplate.h>
 #include <Core/Resource/Script/CScriptLayer.h>
+#include <Core/Resource/Script/CScriptTemplate.h>
 #include <Core/Resource/Script/NGameList.h>
+#include <Core/Scene/CSceneNode.h>
 #include <Core/Scene/CScriptNode.h>
+
 #include <QApplication>
 #include <QIcon>
 
