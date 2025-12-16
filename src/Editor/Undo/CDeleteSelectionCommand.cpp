@@ -7,6 +7,36 @@
 #include <Core/Resource/Factory/CScriptLoader.h>
 #include <Core/Scene/CSceneNode.h>
 
+#include <vector>
+
+struct CDeleteSelectionCommand::SDeletedNode
+{
+    // Node Info
+    CNodePtr NodePtr;
+    uint32_t NodeID;
+    CVector3f Position;
+    CQuaternion Rotation;
+    CVector3f Scale;
+
+    // Instance Info
+    CGameArea* pArea;
+    CScriptLayer* pLayer;
+    uint32_t LayerIndex;
+    std::vector<char> InstanceData;
+};
+
+struct CDeleteSelectionCommand::SDeletedLink
+{
+    uint32_t State;
+    uint32_t Message;
+    uint32_t SenderID;
+    uint32_t SenderIndex;
+    uint32_t ReceiverID;
+    uint32_t ReceiverIndex;
+    CInstancePtr pSender;
+    CInstancePtr pReceiver;
+};
+
 CDeleteSelectionCommand::CDeleteSelectionCommand(CWorldEditor *pEditor, const QString& rkCommandName)
     : IUndoCommand(rkCommandName)
     , mpEditor(pEditor)
@@ -46,16 +76,16 @@ CDeleteSelectionCommand::CDeleteSelectionCommand(CWorldEditor *pEditor, const QS
 
                     if (!Links.contains(pLink))
                     {
-                        SDeletedLink Link;
-                        Link.State = pLink->State();
-                        Link.Message = pLink->Message();
-                        Link.SenderID = pLink->SenderID();
-                        Link.SenderIndex = pLink->SenderIndex();
-                        Link.ReceiverID = pLink->ReceiverID();
-                        Link.ReceiverIndex = pLink->ReceiverIndex();
-                        Link.pSender = pLink->Sender();
-                        Link.pReceiver = pLink->Receiver();
-                        mDeletedLinks.push_back(Link);
+                        mDeletedLinks.push_back({
+                            .State = pLink->State(),
+                            .Message = pLink->Message(),
+                            .SenderID = pLink->SenderID(),
+                            .SenderIndex = pLink->SenderIndex(),
+                            .ReceiverID = pLink->ReceiverID(),
+                            .ReceiverIndex = pLink->ReceiverIndex(),
+                            .pSender = pLink->Sender(),
+                            .pReceiver = pLink->Receiver(),
+                        });
                         Links.insert(pLink);
 
                         if (!LinkedInstances.contains(pLink->Sender()))
@@ -87,6 +117,8 @@ CDeleteSelectionCommand::CDeleteSelectionCommand(CWorldEditor *pEditor, const QS
 
     mLinkedInstances = LinkedInstances;
 }
+
+CDeleteSelectionCommand::~CDeleteSelectionCommand() = default;
 
 void CDeleteSelectionCommand::undo()
 {

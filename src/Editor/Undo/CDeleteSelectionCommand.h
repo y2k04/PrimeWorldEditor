@@ -5,10 +5,7 @@
 #include "Editor/Undo/ObjReferences.h"
 
 #include <QCoreApplication>
-#include <vector>
 
-class CGameArea;
-class CScriptLayer;
 class CWorldEditor;
 
 // todo: currently only supports deleting script nodes; needs support for light nodes as well
@@ -20,38 +17,16 @@ class CDeleteSelectionCommand : public IUndoCommand
     CNodePtrList mNewSelection;
     CInstancePtrList mLinkedInstances;
 
-    struct SDeletedNode
-    {
-        // Node Info
-        CNodePtr NodePtr;
-        uint32 NodeID;
-        CVector3f Position;
-        CQuaternion Rotation;
-        CVector3f Scale;
-
-        // Instance Info
-        CGameArea *pArea;
-        CScriptLayer *pLayer;
-        uint32 LayerIndex;
-        std::vector<char> InstanceData;
-    };
+    struct SDeletedNode;
     QList<SDeletedNode> mDeletedNodes;
 
-    struct SDeletedLink
-    {
-        uint32 State;
-        uint32 Message;
-        uint32 SenderID;
-        uint32 SenderIndex;
-        uint32 ReceiverID;
-        uint32 ReceiverIndex;
-        CInstancePtr pSender;
-        CInstancePtr pReceiver;
-    };
+    struct SDeletedLink;
     QList<SDeletedLink> mDeletedLinks;
 
 public:
     explicit CDeleteSelectionCommand(CWorldEditor *pEditor, const QString& rkCommandName = QCoreApplication::translate("CDeleteSelectionCommand", "Delete"));
+    ~CDeleteSelectionCommand() override;
+
     void undo() override;
     void redo() override;
     bool AffectsCleanState() const override { return true; }
