@@ -1,9 +1,17 @@
-#include "CUnsupportedFormatLoader.h"
+#include "Core/Resource/Factory/CUnsupportedFormatLoader.h"
+
+#include <Common/CAssetID.h>
+#include <Common/EGame.h>
 #include "Core/GameProject/CGameProject.h"
 #include "Core/GameProject/CResourceIterator.h"
+#include "Core/Resource/CAudioMacro.h"
+#include "Core/Resource/CDependencyGroup.h"
+#include "Core/Resource/CMapArea.h"
 #include "Core/Resource/CWorld.h"
 
-void CUnsupportedFormatLoader::PerformCheating(IInputStream& rFile, EGame Game, std::list<CAssetID>& rAssetList)
+#include <list>
+
+static void PerformCheating(IInputStream& rFile, EGame Game, std::list<CAssetID>& rAssetList)
 {
     // Analyze file contents and check every sequence of 4/8 bytes for asset IDs
     std::vector<uint8> Data(rFile.Size() - rFile.Tell());

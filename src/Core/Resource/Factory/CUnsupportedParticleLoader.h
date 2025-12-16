@@ -1,8 +1,13 @@
 #ifndef CUNSUPPORTEDPARTICLELOADER_H
 #define CUNSUPPORTEDPARTICLELOADER_H
 
-#include "Core/Resource/CDependencyGroup.h"
+#include <cstdint>
 #include <memory>
+
+class CDependencyGroup;
+class CFourCC;
+class CResourceEntry;
+class IInputStream;
 
 // This class is responsible for loading particle formats that aren't yet fully supported.
 // Used for finding dependencies. Split from CUnsupportedFormatLoader for being too big.
@@ -39,7 +44,7 @@ class CUnsupportedParticleLoader
     void ParseSoundFunction(IInputStream& rFile);
     void ParseAssetFunction(IInputStream& rFile);
     void ParseSpawnSystemKeyframeData(IInputStream& rFile);
-    void ParseKeyframeEmitterData(IInputStream& rFile, const CFourCC& rkFunc, uint32 ElemSize);
+    void ParseKeyframeEmitterData(IInputStream& rFile, const CFourCC& rkFunc, uint32_t ElemSize);
 
 public:
     static std::unique_ptr<CDependencyGroup> LoadParticle(IInputStream& rPART, CResourceEntry *pEntry);

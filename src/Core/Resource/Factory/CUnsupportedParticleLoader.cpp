@@ -1,7 +1,10 @@
 #include "Core/Resource/Factory/CUnsupportedParticleLoader.h"
 
+#include <Common/CFourCC.h>
+#include <Common/Macros.h>
 #include <Core/GameProject/CGameProject.h>
 #include <Core/Resource/CAudioGroup.h>
+#include "Core/Resource/CDependencyGroup.h"
 
 // ************ PARAMETER LOADING ************
 bool CUnsupportedParticleLoader::ParseParticleParameter(IInputStream& rPART)

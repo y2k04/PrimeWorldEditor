@@ -23,7 +23,10 @@
 #include "Core/Resource/Factory/CWorldLoader.h"
 
 #include "Core/Resource/CAudioGroup.h"
+#include "Core/Resource/CAudioMacro.h"
 #include "Core/Resource/CAudioLookupTable.h"
+#include "Core/Resource/CDependencyGroup.h"
+#include "Core/Resource/CMapArea.h"
 #include "Core/Resource/CStringList.h"
 #include "Core/Resource/Resources.h"
 #include "Core/Tweaks/CTweakLoader.h"
@@ -31,7 +34,7 @@
 // Static helper class to allow spawning resources based on an EResType
 class CResourceFactory
 {
-    CResourceFactory() {}
+    CResourceFactory() = delete;
 
 public:
     static std::unique_ptr<CResource> CreateResource(CResourceEntry *pEntry)
