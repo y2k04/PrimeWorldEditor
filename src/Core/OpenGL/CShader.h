@@ -40,8 +40,8 @@ public:
     GLuint GetUniformLocation(const char* pkUniform) const;
     GLuint GetUniformBlockIndex(const char* pkUniformBlock) const;
     void UniformBlockBinding(GLuint BlockIndex, GLuint BlockBinding);
-    void SetTextureUniforms(uint32 NumTextures);
-    void SetNumLights(uint32 NumLights);
+    void SetTextureUniforms(uint32_t NumTextures);
+    void SetNumLights(uint32_t NumLights);
     void SetCurrent();
 
     // Static

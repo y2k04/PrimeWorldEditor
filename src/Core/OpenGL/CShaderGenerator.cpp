@@ -1,4 +1,4 @@
-#include "CShaderGenerator.h"
+#include "Core/OpenGL/CShaderGenerator.h"
 #include <Common/Macros.h>
 #include <array>
 #include <fstream>

@@ -1,7 +1,7 @@
 #ifndef CDEPENDENCYGROUP
 #define CDEPENDENCYGROUP
 
-#include "CResource.h"
+#include "Core/Resource/CResource.h"
 #include <algorithm>
 
 class CDependencyGroup : public CResource
@@ -13,7 +13,7 @@ public:
     explicit CDependencyGroup(CResourceEntry *pEntry = nullptr) : CResource(pEntry) {}
 
     void Clear()                                     { mDependencies.clear(); }
-    uint32 NumDependencies() const                   { return mDependencies.size(); }
+    uint32_t NumDependencies() const                 { return mDependencies.size(); }
     CAssetID DependencyByIndex(size_t Index) const   { return mDependencies[Index]; }
 
     void AddDependency(const CAssetID& rkID)

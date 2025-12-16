@@ -1,7 +1,10 @@
 #ifndef COPENINGBANNER_H
 #define COPENINGBANNER_H
 
-#include <Common/Common.h>
+#include <Common/TString.h>
+#include <cstdint>
+#include <vector>
+
 class CGameProject;
 
 // This class can be expanded later for better editing functionality.
@@ -9,7 +12,7 @@ class CGameProject;
 class COpeningBanner
 {
     CGameProject *mpProj;
-    std::vector<uint8> mBannerData;
+    std::vector<uint8_t> mBannerData;
     bool mWii;
 
 public:
@@ -18,7 +21,7 @@ public:
     void SetEnglishGameName(const TString& rkName);
     void Save();
 
-    uint32 MaxGameNameLength() const;
+    uint32_t MaxGameNameLength() const;
 };
 
 #endif // COPENINGBANNER_H

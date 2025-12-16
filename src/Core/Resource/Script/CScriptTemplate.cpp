@@ -1,5 +1,7 @@
 #include "Core/Resource/Script/CScriptTemplate.h"
 
+#include <Common/Serialization/CXMLReader.h>
+#include <Common/Serialization/CXMLWriter.h>
 #include "Core/GameProject/CResourceStore.h"
 #include "Core/Resource/Animation/CAnimSet.h"
 #include "Core/Resource/Script/CGameTemplate.h"

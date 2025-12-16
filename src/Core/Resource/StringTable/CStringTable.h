@@ -1,7 +1,7 @@
 #ifndef CSTRINGTABLE_H
 #define CSTRINGTABLE_H
 
-#include "ELanguage.h"
+#include "Core/Resource/StringTable/ELanguage.h"
 #include "Core/Resource/CResource.h"
 #include <Common/BasicTypes.h>
 #include <Common/CFourCC.h>

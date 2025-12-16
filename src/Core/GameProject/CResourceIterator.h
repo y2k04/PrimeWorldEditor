@@ -4,6 +4,9 @@
 #include <Core/GameProject/CResourceEntry.h>
 #include <Core/GameProject/CResourceStore.h>
 
+#include <map>
+#include <memory>
+
 class CResourceIterator
 {
 protected:

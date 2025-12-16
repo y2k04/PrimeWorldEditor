@@ -1,19 +1,24 @@
 #ifndef DEPENDENCYLISTBUILDERS
 #define DEPENDENCYLISTBUILDERS
 
-#include "CDependencyTree.h"
-#include "CGameProject.h"
-#include "CPackage.h"
-#include "CResourceEntry.h"
+#include "Core/GameProject/CDependencyTree.h"
+#include "Core/GameProject/CGameProject.h"
+#include "Core/GameProject/CPackage.h"
+#include "Core/GameProject/CResourceEntry.h"
 #include "Core/Resource/CDependencyGroup.h"
 #include "Core/Resource/CWorld.h"
+
+#include <list>
+#include <map>
+#include <set>
+#include <vector>
 
 class CCharacterUsageMap
 {
     std::map<CAssetID, std::vector<bool>> mUsageMap;
     std::set<CAssetID> mStillLookingIDs;
     CResourceStore *mpStore = nullptr;
-    uint32 mLayerIndex = UINT32_MAX;
+    uint32_t mLayerIndex = UINT32_MAX;
     bool mIsInitialArea = true;
     bool mCurrentAreaAllowsDupes = false;
 
@@ -27,7 +32,7 @@ public:
     void FindUsagesForAsset(CResourceEntry *pEntry);
     void FindUsagesForArea(CWorld *pWorld, CResourceEntry *pEntry);
     void FindUsagesForArea(CWorld *pWorld, size_t AreaIndex);
-    void FindUsagesForLayer(CResourceEntry *pAreaEntry, uint32 LayerIndex);
+    void FindUsagesForLayer(CResourceEntry *pAreaEntry, uint32_t LayerIndex);
     void Clear();
     void DebugPrintContents();
 
@@ -89,7 +94,7 @@ public:
         ASSERT(mpAreaEntry->ResourceType() == EResourceType::Area);
     }
 
-    void BuildDependencyList(std::list<CAssetID>& rAssetsOut, std::list<uint32>& rLayerOffsetsOut, std::set<CAssetID> *pAudioGroupsOut = nullptr);
+    void BuildDependencyList(std::list<CAssetID>& rAssetsOut, std::list<uint32_t>& rLayerOffsetsOut, std::set<CAssetID> *pAudioGroupsOut = nullptr);
     void AddDependency(const CAssetID& rkID, std::list<CAssetID>& rOut, std::set<CAssetID> *pAudioGroupsOut);
     void EvaluateDependencyNode(CResourceEntry *pCurEntry, IDependencyNode *pNode, std::list<CAssetID>& rOut, std::set<CAssetID> *pAudioGroupsOut);
 };

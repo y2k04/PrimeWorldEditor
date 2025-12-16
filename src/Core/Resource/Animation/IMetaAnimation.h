@@ -1,9 +1,13 @@
 #ifndef IMETAANIMATION
 #define IMETAANIMATION
 
-#include "CAnimation.h"
-#include "Core/Resource/TResPtr.h"
 #include <Common/TString.h>
+#include "Core/Resource/TResPtr.h"
+#include "Core/Resource/Animation/CAnimation.h"
+
+#include <memory>
+#include <set>
+#include <vector>
 
 enum class EMetaAnimType
 {
@@ -26,13 +30,13 @@ extern CMetaAnimFactory gMetaAnimFactory;
 class CAnimPrimitive
 {
     TResPtr<CAnimation> mpAnim;
-    uint32 mID = 0;
+    uint32_t mID = 0;
     TString mName;
 
 public:
     CAnimPrimitive() = default;
 
-    CAnimPrimitive(const CAssetID& rkAnimAssetID, uint32 CharAnimID, const TString& rkAnimName)
+    CAnimPrimitive(const CAssetID& rkAnimAssetID, uint32_t CharAnimID, const TString& rkAnimName)
         : mID(CharAnimID), mName(rkAnimName)
     {
         mpAnim = gpResourceStore->LoadResource(rkAnimAssetID);
@@ -40,7 +44,7 @@ public:
 
     CAnimPrimitive(IInputStream& rInput, EGame Game)
     {
-        mpAnim = gpResourceStore->LoadResource( CAssetID(rInput, Game) );
+        mpAnim = gpResourceStore->LoadResource(CAssetID(rInput, Game));
         mID = rInput.ReadLong();
         mName = rInput.ReadString();
     }
@@ -51,7 +55,7 @@ public:
 
     // Accessors
     CAnimation* Animation() const   { return mpAnim; }
-    uint32 ID() const               { return mID; }
+    uint32_t ID() const               { return mID; }
     const TString& Name() const     { return mName; }
 };
 
@@ -74,10 +78,10 @@ class CMetaAnimPlay : public IMetaAnimation
 protected:
     CAnimPrimitive mPrimitive;
     float mUnknownA;
-    uint32 mUnknownB;
+    uint32_t mUnknownB;
 
 public:
-    CMetaAnimPlay(const CAnimPrimitive& rkPrimitive, float UnkA, uint32 UnkB);
+    CMetaAnimPlay(const CAnimPrimitive& rkPrimitive, float UnkA, uint32_t UnkB);
     CMetaAnimPlay(IInputStream& rInput, EGame Game);
     EMetaAnimType Type() const override;
     void GetUniquePrimitives(std::set<CAnimPrimitive>& rPrimSet) const override;
@@ -85,7 +89,7 @@ public:
     // Accessors
     CAnimPrimitive Primitive() const { return mPrimitive; }
     float UnknownA() const           { return mUnknownA; }
-    uint32 UnknownB() const          { return mUnknownB; }
+    uint32_t UnknownB() const          { return mUnknownB; }
 };
 
 // CMetaAnimBlend - blend between two animations
@@ -115,7 +119,7 @@ public:
 struct SAnimProbabilityPair
 {
     std::unique_ptr<IMetaAnimation> pAnim;
-    uint32 Probability;
+    uint32_t Probability;
 };
 
 // CMetaAnimRandom - play random animation

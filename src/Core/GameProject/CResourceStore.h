@@ -1,7 +1,7 @@
 #ifndef CRESOURCESTORE_H
 #define CRESOURCESTORE_H
 
-#include "CVirtualDirectory.h"
+#include "Core/GameProject/CVirtualDirectory.h"
 #include "Core/Resource/EResType.h"
 #include <Common/CAssetID.h>
 #include <Common/CFourCC.h>
@@ -86,8 +86,8 @@ public:
     TString ResourcesDir() const             { return IsEditorStore() ? TString(DatabaseRootPath()) : DatabaseRootPath() + "Resources/"; }
     TString DatabasePath() const             { return DatabaseRootPath() + "ResourceDatabaseCache.bin"; }
     CVirtualDirectory* RootDirectory() const { return mpDatabaseRoot; }
-    uint32 NumTotalResources() const         { return mResourceEntries.size(); }
-    uint32 NumLoadedResources() const        { return mLoadedResources.size(); }
+    uint32_t NumTotalResources() const       { return mResourceEntries.size(); }
+    uint32_t NumLoadedResources() const      { return mLoadedResources.size(); }
     bool IsCacheDirty() const                { return mDatabaseCacheDirty; }
 
     void SetCacheDirty()                     { mDatabaseCacheDirty = true; }

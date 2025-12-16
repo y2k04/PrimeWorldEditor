@@ -1,7 +1,8 @@
 #ifndef CAUDIOMACRO_H
 #define CAUDIOMACRO_H
 
-#include "CResource.h"
+#include "Core/Resource/CResource.h"
+#include <vector>
 
 class CAudioMacro : public CResource
 {
@@ -27,9 +28,9 @@ public:
     }
 
     // Accessors
-    const TString& MacroName() const             { return mMacroName; }
-    size_t NumSamples() const                    { return mSamples.size(); }
-    CAssetID SampleByIndex(size_t Index) const   { return mSamples[Index]; }
+    const TString& MacroName() const                  { return mMacroName; }
+    size_t NumSamples() const                         { return mSamples.size(); }
+    const CAssetID& SampleByIndex(size_t Index) const { return mSamples[Index]; }
 };
 
 #endif // CAUDIOMACRO_H

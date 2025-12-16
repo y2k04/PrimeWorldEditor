@@ -1,7 +1,7 @@
 #ifndef CSTRUCTPROPERTY_H
 #define CSTRUCTPROPERTY_H
 
-#include "IProperty.h"
+#include "Core/Resource/Script/Property/IProperty.h"
 
 class CStructProperty : public IProperty
 {
@@ -19,8 +19,8 @@ protected:
 public:
     EPropertyType Type() const override;
     void PostInitialize() override;
-    uint32 DataSize() const override;
-    uint32 DataAlignment() const override;
+    uint32_t DataSize() const override;
+    uint32_t DataAlignment() const override;
     void Construct(void* pData) const override;
     void Destruct(void* pData) const override;
     bool MatchesDefault(void* pData) const override;

@@ -1,6 +1,8 @@
 #include "Core/Resource/Script/NGameList.h"
 
 #include <Common/Log.h>
+#include <Common/Serialization/CXMLReader.h>
+#include <Common/Serialization/CXMLWriter.h>
 #include "Core/Resource/Script/CGameTemplate.h"
 
 #include <array>

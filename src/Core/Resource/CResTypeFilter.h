@@ -1,11 +1,12 @@
 #ifndef CRESTYPEFILTER_H
 #define CRESTYPEFILTER_H
 
-#include "EResType.h"
-#include "CResTypeInfo.h"
 #include "Core/GameProject/CResourceEntry.h"
+#include "Core/Resource/CResTypeInfo.h"
+#include "Core/Resource/EResType.h"
 
 #include <algorithm>
+#include <set>
 
 class CResTypeFilter
 {

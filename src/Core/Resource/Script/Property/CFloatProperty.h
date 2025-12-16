@@ -1,7 +1,7 @@
 #ifndef CFLOATPROPERTY_H
 #define CFLOATPROPERTY_H
 
-#include "IProperty.h"
+#include "Core/Resource/Script/Property/IProperty.h"
 
 class CFloatProperty : public TNumericalProperty<float, EPropertyType::Float>
 {

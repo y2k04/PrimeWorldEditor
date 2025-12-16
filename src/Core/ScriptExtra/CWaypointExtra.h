@@ -5,6 +5,7 @@
 #include <Common/CColor.h>
 
 #include <list>
+#include <vector>
 
 class CLink;
 class CSplinePathExtra;

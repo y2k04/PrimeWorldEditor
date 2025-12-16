@@ -1,7 +1,9 @@
-#include "CGameTemplate.h"
-#include "NPropertyMap.h"
+#include "Core/Resource/Script/CGameTemplate.h"
+
+#include <Common/Serialization/CXMLReader.h>
+#include <Common/Serialization/CXMLWriter.h>
+#include "Core/Resource/Script/NPropertyMap.h"
 #include "Core/Resource/Factory/CWorldLoader.h"
-#include <Common/Log.h>
 
 CGameTemplate::CGameTemplate() = default;
 

@@ -26,8 +26,8 @@ public:
     CVertexBuffer();
     explicit CVertexBuffer(FVertexDescription Desc);
     ~CVertexBuffer();
-    uint16 AddVertex(const CVertex& rkVtx);
-    uint16 AddIfUnique(const CVertex& rkVtx, uint16 Start);
+    uint16_t AddVertex(const CVertex& rkVtx);
+    uint16_t AddIfUnique(const CVertex& rkVtx, uint16_t Start);
     void Reserve(size_t Size);
     void Clear();
     void Buffer();

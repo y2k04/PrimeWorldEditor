@@ -1,7 +1,8 @@
 #ifndef CVECTORPROPERTY_H
 #define CVECTORPROPERTY_H
 
-#include "IProperty.h"
+#include <Common/Math/CVector3f.h>
+#include "Core/Resource/Script/Property/IProperty.h"
 
 class CVectorProperty : public TSerializeableTypedProperty<CVector3f, EPropertyType::Vector>
 {

@@ -3,6 +3,7 @@
 
 #include <Common/EGame.h>
 
+#include <cstdint>
 #include <vector>
 
 class CMaterial;

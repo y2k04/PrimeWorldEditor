@@ -1,11 +1,12 @@
 #ifndef CSCRIPTCOOKER_H
 #define CSCRIPTCOOKER_H
 
-#include "CSectionMgrOut.h"
 #include "Core/Resource/Script/CScriptLayer.h"
 #include "Core/Resource/Script/CScriptObject.h"
 #include <Common/EGame.h>
 #include <Common/FileIO.h>
+
+#include <vector>
 
 class CScriptCooker
 {

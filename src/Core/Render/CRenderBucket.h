@@ -1,6 +1,7 @@
 #ifndef CRENDERBUCKET_H
 #define CRENDERBUCKET_H
 
+#include <cstdint>
 #include <vector>
 
 class CCamera;

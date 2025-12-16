@@ -13,12 +13,12 @@ CIndexBuffer::~CIndexBuffer()
         glDeleteBuffers(1, &mIndexBuffer);
 }
 
-void CIndexBuffer::AddIndex(uint16 index)
+void CIndexBuffer::AddIndex(uint16_t index)
 {
     mIndices.push_back(index);
 }
 
-void CIndexBuffer::AddIndices(const uint16 *indices, size_t count)
+void CIndexBuffer::AddIndices(const uint16_t *indices, size_t count)
 {
     Reserve(count);
     for (size_t i = 0; i < count; i++)
@@ -46,7 +46,7 @@ void CIndexBuffer::Buffer()
 
     glGenBuffers(1, &mIndexBuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(uint16), mIndices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(uint16_t), mIndices.data(), GL_STATIC_DRAW);
 
     mBuffered = true;
 }
@@ -70,7 +70,7 @@ void CIndexBuffer::DrawElements()
     Unbind();
 }
 
-void CIndexBuffer::DrawElements(uint offset, uint size)
+void CIndexBuffer::DrawElements(uint32_t offset, uint32_t size)
 {
     Bind();
     glDrawElements(mPrimitiveType, size, GL_UNSIGNED_SHORT, (char*)0 + (offset * 2));
@@ -82,7 +82,7 @@ bool CIndexBuffer::IsBuffered() const
     return mBuffered;
 }
 
-uint CIndexBuffer::GetSize() const
+uint32_t CIndexBuffer::GetSize() const
 {
     return mIndices.size();
 }
@@ -97,7 +97,7 @@ void CIndexBuffer::SetPrimitiveType(GLenum type)
     mPrimitiveType = type;
 }
 
-void CIndexBuffer::TrianglesToStrips(uint16 *indices, size_t count)
+void CIndexBuffer::TrianglesToStrips(uint16_t *indices, size_t count)
 {
     Reserve(count + (count / 3));
 
@@ -110,10 +110,10 @@ void CIndexBuffer::TrianglesToStrips(uint16 *indices, size_t count)
     }
 }
 
-void CIndexBuffer::FansToStrips(uint16 *indices, size_t count)
+void CIndexBuffer::FansToStrips(uint16_t *indices, size_t count)
 {
     Reserve(count);
-    const uint16 firstIndex = *indices;
+    const uint16_t firstIndex = *indices;
 
     for (size_t i = 2; i < count; i += 3)
     {
@@ -128,7 +128,7 @@ void CIndexBuffer::FansToStrips(uint16 *indices, size_t count)
     }
 }
 
-void CIndexBuffer::QuadsToStrips(uint16 *indices, size_t count)
+void CIndexBuffer::QuadsToStrips(uint16_t *indices, size_t count)
 {
     Reserve(static_cast<size_t>(count * 1.25));
 

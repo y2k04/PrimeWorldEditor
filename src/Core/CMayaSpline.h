@@ -1,8 +1,8 @@
 #ifndef CMAYASPLINE_H
 #define CMAYASPLINE_H
 
-#include <Common/Common.h>
 #include <Common/Math/CVector2f.h>
+#include <cstdint>
 #include <vector>
 
 // These classes based off Metroid Prime 2's CMayaSpline implementation
@@ -12,7 +12,7 @@ public:
     float Time;
     float Amplitude;
 
-    mutable uint32 Flags;
+    mutable uint32_t Flags;
     mutable CVector2f CachedTangentA;
     mutable CVector2f CachedTangentB;
 
@@ -22,10 +22,10 @@ public:
 
 class CMayaSpline
 {
-    uint mPreInfinity = 0; // 0x00
-    uint mPostInfinity = 0; // 0x04
+    uint32_t mPreInfinity = 0; // 0x00
+    uint32_t mPostInfinity = 0; // 0x04
     std::vector<CMayaSplineKnot> mKnots; // 0x08, 0x0C, 0x10
-    uint mClampMode = 0; // 0x14 - clamp mode
+    uint32_t mClampMode = 0; // 0x14 - clamp mode
     float mMinAmplitude = 0.0f; // 0x18
     float mMaxAmplitude = 0.0f; // 0x1C
 
@@ -37,7 +37,7 @@ class CMayaSpline
 
 public:
     CMayaSpline() = default;
-    uint GetKnotCount() const;
+    uint32_t GetKnotCount() const;
     const std::vector<CMayaSplineKnot>& GetKnots() const;
     float GetMinTime() const;
     float GetMaxTime() const;

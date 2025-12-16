@@ -3,6 +3,7 @@
 
 #include "Core/Resource/CResource.h"
 #include "Core/Resource/Model/CVertex.h"
+#include <vector>
 
 struct SVertexWeights
 {

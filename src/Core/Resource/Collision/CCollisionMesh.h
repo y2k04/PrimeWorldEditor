@@ -1,9 +1,8 @@
 #ifndef CCOLLISIONMESH_H
 #define CCOLLISIONMESH_H
 
-#include "CCollisionMaterial.h"
-#include "CCollisionRenderData.h"
-#include "SCollisionIndexData.h"
+#include "Core/Resource/Collision/CCollisionRenderData.h"
+#include "Core/Resource/Collision/SCollisionIndexData.h"
 #include <Common/Math/CAABox.h>
 
 /** Base class of collision geometry */

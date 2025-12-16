@@ -1,18 +1,17 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-#include "CMaterialPass.h"
-#include "CTexture.h"
-#include "TResPtr.h"
+#include "Core/OpenGL/CShader.h"
+#include "Core/Resource/CMaterialPass.h"
+#include "Core/Resource/CTexture.h"
+#include "Core/Resource/TResPtr.h"
 #include "Core/Resource/Model/EVertexAttribute.h"
 #include "Core/Render/FRenderOptions.h"
-#include "Core/OpenGL/CShader.h"
 
-#include <Common/BasicTypes.h>
 #include <Common/CColor.h>
 #include <Common/EGame.h>
 #include <Common/Flags.h>
-#include <Common/FileIO/IInputStream.h>
+#include <cstdint>
 
 class CMaterialSet;
 
@@ -70,26 +69,26 @@ public:
 
 private:
     // Statics
-    static uint64 sCurrentMaterial; // The hash for the currently bound material
-    static CColor sCurrentTint;  // The tint for the currently bound material
+    static uint64_t sCurrentMaterial; // The hash for the currently bound material
+    static CColor sCurrentTint; // The tint for the currently bound material
 
     // Members
     TString mName;                                           // Name of the material
     CShader *mpShader = nullptr;                             // This material's generated shader. Created with GenerateShader().
     EShaderStatus mShaderStatus{EShaderStatus::NoShader};    // A status variable so that PWE won't crash if a shader fails to compile.
-    uint64 mParametersHash = 0;                              // A hash of all the parameters that can identify this TEV setup.
+    uint64_t mParametersHash = 0;                            // A hash of all the parameters that can identify this TEV setup.
     bool mRecalcHash = true;                                 // Indicates the hash needs to be recalculated. Set true when parameters are changed.
 
     EGame mVersion{EGame::Invalid};
-    FMaterialOptions mOptions{EMaterialOption::None};           // See the EMaterialOption enum above
-    FVertexDescription mVtxDesc{EVertexAttribute::None};        // Descriptor of vertex attributes used by this material
+    FMaterialOptions mOptions{EMaterialOption::None};       // See the EMaterialOption enum above
+    FVertexDescription mVtxDesc{EVertexAttribute::None};    // Descriptor of vertex attributes used by this material
     std::array<CColor, 4> mKonstColors;                         // Konst color values for TEV
     std::array<CColor, 4> mTevColors;                           // Initial TEV color register values (for MP3 materials only)
     GLenum mBlendSrcFac{GL_ONE};                                // Source blend factor
     GLenum mBlendDstFac{GL_ZERO};                               // Dest blend factor
     bool mLightingEnabled = true;                               // Color channel control flags; indicate whether lighting is enabled
-    uint32 mEchoesUnknownA = 0;                                 // First unknown value introduced in Echoes. Included for cooking.
-    uint32 mEchoesUnknownB = 0;                                 // Second unknown value introduced in Echoes. Included for cooking.
+    uint32_t mEchoesUnknownA = 0;                               // First unknown value introduced in Echoes. Included for cooking.
+    uint32_t mEchoesUnknownB = 0;                               // Second unknown value introduced in Echoes. Included for cooking.
     TResPtr<CTexture> mpIndirectTexture;                        // Optional texture used for the indirect stage for reflections
 
     std::vector<std::unique_ptr<CMaterialPass>> mPasses;
@@ -110,7 +109,7 @@ private:
         int NumReferences;
         CShader *pShader;
     };
-    static std::map<uint64, SMaterialShader> smShaderMap;
+    static std::map<uint64_t, SMaterialShader> smShaderMap;
 
 public:
     CMaterial();
@@ -121,7 +120,7 @@ public:
     void GenerateShader(bool AllowRegen = true);
     void ClearShader();
     bool SetCurrent(FRenderOptions Options);
-    uint64 HashParameters();
+    uint64_t HashParameters();
     void Update();
     void SetNumPasses(size_t NumPasses);
 
@@ -136,9 +135,9 @@ public:
     const CColor& TevColor(ETevOutput Out) const { return mTevColors[static_cast<size_t>(Out)]; }
     CTexture* IndTexture() const                 { return mpIndirectTexture; }
     bool IsLightingEnabled() const               { return mLightingEnabled; }
-    uint32 EchoesUnknownA() const                { return mEchoesUnknownA; }
-    uint32 EchoesUnknownB() const                { return mEchoesUnknownB; }
-    uint32 PassCount() const                     { return mPasses.size(); }
+    uint32_t EchoesUnknownA() const              { return mEchoesUnknownA; }
+    uint32_t EchoesUnknownB() const              { return mEchoesUnknownB; }
+    uint32_t PassCount() const                   { return mPasses.size(); }
     CMaterialPass* Pass(size_t PassIndex) const  { return mPasses[PassIndex].get(); }
     CMaterial* GetNextDrawPass() const           { return mpNextDrawPassMaterial.get(); }
     CMaterial* GetBloomVersion() const           { return mpBloomMaterial.get(); }

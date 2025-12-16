@@ -1,7 +1,7 @@
 #ifndef CSCENENODE_H
 #define CSCENENODE_H
 
-#include "ENodeType.h"
+#include "Core/Scene/ENodeType.h"
 #include "Core/Render/EDepthGroup.h"
 #include "Core/Render/FRenderOptions.h"
 #include "Core/Render/IRenderable.h"

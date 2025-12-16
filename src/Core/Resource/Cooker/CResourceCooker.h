@@ -1,12 +1,12 @@
 #ifndef CRESOURCECOOKER_H
 #define CRESOURCECOOKER_H
 
-#include "CAreaCooker.h"
-#include "CModelCooker.h"
-#include "CPoiToWorldCooker.h"
-#include "CScanCooker.h"
-#include "CStringCooker.h"
-#include "CWorldCooker.h"
+#include "Core/Resource/Cooker/CAreaCooker.h"
+#include "Core/Resource/Cooker/CModelCooker.h"
+#include "Core/Resource/Cooker/CPoiToWorldCooker.h"
+#include "Core/Resource/Cooker/CScanCooker.h"
+#include "Core/Resource/Cooker/CStringCooker.h"
+#include "Core/Resource/Cooker/CWorldCooker.h"
 
 #include "Core/Tweaks/CTweakCooker.h"
 

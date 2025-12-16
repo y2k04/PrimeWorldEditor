@@ -1,9 +1,10 @@
 #ifndef SSCANPARAMETERSMP1_H
 #define SSCANPARAMETERSMP1_H
 
-#include "ELogbookCategory.h"
-#include <Common/Common.h>
+#include "Core/Resource/Scan/ELogbookCategory.h"
+#include <Common/CAssetID.h>
 #include <array>
+#include <cstdint>
 
 /** Struct mapping to SCAN property layout in MP1 */
 enum class EScanSpeed
@@ -42,8 +43,8 @@ struct SScanImage
     CAssetID        Texture;
     float           AppearPercentage;
     EScanImagePane  Pane;
-    int32           AnimationCellWidth;
-    int32           AnimationCellHeight;
+    int32_t         AnimationCellWidth;
+    int32_t         AnimationCellHeight;
     float           AnimationSwapInterval;
     float           FadeDuration;
 };

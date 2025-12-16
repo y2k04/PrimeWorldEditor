@@ -1,16 +1,16 @@
 #ifndef CANIMSET_H
 #define CANIMSET_H
 
-#include "CAnimation.h"
-#include "CAnimEventData.h"
-#include "CSkeleton.h"
-#include "CSkin.h"
-#include "CSourceAnimData.h"
-#include "IMetaAnimation.h"
-#include "IMetaTransition.h"
 #include "Core/Resource/CDependencyGroup.h"
 #include "Core/Resource/CResource.h"
 #include "Core/Resource/TResPtr.h"
+#include "Core/Resource/Animation/CAnimation.h"
+#include "Core/Resource/Animation/CAnimEventData.h"
+#include "Core/Resource/Animation/CSkeleton.h"
+#include "Core/Resource/Animation/CSkin.h"
+#include "Core/Resource/Animation/CSourceAnimData.h"
+#include "Core/Resource/Animation/IMetaAnimation.h"
+#include "Core/Resource/Animation/IMetaTransition.h"
 #include "Core/Resource/Model/CModel.h"
 #include <Common/BasicTypes.h>
 
@@ -21,7 +21,7 @@
 // Animation structures
 struct SAdditiveAnim
 {
-    uint32 AnimID;
+    uint32_t AnimID;
     float FadeInTime;
     float FadeOutTime;
 };
@@ -34,15 +34,15 @@ struct SAnimation
 
 struct STransition
 {
-    uint32 Unknown;
-    uint32 AnimIdA;
-    uint32 AnimIdB;
+    uint32_t Unknown;
+    uint32_t AnimIdA;
+    uint32_t AnimIdB;
     std::unique_ptr<IMetaTransition> pMetaTrans;
 };
 
 struct SHalfTransition
 {
-    uint32 AnimID;
+    uint32_t AnimID;
     std::unique_ptr<IMetaTransition> pMetaTrans;
 };
 
@@ -64,7 +64,7 @@ struct SOverlayModel
 
 struct SSetCharacter
 {
-    uint32 ID;
+    uint32_t ID;
     TString Name;
     TResPtr<CModel> pModel;
     TResPtr<CSkin> pSkin;
@@ -81,7 +81,7 @@ struct SSetCharacter
     std::vector<CAssetID> SoundEffects;
     std::vector<CAssetID> DKDependencies;
     CAssetID SpatialPrimitives;
-    std::set<uint32> UsedAnimationIndices;
+    std::set<uint32_t> UsedAnimationIndices;
 };
 
 class CAnimSet : public CResource
@@ -132,7 +132,7 @@ public:
         // Animation dependencies
         if (Game() <= EGame::Echoes)
         {
-            for (uint32 iAnim = 0; iAnim < mAnimations.size(); iAnim++)
+            for (uint32_t iAnim = 0; iAnim < mAnimations.size(); iAnim++)
             {
                 auto pAnimTree = CSetAnimationDependency::BuildTree(this, iAnim);
                 ASSERT(pAnimTree);

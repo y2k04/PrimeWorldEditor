@@ -21,7 +21,7 @@ class CWorldLoader
 
 public:
     static std::unique_ptr<CWorld> LoadMLVL(IInputStream& rMLVL, CResourceEntry *pEntry);
-    static EGame GetFormatVersion(uint32 Version);
+    static EGame GetFormatVersion(uint32_t Version);
 };
 
 #endif // CWORLDLOADER_H

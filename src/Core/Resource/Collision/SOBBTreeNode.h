@@ -1,10 +1,11 @@
 #ifndef SOBBTREENODE_H
 #define SOBBTREENODE_H
 
-#include <Common/BasicTypes.h>
 #include <Common/Math/CTransform4f.h>
 #include <Common/Math/CVector3f.h>
+#include <cstdint>
 #include <memory>
+#include <vector>
 
 enum class EOBBTreeNodeType : uint8
 {
@@ -33,7 +34,7 @@ struct SOBBTreeBranch : public SOBBTreeNode
 
 struct SOBBTreeLeaf : public SOBBTreeNode
 {
-    std::vector<uint16> TriangleIndices;
+    std::vector<uint16_t> TriangleIndices;
 
     SOBBTreeLeaf() : SOBBTreeNode()
     {

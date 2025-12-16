@@ -4,6 +4,7 @@
 #include "Core/Resource/CResource.h"
 #include "Core/Resource/Script/CScriptTemplate.h"
 #include "Core/Resource/Script/Property/TPropertyRef.h"
+#include <vector>
 
 /** Tweak data assets for MP1 */
 class CTweakData : public CResource
@@ -14,13 +15,13 @@ class CTweakData : public CResource
     CScriptTemplate* mpTemplate;
 
     /** Tweak ID for MP2+ */
-    uint32 mTweakID;
+    uint32_t mTweakID;
 
     /** Tweak data */
     std::vector<uint8> mTweakData;
 
 public:
-    CTweakData(CScriptTemplate* pTemplate, uint32 TweakID, CResourceEntry* pEntry = nullptr)
+    CTweakData(CScriptTemplate* pTemplate, uint32_t TweakID, CResourceEntry* pEntry = nullptr)
         : CResource(pEntry)
         , mpTemplate(pTemplate)
         , mTweakID(TweakID)
@@ -48,7 +49,7 @@ public:
         return mpTemplate;
     }
 
-    uint32 TweakID() const
+    uint32_t TweakID() const
     {
         return mTweakID;
     }

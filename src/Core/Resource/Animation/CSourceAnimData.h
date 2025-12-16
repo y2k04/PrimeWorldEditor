@@ -2,9 +2,11 @@
 #define CSOURCEANIMDATA_H
 
 #include "Core/Resource/CResource.h"
-#include "IMetaTransition.h"
+#include "Core/Resource/Animation/IMetaTransition.h"
 
 #include <memory>
+#include <set>
+#include <vector>
 
 class CSourceAnimData : public CResource
 {

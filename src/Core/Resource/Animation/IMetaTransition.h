@@ -1,7 +1,7 @@
 #ifndef IMETATRANSITION_H
 #define IMETATRANSITION_H
 
-#include "IMetaAnimation.h"
+#include "Core/Resource/Animation/IMetaAnimation.h"
 #include <memory>
 #include <set>
 
@@ -54,10 +54,10 @@ class CMetaTransTrans : public IMetaTransition
 {
     EMetaTransType mType;
     float mUnknownA = 0.0f;
-    uint32 mUnknownB = 0;
+    uint32_t mUnknownB = 0;
     bool mUnknownC = false;
     bool mUnknownD = false;
-    uint32 mUnknownE = 0;
+    uint32_t mUnknownE = 0;
 
 public:
     CMetaTransTrans(EMetaTransType Type, IInputStream& rInput, EGame Game);

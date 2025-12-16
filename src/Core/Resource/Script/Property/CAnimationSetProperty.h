@@ -1,10 +1,10 @@
 #ifndef CANIMATIONSETPROPERTY_H
 #define CANIMATIONSETPROPERTY_H
 
-#include "IProperty.h"
 #include "Core/Resource/Animation/CAnimationParameters.h"
+#include "Core/Resource/Script/Property/IProperty.h"
 
-class CAnimationSetProperty : public TSerializeableTypedProperty< CAnimationParameters, EPropertyType::AnimationSet >
+class CAnimationSetProperty : public TSerializeableTypedProperty<CAnimationParameters, EPropertyType::AnimationSet>
 {
     friend class IProperty;
 

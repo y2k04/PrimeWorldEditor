@@ -1,9 +1,9 @@
 #ifndef CANIMATIONPROPERTY_H
 #define CANIMATIONPROPERTY_H
 
-#include "IProperty.h"
+#include "Core/Resource/Script/Property/IProperty.h"
 
-class CAnimationProperty : public TSerializeableTypedProperty<uint32, EPropertyType::Animation>
+class CAnimationProperty : public TSerializeableTypedProperty<uint32_t, EPropertyType::Animation>
 {
     friend class IProperty;
 
@@ -15,12 +15,12 @@ protected:
 public:
     void SerializeValue(void* pData, IArchive& rArc) const override
     {
-        rArc.SerializePrimitive((uint32&)ValueRef(pData), SH_HexDisplay);
+        rArc.SerializePrimitive((uint32_t&)ValueRef(pData), SH_HexDisplay);
     }
 
     TString ValueAsString(void* pData) const override
     {
-        return TString::HexString(static_cast<uint32>(Value(pData)));
+        return TString::HexString(static_cast<uint32_t>(Value(pData)));
     }
 };
 

@@ -1,7 +1,7 @@
 #ifndef CBOOLPROPERTY_H
 #define CBOOLPROPERTY_H
 
-#include "IProperty.h"
+#include "Core/Resource/Script/Property/IProperty.h"
 
 class CBoolProperty : public TSerializeableTypedProperty<bool, EPropertyType::Bool>
 {

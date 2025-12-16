@@ -1,7 +1,10 @@
 #ifndef CARRAYPROPERTY_H
 #define CARRAYPROPERTY_H
 
-#include "IProperty.h"
+#include "Core/Resource/Script/Property/IProperty.h"
+
+#include <algorithm>
+#include <vector>
 
 struct SScriptArray
 {
@@ -14,7 +17,7 @@ struct SScriptArray
 
 /** You probably shouldn't use this on intrinsic classes; script only */
 /** @todo proper support of default values for arrays (this would be used for prefabs) */
-class CArrayProperty : public TTypedProperty<uint32, EPropertyType::Array>
+class CArrayProperty : public TTypedProperty<uint32_t, EPropertyType::Array>
 {
     friend class IProperty;
 
@@ -28,10 +31,10 @@ class CArrayProperty : public TTypedProperty<uint32, EPropertyType::Array>
     /** Internal functions */
     SScriptArray& _GetInternalArray(void* pData) const
     {
-        return *( (SScriptArray*) RawValuePtr(pData) );
+        return *((SScriptArray*)RawValuePtr(pData));
     }
 
-    uint32 _InternalArrayCount(void* pPropertyData) const
+    uint32_t _InternalArrayCount(void* pPropertyData) const
     {
         std::vector<char>& rArray = _GetInternalArray(pPropertyData).Array;
         return rArray.size() / ItemSize();
@@ -45,12 +48,12 @@ protected:
 public:
     ~CArrayProperty() override { delete mpItemArchetype; }
 
-    uint32 DataSize() const override
+    uint32_t DataSize() const override
     {
         return sizeof(SScriptArray);
     }
 
-    uint32 DataAlignment() const override
+    uint32_t DataAlignment() const override
     {
         return alignof(SScriptArray);
     }
@@ -95,7 +98,7 @@ public:
     void PropertyValueChanged(void* pPropertyData) override
     {
         SScriptArray& rArray = _GetInternalArray(pPropertyData);
-        rArray.Count = Math::Max(rArray.Count, 0);
+        rArray.Count = std::max(rArray.Count, 0);
         Resize(pPropertyData, rArray.Count);
     }
 
@@ -107,13 +110,13 @@ public:
 
     void SerializeValue(void* pData, IArchive& Arc) const override
     {
-        uint32 Count = ArrayCount(pData);
+        uint32_t Count = ArrayCount(pData);
         Arc.SerializeArraySize(Count);
 
         if (Arc.IsReader())
             Resize(pData, Count);
 
-        for (uint32 ItemIdx = 0; ItemIdx < Count; ItemIdx++)
+        for (uint32_t ItemIdx = 0; ItemIdx < Count; ItemIdx++)
         {
             if (Arc.ParamBegin("ArrayElement", 0))
             {
@@ -127,7 +130,7 @@ public:
     void InitFromArchetype(IProperty* pOther) override
     {
         TTypedProperty::InitFromArchetype(pOther);
-        CArrayProperty* pOtherArray = static_cast<CArrayProperty*>(pOther);
+        auto* pOtherArray = static_cast<CArrayProperty*>(pOther);
         mpItemArchetype = IProperty::CreateCopy(pOtherArray->mpItemArchetype);
     }
 
@@ -137,58 +140,57 @@ public:
         mpItemArchetype->Initialize(this, mpScriptTemplate, 0);
     }
 
-    uint32 ArrayCount(void* pPropertyData) const
+    uint32_t ArrayCount(void* pPropertyData) const
     {
         return ValueRef(pPropertyData);
     }
 
-    void Resize(void* pPropertyData, uint32 NewCount) const
+    void Resize(void* pPropertyData, uint32_t NewCount) const
     {
-        uint32 OldCount = _InternalArrayCount(pPropertyData);
+        const uint32_t OldCount = _InternalArrayCount(pPropertyData);
+        if (OldCount == NewCount)
+            return;
 
-        if (OldCount != NewCount)
+        SScriptArray& rArray = _GetInternalArray(pPropertyData);
+
+        // Handle destruction of old elements
+        if (OldCount > NewCount)
         {
-            SScriptArray& rArray = _GetInternalArray(pPropertyData);
-
-            // Handle destruction of old elements
-            if (OldCount > NewCount)
+            for (uint32_t ItemIdx = NewCount; ItemIdx < OldCount; ItemIdx++)
             {
-                for (uint32 ItemIdx = NewCount; ItemIdx < OldCount; ItemIdx++)
-                {
-                    void* pItemPtr = ItemPointer(pPropertyData, ItemIdx);
-                    mpItemArchetype->Destruct(pItemPtr);
-                }
+                void* pItemPtr = ItemPointer(pPropertyData, ItemIdx);
+                mpItemArchetype->Destruct(pItemPtr);
             }
+        }
 
-            uint32 NewSize = NewCount * ItemSize();
-            rArray.Array.resize(NewSize);
-            rArray.Count = NewCount;
+        const uint32_t NewSize = NewCount * ItemSize();
+        rArray.Array.resize(NewSize);
+        rArray.Count = NewCount;
 
-            // Handle construction of new elements
-            if (NewCount > OldCount)
+        // Handle construction of new elements
+        if (NewCount > OldCount)
+        {
+            for (uint32_t ItemIdx = OldCount; ItemIdx < NewCount; ItemIdx++)
             {
-                for (uint32 ItemIdx = OldCount; ItemIdx < NewCount; ItemIdx++)
-                {
-                    void* pItemPtr = ItemPointer(pPropertyData, ItemIdx);
-                    mpItemArchetype->Construct(pItemPtr);
-                }
+                void* pItemPtr = ItemPointer(pPropertyData, ItemIdx);
+                mpItemArchetype->Construct(pItemPtr);
             }
         }
     }
 
-    void* ItemPointer(void* pPropertyData, uint32 ItemIndex) const
+    void* ItemPointer(void* pPropertyData, uint32_t ItemIndex) const
     {
         ASSERT(_InternalArrayCount(pPropertyData) > ItemIndex);
         std::vector<char>& rArray = _GetInternalArray(pPropertyData).Array;
-        uint32 MyItemSize = ItemSize();
+        const uint32_t MyItemSize = ItemSize();
         ASSERT(rArray.size() >= (MyItemSize * (ItemIndex+1)));
         return rArray.data() + (MyItemSize * ItemIndex);
     }
 
-    uint32 ItemSize() const
+    uint32_t ItemSize() const
     {
-        uint32 ItemAlign = mpItemArchetype->DataAlignment();
-        uint32 ItemSize = VAL_ALIGN(mpItemArchetype->DataSize(), ItemAlign);
+        const uint32_t ItemAlign = mpItemArchetype->DataAlignment();
+        const uint32_t ItemSize = VAL_ALIGN(mpItemArchetype->DataSize(), ItemAlign);
         return ItemSize;
     }
 

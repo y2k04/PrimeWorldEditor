@@ -474,7 +474,7 @@ void GenerateAssetNames(CGameProject *pProj)
 
         for (size_t iSamp = 0; iSamp < pMacro->NumSamples(); iSamp++)
         {
-            const CAssetID SampleID = pMacro->SampleByIndex(iSamp);
+            const CAssetID& SampleID = pMacro->SampleByIndex(iSamp);
             CResourceEntry* pSample = pStore->FindEntry(SampleID);
 
             if (pSample != nullptr && !pSample->IsNamed())

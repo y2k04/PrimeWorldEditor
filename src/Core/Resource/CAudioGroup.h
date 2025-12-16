@@ -1,7 +1,8 @@
 #ifndef CAUDIOGROUP
 #define CAUDIOGROUP
 
-#include "CResource.h"
+#include "Core/Resource/CResource.h"
+#include <vector>
 
 // Very limited functionality - mostly just intended to find the AGSC that a sound ID belongs to
 class CAudioGroup : public CResource

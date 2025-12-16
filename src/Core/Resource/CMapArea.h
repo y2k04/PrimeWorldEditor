@@ -1,7 +1,7 @@
 #ifndef CMAPAREA_H
 #define CMAPAREA_H
 
-#include "CResource.h"
+#include "Core/Resource/CResource.h"
 
 // Barebones class
 class CMapArea : public CResource

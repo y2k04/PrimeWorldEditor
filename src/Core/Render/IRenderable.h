@@ -1,10 +1,9 @@
 #ifndef IRENDERABLE_H
 #define IRENDERABLE_H
 
-#include "ERenderCommand.h"
-#include "FRenderOptions.h"
-#include "SViewInfo.h"
-#include <Common/BasicTypes.h>
+#include "Core/Render/ERenderCommand.h"
+#include "Core/Render/FRenderOptions.h"
+#include "Core/Render/SViewInfo.h"
 
 class CRenderer;
 

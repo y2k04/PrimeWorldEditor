@@ -1,8 +1,8 @@
 #ifndef CASSETPROPERTY_H
 #define CASSETPROPERTY_H
 
-#include "IProperty.h"
 #include "Core/Resource/CResTypeFilter.h"
+#include "Core/Resource/Script/Property/IProperty.h"
 
 class CAssetProperty : public TSerializeableTypedProperty<CAssetID, EPropertyType::Asset>
 {
@@ -21,13 +21,13 @@ public:
     void Serialize(IArchive& rArc) override
     {
         TSerializeableTypedProperty::Serialize(rArc);
-        CAssetProperty* pArchetype = static_cast<CAssetProperty*>(mpArchetype);
+        auto* pArchetype = static_cast<CAssetProperty*>(mpArchetype);
         rArc << SerialParameter("TypeFilter", mTypeFilter, pArchetype ? SH_Optional : 0, pArchetype ? pArchetype->mTypeFilter : CResTypeFilter());
     }
 
     bool ShouldSerialize() const override
     {
-        CAssetProperty* pArchetype = static_cast<CAssetProperty*>(mpArchetype);
+        auto* pArchetype = static_cast<CAssetProperty*>(mpArchetype);
         return TSerializeableTypedProperty::ShouldSerialize() ||
                 mTypeFilter != pArchetype->mTypeFilter;
     }

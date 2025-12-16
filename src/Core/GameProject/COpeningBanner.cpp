@@ -1,5 +1,5 @@
-#include "COpeningBanner.h"
-#include "CGameProject.h"
+#include "Core/GameProject/COpeningBanner.h"
+#include "Core/GameProject/CGameProject.h"
 
 COpeningBanner::COpeningBanner(CGameProject *pProj)
     : mpProj(pProj)
@@ -22,8 +22,8 @@ TString COpeningBanner::EnglishGameName() const
     // this and prevent the string-reading function from overrunning the buffer
     CMemoryInStream Banner(mBannerData.data(), mBannerData.size(), EEndian::BigEndian);
 
-    uint32 CharSize = mWii ? 2 : 1;
-    uint32 MaxLen = MaxGameNameLength();
+    uint32_t CharSize = mWii ? 2 : 1;
+    uint32_t MaxLen = MaxGameNameLength();
 
     std::vector<uint8> NameBuffer((MaxLen + 1) * CharSize, 0);
     Banner.GoTo( mWii ? 0xB0 : 0x1860 );
@@ -36,9 +36,9 @@ TString COpeningBanner::EnglishGameName() const
 void COpeningBanner::SetEnglishGameName(const TString& rkName)
 {
     CMemoryOutStream Banner(mBannerData.data(), mBannerData.size(), EEndian::BigEndian);
-    uint32 PadCount = 0;
+    uint32_t PadCount = 0;
 
-    uint32 MaxLen = MaxGameNameLength();
+    uint32_t MaxLen = MaxGameNameLength();
     ASSERT(rkName.Size() <= MaxLen);
 
     if (mWii)
@@ -54,7 +54,7 @@ void COpeningBanner::SetEnglishGameName(const TString& rkName)
         PadCount = MaxLen - rkName.Size();
     }
 
-    for (uint32 Pad = 0; Pad < PadCount; Pad++)
+    for (uint32_t Pad = 0; Pad < PadCount; Pad++)
         Banner.WriteByte(0);
 }
 
@@ -65,7 +65,7 @@ void COpeningBanner::Save()
     Banner.WriteBytes(mBannerData.data(), mBannerData.size());
 }
 
-uint32 COpeningBanner::MaxGameNameLength() const
+uint32_t COpeningBanner::MaxGameNameLength() const
 {
     return (mWii ? 21 : 64);
 }

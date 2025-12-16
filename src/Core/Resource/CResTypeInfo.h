@@ -1,11 +1,12 @@
 #ifndef CRESTYPEINFO
 #define CRESTYPEINFO
 
-#include "EResType.h"
+#include "Core/Resource/EResType.h"
 #include <Common/CFourCC.h>
 #include <Common/EGame.h>
 #include <Common/Flags.h>
 #include <Common/TString.h>
+#include <list>
 #include <unordered_map>
 #include <vector>
 

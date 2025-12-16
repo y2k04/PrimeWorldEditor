@@ -1,7 +1,8 @@
 #ifndef CTWEAKMANAGER_H
 #define CTWEAKMANAGER_H
 
-#include "CTweakData.h"
+#include "Core/Tweaks/CTweakData.h"
+#include <vector>
 
 /** Class responsible for managing game tweak data, including saving/loading and providing access */
 class CTweakManager
@@ -10,7 +11,7 @@ class CTweakManager
     CGameProject* mpProject;
 
     /** All tweak resources in the current game */
-    std::vector< CTweakData* > mTweakObjects;
+    std::vector<CTweakData*> mTweakObjects;
 
     /** For MP2+, the path to Standard.ntwk */
     TString mStandardFilePath;

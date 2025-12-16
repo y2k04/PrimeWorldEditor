@@ -7,6 +7,9 @@
 #include <Common/Serialization/IArchive.h>
 #include "Core/IProgressNotifier.h"
 
+#include <set>
+#include <vector>
+
 class CGameProject;
 
 enum class EPackageDefinitionVersion

@@ -1,9 +1,9 @@
 #ifndef CSEQUENCEPROPERTY_H
 #define CSEQUENCEPROPERTY_H
 
-#include "IProperty.h"
+#include "Core/Resource/Script/Property/IProperty.h"
 
-class CSequenceProperty : public TTypedProperty<int32, EPropertyType::Sequence>
+class CSequenceProperty : public TTypedProperty<int32_t, EPropertyType::Sequence>
 {
     friend class IProperty;
 

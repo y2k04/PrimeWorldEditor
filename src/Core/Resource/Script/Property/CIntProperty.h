@@ -1,9 +1,9 @@
 #ifndef CINTPROPERTY_H
 #define CINTPROPERTY_H
 
-#include "IProperty.h"
+#include "Core/Resource/Script/Property/IProperty.h"
 
-class CIntProperty : public TNumericalProperty<int32, EPropertyType::Int>
+class CIntProperty : public TNumericalProperty<int32_t, EPropertyType::Int>
 {
     friend class IProperty;
 

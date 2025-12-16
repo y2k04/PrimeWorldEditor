@@ -1,8 +1,8 @@
 #ifndef SSURFACE_H
 #define SSURFACE_H
 
-#include "CVertex.h"
 #include "Core/OpenGL/GLCommon.h"
+#include "Core/Resource/Model/CVertex.h"
 #include <Common/Math/CAABox.h>
 #include <Common/Math/CVector3f.h>
 #include <cstdint>

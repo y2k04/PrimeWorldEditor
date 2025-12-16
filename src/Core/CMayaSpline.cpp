@@ -1,9 +1,11 @@
-#include "CMayaSpline.h"
+#include "Core/CMayaSpline.h"
 #include <Common/Math/MathUtil.h>
 
 void ValidateTangent(CVector2f& Tangent)
 {
-    if (Tangent.X < 0.f) Tangent.X = 0.f;
+    if (Tangent.X < 0.f)
+        Tangent.X = 0.f;
+
     Tangent = Tangent.Normalized();
 
     if (Tangent.X == 0.f && Tangent.Y != 0.f)
@@ -40,14 +42,14 @@ void CMayaSplineKnot::CalculateTangents(const CMayaSplineKnot* pkPrev, const CMa
         }
     }
 
-    uint32 TopFlagByte = (Flags >> 24) & 0xFF;
+    uint32_t TopFlagByte = (Flags >> 24) & 0xFF;
 
     if (TopFlagByte == 0)
     {
     }
 }
 
-uint CMayaSpline::GetKnotCount() const
+uint32_t CMayaSpline::GetKnotCount() const
 {
     return mKnots.size();
 }
@@ -253,12 +255,12 @@ bool CMayaSpline::FindKnot(float Time, int& OutKnotIndex) const
     if (mKnots.empty())
         return false;
 
-    uint Lower = 0;
-    uint Upper = mKnots.size();
+    uint32_t Lower = 0;
+    uint32_t Upper = mKnots.size();
 
     while (Lower < Upper)
     {
-        uint Index = (Lower + Upper) >> 1;
+        uint32_t Index = (Lower + Upper) >> 1;
 
         if (mKnots[Index].Time > Time)
             Lower = Index + 1;

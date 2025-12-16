@@ -1,5 +1,6 @@
 #include "Core/Resource/CFont.h"
 
+#include <Common/Math/CTransform4f.h>
 #include "Core/OpenGL/CShader.h"
 #include "Core/Render/CDrawUtil.h"
 #include "Core/Render/CRenderer.h"

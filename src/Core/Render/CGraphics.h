@@ -1,9 +1,9 @@
 #ifndef CGRAPHICS_H
 #define CGRAPHICS_H
 
-#include "CBoneTransformData.h"
 #include "Core/OpenGL/CUniformBuffer.h"
 #include "Core/OpenGL/CVertexArrayManager.h"
+#include "Core/Render/CBoneTransformData.h"
 #include "Core/Resource/CLight.h"
 #include <Common/CColor.h>
 #include <Common/Math/CMatrix4f.h>
@@ -25,8 +25,8 @@ class CGraphics
     static CUniformBuffer *mpPixelBlockBuffer;
     static CUniformBuffer *mpLightBlockBuffer;
     static CUniformBuffer *mpBoneTransformBuffer;
-    static uint32 mContextIndices;
-    static uint32 mActiveContext;
+    static uint32_t mContextIndices;
+    static uint32_t mActiveContext;
     static bool mInitialized;
     static std::vector<CVertexArrayManager*> mVAMs;
     static bool mIdentityBoneTransforms;
@@ -105,10 +105,10 @@ public:
     static GLuint PixelBlockBindingPoint();
     static GLuint LightBlockBindingPoint();
     static GLuint BoneTransformBlockBindingPoint();
-    static uint32 GetContextIndex();
-    static uint32 GetActiveContext();
-    static void ReleaseContext(uint32 Index);
-    static void SetActiveContext(uint32 Index);
+    static uint32_t GetContextIndex();
+    static uint32_t GetActiveContext();
+    static void ReleaseContext(uint32_t Index);
+    static void SetActiveContext(uint32_t Index);
     static void SetDefaultLighting();
     static void SetupAmbientColor();
     static void SetIdentityMVP();

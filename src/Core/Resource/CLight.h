@@ -3,7 +3,6 @@
 
 #include "Core/Resource/Script/Property/Properties.h"
 #include <Common/CColor.h>
-#include <Common/FileIO/IInputStream.h>
 #include <Common/Math/CVector3f.h>
 
 /* CLight is currently heavily based on the lights system from Metroid Prime,
@@ -20,7 +19,7 @@ enum class ELightType
 class CLight
 {
     ELightType mType{};
-    uint32 mLayerIndex = 0;
+    uint32_t mLayerIndex = 0;
     CVector3f mPosition{skDefaultLightPos};
     CVector3f mDirection{skDefaultLightDir};
     CColor mColor;
@@ -30,7 +29,7 @@ class CLight
 
     mutable float mCachedRadius = 0.0f;
     mutable float mCachedIntensity = 0.0f;
-    mutable uint8 mDirtyFlags;
+    mutable uint8_t mDirtyFlags;
 
 public:
     CLight();
@@ -44,14 +43,14 @@ private:
 public:
     // Accessors
     ELightType Type() const                   { return mType; }
-    uint32 LayerIndex() const                 { return mLayerIndex; }
+    uint32_t LayerIndex() const               { return mLayerIndex; }
     const CVector3f& Position() const         { return mPosition; }
     const CVector3f& Direction() const        { return mDirection; }
     const CColor& Color() const               { return mColor; }
     const CVector3f& DistAttenuation() const  { return mDistAttenCoefficients; }
     const CVector3f& AngleAttenuation() const { return mAngleAttenCoefficients; }
 
-    void SetLayer(uint32 Index)                     { mLayerIndex = Index; }
+    void SetLayer(uint32_t Index)                   { mLayerIndex = Index; }
     void SetPosition(const CVector3f& rkPosition)   { mPosition = rkPosition; }
     void SetDirection(const CVector3f& rkDirection) { mDirection = rkDirection; }
 

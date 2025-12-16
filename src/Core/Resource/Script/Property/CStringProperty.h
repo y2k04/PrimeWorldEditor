@@ -1,7 +1,7 @@
 #ifndef CSTRINGPROPERTY_H
 #define CSTRINGPROPERTY_H
 
-#include "IProperty.h"
+#include "Core/Resource/Script/Property/IProperty.h"
 
 class CStringProperty : public TSerializeableTypedProperty<TString, EPropertyType::String>
 {

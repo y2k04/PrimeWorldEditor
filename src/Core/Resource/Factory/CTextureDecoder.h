@@ -3,36 +3,36 @@
 
 #include "Core/Resource/CTexture.h"
 #include "Core/Resource/ETexelFormat.h"
-#include <Common/BasicTypes.h>
 #include <Common/CColor.h>
 #include <Common/FileIO.h>
 
 #include <memory>
+#include <vector>
 
 class CTextureDecoder
 {
     CResourceEntry *mpEntry;
     ETexelFormat mTexelFormat;
-    uint16 mWidth, mHeight;
-    uint32 mNumMipMaps;
+    uint16_t mWidth, mHeight;
+    uint32_t mNumMipMaps;
 
     bool mHasPalettes;
     EGXPaletteFormat mPaletteFormat;
-    std::vector<uint8> mPalettes;
+    std::vector<uint8_t> mPalettes;
     CMemoryInStream mPaletteInput;
 
     struct SDDSInfo
     {
         enum { DXT1, DXT2, DXT3, DXT4, DXT5, RGBA } Format;
-        uint32 Flags;
-        uint32 BitCount;
-        uint32 RBitMask, GBitMask, BBitMask, ABitMask;
-        uint32 RShift, GShift, BShift, AShift;
-        uint32 RSize, GSize, BSize, ASize;
+        uint32_t Flags;
+        uint32_t BitCount;
+        uint32_t RBitMask, GBitMask, BBitMask, ABitMask;
+        uint32_t RShift, GShift, BShift, AShift;
+        uint32_t RSize, GSize, BSize, ASize;
     } mDDSInfo;
 
-    uint8 *mpDataBuffer;
-    uint32 mDataBufferSize;
+    uint8_t *mpDataBuffer;
+    uint32_t mDataBufferSize;
 
     // Private Functions
     CTextureDecoder();
@@ -61,19 +61,19 @@ class CTextureDecoder
     void ReadSubBlockCMPR(IInputStream& rSrc, IOutputStream& rDst);
 
     // Decode Pixels (convert to RGBA8)
-    CColor DecodePixelI4(uint8 Byte, uint8 WhichPixel);
-    CColor DecodePixelI8(uint8 Byte);
-    CColor DecodePixelIA4(uint8 Byte);
-    CColor DecodePixelIA8(uint16 Short);
-    CColor DecodePixelC4(uint8 Byte, uint8 WhichPixel, IInputStream& rPaletteStream);
-    CColor DecodePixelC8(uint8 Byte, IInputStream& rPaletteStream);
-    CColor DecodePixelRGB565(uint16 Short);
-    CColor DecodePixelRGB5A3(uint16 Short);
-    void DecodeSubBlockCMPR(IInputStream& rSrc, IOutputStream& rDst, uint16 Width);
+    CColor DecodePixelI4(uint8_t Byte, uint8_t WhichPixel);
+    CColor DecodePixelI8(uint8_t Byte);
+    CColor DecodePixelIA4(uint8_t Byte);
+    CColor DecodePixelIA8(uint16_t Short);
+    CColor DecodePixelC4(uint8_t Byte, uint8_t WhichPixel, IInputStream& rPaletteStream);
+    CColor DecodePixelC8(uint8_t Byte, IInputStream& rPaletteStream);
+    CColor DecodePixelRGB565(uint16_t Short);
+    CColor DecodePixelRGB5A3(uint16_t Short);
+    void DecodeSubBlockCMPR(IInputStream& rSrc, IOutputStream& rDst, uint16_t Width);
 
-    void DecodeBlockBC1(IInputStream& rSrc, IOutputStream& rDst, uint32 Width);
-    void DecodeBlockBC2(IInputStream& rSrc, IOutputStream& rDst, uint32 Width);
-    void DecodeBlockBC3(IInputStream& rSrc, IOutputStream& rDst, uint32 Width);
+    void DecodeBlockBC1(IInputStream& rSrc, IOutputStream& rDst, uint32_t Width);
+    void DecodeBlockBC2(IInputStream& rSrc, IOutputStream& rDst, uint32_t Width);
+    void DecodeBlockBC3(IInputStream& rSrc, IOutputStream& rDst, uint32_t Width);
     CColor DecodeDDSPixel(IInputStream& rDDS);
 
     // Static

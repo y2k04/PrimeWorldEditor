@@ -1,7 +1,8 @@
 #ifndef CSTRINGLIST
 #define CSTRINGLIST
 
-#include "CResource.h"
+#include "Core/Resource/CResource.h"
+#include <vector>
 
 class CStringList : public CResource
 {

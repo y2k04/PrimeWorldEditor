@@ -1,12 +1,12 @@
 #ifndef IPROPERTY_H
 #define IPROPERTY_H
 
-#include <Common/Common.h>
 #include <Common/CFourCC.h>
-#include <Common/Math/CVector3f.h>
-#include <Common/Math/MathUtil.h>
+#include <Common/Flags.h>
 
-#include <memory>
+#include <algorithm>
+#include <cstddef>
+#include <cstdint>
 
 /** Forward declares */
 class CGameTemplate;
@@ -17,7 +17,7 @@ class CStructProperty;
 using TIDString = TString;
 
 /** Property flags */
-enum class EPropertyFlag : uint32
+enum class EPropertyFlag : uint32_t
 {
     /** Property has been fully initialized and has had PostLoad called */
     IsInitialized          = 0x1,
@@ -140,10 +140,10 @@ protected:
     CScriptTemplate* mpScriptTemplate = nullptr;
 
     /** Offset of this property within the property block */
-    uint32 mOffset = UINT32_MAX;
+    uint32_t mOffset = UINT32_MAX;
 
     /** Property ID. This ID is used to uniquely identify this property within this struct. */
-    uint32 mID = UINT32_MAX;
+    uint32_t mID = UINT32_MAX;
 
     /** Property metadata */
     TString mName;
@@ -167,8 +167,8 @@ public:
 
     /** Interface */
     virtual EPropertyType Type() const = 0;
-    virtual uint32 DataSize() const = 0;
-    virtual uint32 DataAlignment() const = 0;
+    virtual uint32_t DataSize() const = 0;
+    virtual uint32_t DataAlignment() const = 0;
     virtual void Construct(void* pData) const = 0;
     virtual void Destruct(void* pData) const = 0;
     virtual bool MatchesDefault(void* pData) const = 0;
@@ -189,9 +189,9 @@ public:
     virtual bool ShouldSerialize() const;
     
     /** Utility methods */
-    void Initialize(IProperty* pInParent, CScriptTemplate* pInTemplate, uint32 InOffset);
+    void Initialize(IProperty* pInParent, CScriptTemplate* pInTemplate, uint32_t InOffset);
     void* RawValuePtr(void* pData) const;
-    IProperty* ChildByID(uint32 ID) const;
+    IProperty* ChildByID(uint32_t ID) const;
     IProperty* ChildByIDString(const TIDString& rkIdString);
     void GatherAllSubInstances(std::list<IProperty*>& OutList, bool Recursive);
     TString GetTemplateFileName();
@@ -259,8 +259,8 @@ public:
             return TString::HexString(mID);
     }
 
-    uint32 Offset() const { return mOffset; }
-    uint32 ID() const { return mID; }
+    uint32_t Offset() const { return mOffset; }
+    uint32_t ID() const { return mID; }
 
     bool IsInitialized() const       { return mFlags.HasFlag(EPropertyFlag::IsInitialized); }
     bool IsArchetype() const         { return mFlags.HasFlag(EPropertyFlag::IsArchetype); }
@@ -272,19 +272,18 @@ public:
     bool IsRootArchetype() const     { return mpArchetype == nullptr; }
 
     /** Create */
-    static IProperty* Create(EPropertyType Type,
-                                EGame Game);
+    static IProperty* Create(EPropertyType Type, EGame Game);
 
     static IProperty* CreateCopy(IProperty* pArchetype);
 
     static IProperty* CreateIntrinsic(EPropertyType Type,
                                       EGame Game,
-                                      uint32 Offset,
+                                      uint32_t Offset,
                                       const TString& rkName);
 
     static IProperty* CreateIntrinsic(EPropertyType Type,
                                       IProperty* pParent,
-                                      uint32 Offset,
+                                      uint32_t Offset,
                                       const TString& rkName);
 
     static IProperty* ArchiveConstructor(EPropertyType Type,
@@ -306,8 +305,8 @@ protected:
 
 public:
     EPropertyType Type() const override              { return PropEnum; }
-    uint32 DataSize() const override                 { return sizeof(PropType); }
-    uint32 DataAlignment() const override            { return alignof(PropType); }
+    uint32_t DataSize() const override               { return sizeof(PropType); }
+    uint32_t DataAlignment() const override          { return alignof(PropType); }
     void Construct(void* pData) const override       { new (ValuePtr(pData)) PropType(mDefaultValue); }
     void Destruct(void* pData) const override        { ValueRef(pData).~PropType(); }
     bool MatchesDefault(void* pData) const override  { return ValueRef(pData) == mDefaultValue; }
@@ -477,7 +476,7 @@ public:
         if (mMinValue >= 0 && mMaxValue >= 0)
         {
             PropType& rValue = base::ValueRef(pPropertyData);
-            rValue = Math::Clamp(mMinValue, mMaxValue, rValue);
+            rValue = std::clamp(rValue, mMinValue, mMaxValue);
         }
     }
 };

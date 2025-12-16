@@ -1,13 +1,14 @@
 #ifndef CMATERIALPASS_H
 #define CMATERIALPASS_H
 
-#include "TResPtr.h"
-#include "CTexture.h"
-#include "ETevEnums.h"
+#include "Core/Resource/CTexture.h"
+#include "Core/Resource/ETevEnums.h"
+#include "Core/Resource/TResPtr.h"
 #include "Core/Render/FRenderOptions.h"
 #include <Common/CFourCC.h>
 #include <Common/Hash/CFNV1A.h>
 #include <array>
+#include <cstdint>
 
 class CMaterial;
 
@@ -38,7 +39,7 @@ class CMaterialPass
     ETevRasSel mRasSel{kRasColorNull};
     float mTevColorScale = 1.0f;
     float mTevAlphaScale = 1.0f;
-    uint32 mTexCoordSource = 0xFF; // Should maybe be an enum but worried about conflicts with EVertexDescriptionn
+    uint32_t mTexCoordSource = 0xFF; // Should maybe be an enum but worried about conflicts with EVertexDescriptionn
     TResPtr<CTexture> mpTexture{nullptr};
     EUVAnimMode mAnimMode{EUVAnimMode::NoUVAnim};
     EUVConvolutedModeBType mAnimConvolutedModeBType{};
@@ -51,7 +52,7 @@ public:
     ~CMaterialPass();
     std::unique_ptr<CMaterialPass> Clone(CMaterial *pParent) const;
     void HashParameters(CFNV1A& rHash);
-    void LoadTexture(uint32 PassIndex);
+    void LoadTexture(uint32_t PassIndex);
     void SetAnimCurrent(FRenderOptions Options, size_t PassIndex);
 
     // Setters
@@ -65,7 +66,7 @@ public:
     void SetRasSel(ETevRasSel Sel);
     void SetTevColorScale(float Scale);
     void SetTevAlphaScale(float Scale);
-    void SetTexCoordSource(uint32 Source);
+    void SetTexCoordSource(uint32_t Source);
     void SetTexture(CTexture *pTex);
     void SetAnimMode(EUVAnimMode Mode);
     void SetAnimParam(size_t ParamIndex, float Value);
@@ -84,7 +85,7 @@ public:
     ETevRasSel RasSel() const                        { return mRasSel; }
     float TevColorScale() const                      { return mTevColorScale; }
     float TevAlphaScale() const                      { return mTevAlphaScale; }
-    uint32 TexCoordSource() const                    { return mTexCoordSource; }
+    uint32_t TexCoordSource() const                  { return mTexCoordSource; }
     CTexture* Texture() const                        { return mpTexture; }
     EUVAnimMode AnimMode() const                     { return mAnimMode; }
     float AnimParam(size_t ParamIndex) const         { return mAnimParams[ParamIndex]; }

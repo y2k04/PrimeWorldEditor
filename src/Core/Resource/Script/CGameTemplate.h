@@ -1,12 +1,12 @@
 #ifndef CGAMETEMPLATE_H
 #define CGAMETEMPLATE_H
 
-#include "CLink.h"
-#include "CScriptTemplate.h"
+#include "Core/Resource/Script/CLink.h"
+#include "Core/Resource/Script/CScriptTemplate.h"
 #include "Core/Resource/Script/Property/Properties.h"
-#include <Common/BasicTypes.h>
 #include <Common/EGame.h>
 #include <map>
+#include <memory>
 
 /** Serialization aid
  *  Retro switched from using integers to fourCCs to represent IDs in several cases (states/messages, object IDs).
@@ -15,15 +15,15 @@
 struct SObjId
 {
     union {
-        uint32 ID;
+        uint32_t ID;
         CFourCC ID_4CC;
     };
 
     SObjId()                             {}
-    SObjId(uint32 InID)  : ID(InID)      {}
+    SObjId(uint32_t InID)  : ID(InID)    {}
     SObjId(CFourCC InID) : ID_4CC(InID)  {}
 
-    operator uint32() const  { return ID; }
+    operator uint32_t() const  { return ID; }
     operator CFourCC() const { return ID_4CC; }
 
     void Serialize(IArchive& Arc)
@@ -90,16 +90,16 @@ public:
     void Save();
     void SaveGameTemplates(bool ForceAll = false);
 
-    uint32 GameVersion(TString VersionName);
-    CScriptTemplate* TemplateByID(uint32 ObjectID);
+    uint32_t GameVersion(TString VersionName);
+    CScriptTemplate* TemplateByID(uint32_t ObjectID);
     CScriptTemplate* TemplateByID(const CFourCC& ObjectID);
-    CScriptTemplate* TemplateByIndex(uint32 Index);
-    SState StateByID(uint32 StateID) const;
+    CScriptTemplate* TemplateByIndex(uint32_t Index);
+    SState StateByID(uint32_t StateID) const;
     SState StateByID(const CFourCC& StateID) const;
-    SState StateByIndex(uint32 Index) const;
-    SMessage MessageByID(uint32 MessageID) const;
+    SState StateByIndex(uint32_t Index) const;
+    SMessage MessageByID(uint32_t MessageID) const;
     SMessage MessageByID(const CFourCC& MessageID) const;
-    SMessage MessageByIndex(uint32 Index) const;
+    SMessage MessageByIndex(uint32_t Index) const;
     IProperty* FindPropertyArchetype(const TString& kTypeName);
     TString GetPropertyArchetypeFilePath(const TString& kTypeName) const;
     bool RenamePropertyArchetype(const TString& kTypeName, const TString& kNewTypeName);
@@ -108,9 +108,9 @@ public:
 
     // Accessors
     EGame Game() const                   { return mGame; }
-    uint32 NumScriptTemplates() const    { return mScriptTemplates.size(); }
-    uint32 NumStates() const             { return mStates.size(); }
-    uint32 NumMessages() const           { return mMessages.size(); }
+    uint32_t NumScriptTemplates() const  { return mScriptTemplates.size(); }
+    uint32_t NumStates() const           { return mStates.size(); }
+    uint32_t NumMessages() const         { return mMessages.size(); }
     bool IsLoadedSuccessfully() const    { return mFullyLoaded; }
 };
 

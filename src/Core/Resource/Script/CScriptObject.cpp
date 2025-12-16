@@ -1,5 +1,7 @@
 #include "Core/Resource/Script/CScriptObject.h"
 
+#include <Common/Serialization/CBasicBinaryReader.h>
+#include <Common/Serialization/CBasicBinaryWriter.h>
 #include "Core/Resource/Animation/CAnimSet.h"
 #include "Core/Resource/Area/CGameArea.h"
 #include "Core/Resource/Collision/CCollisionMeshGroup.h"

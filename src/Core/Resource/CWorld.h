@@ -1,12 +1,15 @@
 #ifndef CWORLD_H
 #define CWORLD_H
 
-#include "CResource.h"
-#include "CSavedStateID.h"
+#include "Core/Resource/CResource.h"
+#include "Core/Resource/CSavedStateID.h"
 #include "Core/Resource/Area/CGameArea.h"
 #include "Core/Resource/Model/CModel.h"
 #include "Core/Resource/StringTable/CStringTable.h"
 #include <Common/Math/CTransform4f.h>
+
+#include <memory>
+#include <vector>
 
 class CWorld : public CResource
 {
@@ -21,7 +24,7 @@ class CWorld : public CResource
     TResPtr<CResource>    mpSaveWorld;
     TResPtr<CModel>       mpDefaultSkybox;
     TResPtr<CResource>    mpMapWorld;
-    uint32 mTempleKeyWorldIndex = 0;
+    uint32_t mTempleKeyWorldIndex = 0;
 
     struct STimeAttackData
     {
@@ -37,15 +40,15 @@ class CWorld : public CResource
     struct SAudioGrp
     {
         CAssetID ResID;
-        uint32 GroupID;
+        uint32_t GroupID;
     };
     std::vector<SAudioGrp> mAudioGrps;
 
     struct SMemoryRelay
     {
-        uint32 InstanceID;
-        uint32 TargetID;
-        uint16 Message;
+        uint32_t InstanceID;
+        uint32_t TargetID;
+        uint16_t Message;
         bool Active;
     };
     std::vector<SMemoryRelay> mMemoryRelays;
@@ -61,16 +64,16 @@ class CWorld : public CResource
         bool AllowPakDuplicates;
 
         std::vector<SMemoryRelay> MemoryRelays; // Only needed for MP1
-        std::vector<uint16> AttachedAreaIDs;
+        std::vector<uint16_t> AttachedAreaIDs;
         std::vector<TString> RelFilenames; // Needs to be removed & generated at cook; temporarily leaving for debugging
-        std::vector<uint32> RelOffsets;
+        std::vector<uint32_t> RelOffsets;
 
         struct SDock
         {
             struct SConnectingDock
             {
-                uint32 AreaIndex;
-                uint32 DockIndex;
+                uint32_t AreaIndex;
+                uint32_t DockIndex;
             };
             std::vector<SConnectingDock> ConnectingDocks;
             std::vector<CVector3f> DockCoordinates;
@@ -94,8 +97,8 @@ public:
     std::unique_ptr<CDependencyTree> BuildDependencyTree() const override;
     void SetAreaLayerInfo(CGameArea *pArea);
     TString InGameName() const;
-    TString AreaInGameName(uint32 AreaIndex) const;
-    uint32 AreaIndex(CAssetID AreaID) const;
+    TString AreaInGameName(uint32_t AreaIndex) const;
+    uint32_t AreaIndex(CAssetID AreaID) const;
 
     // Serialization
     void Serialize(IArchive& rArc) override;
@@ -115,13 +118,13 @@ public:
     CModel* DefaultSkybox() const        { return mpDefaultSkybox; }
     CResource* MapWorld() const          { return mpMapWorld; }
 
-    size_t NumAreas() const                                              { return mAreas.size(); }
-    CAssetID AreaResourceID(size_t AreaIndex) const                      { return mAreas[AreaIndex].AreaResID; }
-    uint32 AreaAttachedCount(size_t AreaIndex) const                     { return mAreas[AreaIndex].AttachedAreaIDs.size(); }
-    uint32 AreaAttachedID(size_t AreaIndex, size_t AttachedIndex) const  { return mAreas[AreaIndex].AttachedAreaIDs[AttachedIndex]; }
-    const TString& AreaInternalName(size_t AreaIndex) const              { return mAreas[AreaIndex].InternalName; }
-    CStringTable* AreaName(size_t AreaIndex) const                       { return mAreas[AreaIndex].pAreaName; }
-    bool DoesAreaAllowPakDuplicates(size_t AreaIndex) const              { return mAreas[AreaIndex].AllowPakDuplicates; }
+    size_t NumAreas() const                                                { return mAreas.size(); }
+    CAssetID AreaResourceID(size_t AreaIndex) const                        { return mAreas[AreaIndex].AreaResID; }
+    uint32_t AreaAttachedCount(size_t AreaIndex) const                     { return mAreas[AreaIndex].AttachedAreaIDs.size(); }
+    uint32_t AreaAttachedID(size_t AreaIndex, size_t AttachedIndex) const  { return mAreas[AreaIndex].AttachedAreaIDs[AttachedIndex]; }
+    const TString& AreaInternalName(size_t AreaIndex) const                { return mAreas[AreaIndex].InternalName; }
+    CStringTable* AreaName(size_t AreaIndex) const                         { return mAreas[AreaIndex].pAreaName; }
+    bool DoesAreaAllowPakDuplicates(size_t AreaIndex) const                { return mAreas[AreaIndex].AllowPakDuplicates; }
 
     void SetName(TString rkName)                                     { mName = std::move(rkName); }
     void SetAreaAllowsPakDuplicates(size_t AreaIndex, bool Allow)    { mAreas[AreaIndex].AllowPakDuplicates = Allow; }

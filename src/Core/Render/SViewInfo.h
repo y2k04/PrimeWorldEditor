@@ -9,8 +9,8 @@
 
 struct SCollisionRenderSettings
 {
-    uint64 HighlightMask = 0;
-    uint64 HideMask = 0;
+    uint64_t HighlightMask = 0;
+    uint64_t HideMask = 0;
     int BoundingHierarchyRenderDepth = 0;
 
     CCollisionMaterial HideMaterial;

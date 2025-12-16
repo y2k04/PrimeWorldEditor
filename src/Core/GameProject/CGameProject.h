@@ -1,11 +1,11 @@
 #ifndef CGAMEPROJECT_H
 #define CGAMEPROJECT_H
 
-#include "CGameInfo.h"
-#include "CPackage.h"
-#include "CResourceStore.h"
 #include "Core/CAudioManager.h"
 #include "Core/IProgressNotifier.h"
+#include "Core/GameProject/CGameInfo.h"
+#include "Core/GameProject/CPackage.h"
+#include "Core/GameProject/CResourceStore.h"
 #include "Core/Resource/Script/CGameTemplate.h"
 #include "Core/Tweaks/CTweakManager.h"
 #include <Common/CAssetID.h>
@@ -13,8 +13,10 @@
 #include <Common/FileUtil.h>
 #include <Common/TString.h>
 #include <Common/FileIO/CFileLock.h>
+
 #include <memory>
 #include <string_view>
+#include <vector>
 
 namespace nod { class DiscWii; }
 

@@ -1,8 +1,8 @@
 #ifndef CVERTEXARRAYMANAGER_H
 #define CVERTEXARRAYMANAGER_H
 
-#include "CDynamicVertexBuffer.h"
-#include "CVertexBuffer.h"
+#include "Core/OpenGL/CDynamicVertexBuffer.h"
+#include "Core/OpenGL/CVertexBuffer.h"
 
 #include <unordered_map>
 #include <vector>
@@ -12,7 +12,7 @@ class CVertexArrayManager
 {
     std::unordered_map<CVertexBuffer*, GLuint> mVBOMap;
     std::unordered_map<CDynamicVertexBuffer*, GLuint> mDynamicVBOMap;
-    uint32 mVectorIndex = 0;
+    uint32_t mVectorIndex = 0;
 
     static std::vector<CVertexArrayManager*> sVAManagers;
     static CVertexArrayManager *spCurrentManager;
@@ -20,6 +20,7 @@ class CVertexArrayManager
 public:
     CVertexArrayManager();
     ~CVertexArrayManager();
+
     void SetCurrent();
     void BindVAO(CVertexBuffer *pVBO);
     void BindVAO(CDynamicVertexBuffer *pVBO);

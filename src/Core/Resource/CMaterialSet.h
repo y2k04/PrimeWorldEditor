@@ -1,11 +1,13 @@
 #ifndef CMATERIALSET_H
 #define CMATERIALSET_H
 
-#include "CMaterial.h"
-#include "CTexture.h"
+#include "Core/Resource/CMaterial.h"
+#include "Core/Resource/CTexture.h"
 #include <Common/EGame.h>
-#include <Common/FileIO/IInputStream.h>
+
 #include <algorithm>
+#include <memory>
+#include <vector>
 
 class CMaterialSet
 {
@@ -57,9 +59,9 @@ public:
         return iter->get();
     }
 
-    uint32 MaterialIndexByName(const TString& rkName) const
+    uint32_t MaterialIndexByName(const TString& rkName) const
     {
-        for (uint32 i = 0; i < mMaterials.size(); i++)
+        for (uint32_t i = 0; i < mMaterials.size(); i++)
         {
             if (mMaterials[i]->Name() == rkName)
                 return i;

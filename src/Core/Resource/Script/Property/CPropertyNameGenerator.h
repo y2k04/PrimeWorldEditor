@@ -5,7 +5,11 @@
 #include <Common/Common.h>
 
 #include <atomic>
+#include <list>
 #include <mutex>
+#include <set>
+#include <unordered_map>
+#include <vector>
 
 /** Name casing parameter */
 enum class ENameCasing
@@ -18,7 +22,7 @@ enum class ENameCasing
 /** ID/type pairing for ID pool */
 struct SPropertyIdTypePair
 {
-    uint32 ID;
+    uint32_t ID;
     const char* pkType;
 };
 
@@ -59,13 +63,13 @@ struct SPropertyNameGenerationParameters
 struct SPropertyNameGenerationTaskParameters
 {
     /** Task index */
-    uint TaskIndex;
+    uint32_t TaskIndex;
 
     /** Base word start index */
-    uint StartWord;
+    uint32_t StartWord;
 
     /** Base word end index */
-    uint EndWord;
+    uint32_t EndWord;
 };
 
 /** A generated property name */
@@ -73,7 +77,7 @@ struct SGeneratedPropertyName
 {
     TString Name;
     TString Type;
-    uint32 ID;
+    uint32_t ID;
     std::set<TString> XmlList;
 };
 
@@ -90,7 +94,7 @@ class CPropertyNameGenerator
     std::vector<TString> mTypeNames;
 
     /** Mapping of valid ID/type pairs; if empty, all property names in NPropertyMap are allowed */
-    std::unordered_map<uint32, const char*> mValidTypePairMap;
+    std::unordered_map<uint32_t, const char*> mValidTypePairMap;
 
     /** List of words */
     std::vector<TString> mWords;
@@ -125,7 +129,7 @@ public:
     void Generate(const SPropertyNameGenerationParameters& rkParams, IProgressNotifier* pProgressNotifier);
 
     /** Returns whether a given property ID is valid */
-    bool IsValidPropertyID(uint32 ID, const char*& pkType, const SPropertyNameGenerationParameters& rkParams);
+    bool IsValidPropertyID(uint32_t ID, const char*& pkType, const SPropertyNameGenerationParameters& rkParams);
 
     /** Accessors */
     bool IsRunning() const

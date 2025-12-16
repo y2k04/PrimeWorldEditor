@@ -1,10 +1,10 @@
 #ifndef CGAMEEXPORTER_H
 #define CGAMEEXPORTER_H
 
-#include "CAssetNameMap.h"
-#include "CGameInfo.h"
-#include "CGameProject.h"
-#include "CResourceStore.h"
+#include "Core/GameProject/CAssetNameMap.h"
+#include "Core/GameProject/CGameInfo.h"
+#include "Core/GameProject/CGameProject.h"
+#include "Core/GameProject/CResourceStore.h"
 #include <Common/CAssetID.h>
 #include <Common/Flags.h>
 #include <Common/TString.h>
@@ -54,8 +54,8 @@ class CGameExporter
         TString PakFile;
         CAssetID ResourceID;
         CFourCC ResourceType;
-        uint32 PakOffset;
-        uint32 PakSize;
+        uint32_t PakOffset;
+        uint32_t PakSize;
         bool Compressed;
         bool Exported;
     };
@@ -76,7 +76,7 @@ public:
 
     CGameExporter(EDiscType DiscType, EGame Game, bool FrontEnd, ERegion Region, const TString& rkGameName, const TString& rkGameID, float BuildVersion);
     bool Export(nod::DiscBase *pDisc, const TString& rkOutputDir, CAssetNameMap *pNameMap, CGameInfo *pGameInfo, IProgressNotifier *pProgress);
-    void LoadResource(const CAssetID& rkID, std::vector<uint8>& rBuffer);
+    void LoadResource(const CAssetID& rkID, std::vector<uint8_t>& rBuffer);
     bool ShouldExportDiscNode(const nod::Node *pkNode, bool IsInRoot) const;
 
     const TString& ProjectPath() const  { return mProjectPath; }
@@ -85,7 +85,7 @@ protected:
     bool ExtractDiscData();
     bool ExtractDiscNodeRecursive(const nod::Node *pkNode, const TString& rkDir, bool RootNode, const nod::ExtractionContext& rkContext);
     void LoadPaks();
-    void LoadResource(const SResourceInstance& rkResource, std::vector<uint8>& rBuffer);
+    void LoadResource(const SResourceInstance& rkResource, std::vector<uint8_t>& rBuffer);
     void ExportCookedResources();
     void ExportResourceEditorData();
     void ExportResource(SResourceInstance& rRes);
@@ -94,8 +94,8 @@ protected:
     // Convenience Functions
     SResourceInstance* FindResourceInstance(const CAssetID& rkID)
     {
-        uint64 IntegralID = rkID.ToLongLong();
-        auto Found = mResourceMap.find(IntegralID);
+        const uint64_t IntegralID = rkID.ToLongLong();
+        const auto Found = mResourceMap.find(IntegralID);
         return (Found == mResourceMap.end() ? nullptr : &Found->second);
     }
 };

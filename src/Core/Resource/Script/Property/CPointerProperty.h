@@ -1,7 +1,7 @@
 #ifndef CPOINTERPROPERTY_H
 #define CPOINTERPROPERTY_H
 
-#include "IProperty.h"
+#include "Core/Resource/Script/Property/IProperty.h"
 
 class CPointerProperty : public TTypedProperty<void*, EPropertyType::Pointer>
 {

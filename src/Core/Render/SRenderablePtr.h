@@ -1,8 +1,8 @@
 #ifndef SRENDERABLEPTR_H
 #define SRENDERABLEPTR_H
 
-#include "ERenderCommand.h"
-#include "IRenderable.h"
+#include "Core/Render/ERenderCommand.h"
+#include "Core/Render/IRenderable.h"
 #include <Common/Math/CAABox.h>
 #include <cstdint>
 

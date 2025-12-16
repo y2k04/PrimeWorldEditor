@@ -1,14 +1,15 @@
-#include "IProperty.h"
-#include "CAssetProperty.h"
-#include "CArrayProperty.h"
-#include "CEnumProperty.h"
-#include "CFlagsProperty.h"
-#include "CPointerProperty.h"
+#include "Core/Resource/Script/Property/IProperty.h"
 
+#include <Common/NBasics.h>
 #include "Core/Resource/Script/CGameTemplate.h"
 #include "Core/Resource/Script/CScriptTemplate.h"
 #include "Core/Resource/Script/NGameList.h"
 #include "Core/Resource/Script/NPropertyMap.h"
+#include "Core/Resource/Script/Property/CAssetProperty.h"
+#include "Core/Resource/Script/Property/CArrayProperty.h"
+#include "Core/Resource/Script/Property/CEnumProperty.h"
+#include "Core/Resource/Script/Property/CFlagsProperty.h"
+#include "Core/Resource/Script/Property/CPointerProperty.h"
 
 #include <algorithm>
 #include <cfloat>

@@ -1,8 +1,10 @@
 #ifndef CCOLLIDABLEOBBTREE_H
 #define CCOLLIDABLEOBBTREE_H
 
-#include "CCollisionMesh.h"
-#include "SOBBTreeNode.h"
+#include "Core/Resource/Collision/CCollisionMesh.h"
+#include "Core/Resource/Collision/SOBBTreeNode.h"
+
+#include <memory>
 
 /** A collision mesh with an OBB tree for spatial queries. Represents one mesh from a DCLN file */
 class CCollidableOBBTree : public CCollisionMesh

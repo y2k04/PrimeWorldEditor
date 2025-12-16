@@ -1,9 +1,9 @@
 #ifndef CSHORTPROPERTY_H
 #define CSHORTPROPERTY_H
 
-#include "IProperty.h"
+#include "Core/Resource/Script/Property/IProperty.h"
 
-class CShortProperty : public TNumericalProperty< int16, EPropertyType::Short >
+class CShortProperty : public TNumericalProperty<int16_t, EPropertyType::Short>
 {
     friend class IProperty;
 

@@ -40,7 +40,7 @@ class CResourceEntry
     FResEntryFlags mFlags;
 
     mutable bool mMetadataDirty = false;
-    mutable uint64 mCachedSize = UINT64_MAX;
+    mutable uint64_t mCachedSize = UINT64_MAX;
     mutable TString mCachedUppercaseName; // This is used to speed up case-insensitive sorting and filtering.
 
     // Private constructor
@@ -69,7 +69,7 @@ public:
     CFourCC CookedExtension() const;
     TString MetadataFilePath(bool Relative = false) const;
     bool IsInDirectory(CVirtualDirectory *pDir) const;
-    uint64 Size() const;
+    uint64_t Size() const;
     bool NeedsRecook() const;
     bool Save(bool SkipCacheSave = false, bool FlagForRecook = true);
     bool Cook();

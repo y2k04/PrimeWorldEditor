@@ -1,11 +1,14 @@
 #ifndef CDEPENDENCYTREE
 #define CDEPENDENCYTREE
 
-#include "CResourceEntry.h"
+#include "Core/GameProject/CResourceEntry.h"
 #include <Common/CAssetID.h>
-#include <Common/FileIO.h>
+#include <Common/CFourCC.h>
 #include <Common/Macros.h>
+
 #include <memory>
+#include <set>
+#include <vector>
 
 class CScriptLayer;
 class CScriptObject;
@@ -81,7 +84,7 @@ public:
     bool HasDependency(const CAssetID& rkID) const override;
 
     // Accessors
-    CAssetID ID() const              { return mID; }
+    const CAssetID& ID() const       { return mID; }
     void SetID(const CAssetID& rkID) { mID = rkID; }
 };
 
@@ -123,21 +126,21 @@ public:
     void Serialize(IArchive& rArc) override;
 
     // Accessors
-    int UsedChar() const                 { return mUsedChar; }
+    int UsedChar() const { return mUsedChar; }
 };
 
 // Node representing a script object. Indicates the type of object.
 class CScriptInstanceDependency : public IDependencyNode
 {
 protected:
-    uint32 mObjectType = 0;
+    uint32_t mObjectType = 0;
 
 public:
     EDependencyNodeType Type() const override;
     void Serialize(IArchive& rArc) override;
 
     // Accessors
-    uint32 ObjectType() const       { return mObjectType; }
+    uint32_t ObjectType() const { return mObjectType; }
 
     // Static
     static std::unique_ptr<CScriptInstanceDependency> BuildTree(CScriptObject *pInstance);
@@ -147,17 +150,17 @@ public:
 class CSetCharacterDependency : public CDependencyTree
 {
 protected:
-    uint32 mCharSetIndex = 0;
+    uint32_t mCharSetIndex = 0;
 
 public:
     CSetCharacterDependency() = default;
-    explicit CSetCharacterDependency(uint32 SetIndex) : mCharSetIndex(SetIndex) {}
+    explicit CSetCharacterDependency(uint32_t SetIndex) : mCharSetIndex(SetIndex) {}
 
     EDependencyNodeType Type() const override;
     void Serialize(IArchive& rArc) override;
 
     // Accessors
-    uint32 CharSetIndex() const { return mCharSetIndex; }
+    uint32_t CharSetIndex() const { return mCharSetIndex; }
 
     // Static
     static std::unique_ptr<CSetCharacterDependency> BuildTree(const SSetCharacter& rkChar);
@@ -167,7 +170,7 @@ public:
 class CSetAnimationDependency : public CDependencyTree
 {
 protected:
-    std::set<uint32> mCharacterIndices;
+    std::set<uint32_t> mCharacterIndices;
 
 public:
     CSetAnimationDependency() = default;
@@ -176,36 +179,36 @@ public:
     void Serialize(IArchive& rArc) override;
 
     // Accessors
-    bool IsUsedByCharacter(uint32 CharIdx) const { return mCharacterIndices.contains(CharIdx); }
-    bool IsUsedByAnyCharacter() const            { return !mCharacterIndices.empty(); }
+    bool IsUsedByCharacter(uint32_t CharIdx) const { return mCharacterIndices.contains(CharIdx); }
+    bool IsUsedByAnyCharacter() const              { return !mCharacterIndices.empty(); }
 
     // Static
-    static std::unique_ptr<CSetAnimationDependency> BuildTree(const CAnimSet *pkOwnerSet, uint32 AnimIndex);
+    static std::unique_ptr<CSetAnimationDependency> BuildTree(const CAnimSet *pkOwnerSet, uint32_t AnimIndex);
 };
 
 // Node representing an animation event. Indicates which character index uses this event.
 class CAnimEventDependency : public CResourceDependency
 {
 protected:
-    uint32 mCharIndex = 0;
+    uint32_t mCharIndex = 0;
 
 public:
     CAnimEventDependency() = default;
-    CAnimEventDependency(const CAssetID& rkID, uint32 CharIndex)
+    CAnimEventDependency(const CAssetID& rkID, uint32_t CharIndex)
         : CResourceDependency(rkID), mCharIndex(CharIndex) {}
 
     EDependencyNodeType Type() const override;
     void Serialize(IArchive& rArc) override;
 
     // Accessors
-    uint32 CharIndex() const    { return mCharIndex; }
+    uint32_t CharIndex() const    { return mCharIndex; }
 };
 
 // Node representing an area. Tracks dependencies on a per-instance basis and can separate dependencies of different script layers.
 class CAreaDependencyTree : public CDependencyTree
 {
 protected:
-    std::vector<uint32> mLayerOffsets;
+    std::vector<uint32_t> mLayerOffsets;
 
 public:
     CAreaDependencyTree() = default;
@@ -214,11 +217,11 @@ public:
     void Serialize(IArchive& rArc) override;
 
     void AddScriptLayer(CScriptLayer *pLayer, const std::vector<CAssetID>& rkExtraDeps);
-    void GetModuleDependencies(EGame Game, std::vector<TString>& rModuleDepsOut, std::vector<uint32>& rModuleLayerOffsetsOut) const;
+    void GetModuleDependencies(EGame Game, std::vector<TString>& rModuleDepsOut, std::vector<uint32_t>& rModuleLayerOffsetsOut) const;
 
     // Accessors
-    size_t NumScriptLayers() const                   { return mLayerOffsets.size(); }
-    uint32 ScriptLayerOffset(size_t LayerIdx) const  { return mLayerOffsets[LayerIdx]; }
+    size_t NumScriptLayers() const                    { return mLayerOffsets.size(); }
+    uint32_t ScriptLayerOffset(size_t LayerIdx) const { return mLayerOffsets[LayerIdx]; }
 };
 
 #endif // CDEPENDENCYTREE

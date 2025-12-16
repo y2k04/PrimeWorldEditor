@@ -1,9 +1,9 @@
 #ifndef CSOUNDPROPERTY_H
 #define CSOUNDPROPERTY_H
 
-#include "IProperty.h"
+#include "Core/Resource/Script/Property/IProperty.h"
 
-class CSoundProperty : public TSerializeableTypedProperty<int32, EPropertyType::Sound>
+class CSoundProperty : public TSerializeableTypedProperty<int32_t, EPropertyType::Sound>
 {
     friend class IProperty;
 

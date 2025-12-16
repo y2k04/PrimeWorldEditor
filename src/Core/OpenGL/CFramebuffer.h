@@ -1,7 +1,7 @@
 #ifndef CFRAMEBUFFER_H
 #define CFRAMEBUFFER_H
 
-#include "CRenderbuffer.h"
+#include "Core/OpenGL/CRenderbuffer.h"
 #include "Core/Resource/CTexture.h"
 #include <GL/glew.h>
 
@@ -10,8 +10,8 @@ class CFramebuffer
     GLuint mFramebuffer = 0;
     CRenderbuffer *mpRenderbuffer = nullptr;
     CTexture *mpTexture = nullptr;
-    uint32 mWidth = 0;
-    uint32 mHeight = 0;
+    uint32_t mWidth = 0;
+    uint32_t mHeight = 0;
     bool mEnableMultisampling = false;
     bool mInitialized = false;
     GLenum mStatus{};
@@ -21,15 +21,16 @@ class CFramebuffer
 
 public:
     CFramebuffer();
-    CFramebuffer(uint32 Width, uint32 Height);
+    CFramebuffer(uint32_t Width, uint32_t Height);
     ~CFramebuffer();
+
     void Init();
     void Bind(GLenum Target = GL_FRAMEBUFFER);
-    void Resize(uint32 Width, uint32 Height);
+    void Resize(uint32_t Width, uint32_t Height);
     void SetMultisamplingEnabled(bool Enable);
 
     // Accessors
-    CTexture* Texture() const    { return mpTexture; }
+    CTexture* Texture() const { return mpTexture; }
 
     // Static
     static void BindDefaultFramebuffer(GLenum Target = GL_FRAMEBUFFER);

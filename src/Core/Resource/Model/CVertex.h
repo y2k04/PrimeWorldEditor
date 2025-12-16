@@ -6,21 +6,21 @@
 #include <Common/Math/CVector3f.h>
 #include <array>
 
-using TBoneIndices = std::array<uint8, 4>;
+using TBoneIndices = std::array<uint8_t, 4>;
 using TBoneWeights = std::array<float, 4>;
 
 class CVertex
 {
 public:
-    uint32 ArrayPosition = 0; // Position of this vertex in the input model file.
-                              // This is needed to resave without breaking rigging.
+    uint32_t ArrayPosition = 0; // Position of this vertex in the input model file.
+                                // This is needed to resave without breaking rigging.
     CVector3f Position;
     CVector3f Normal;
     std::array<CColor, 2> Color;
     std::array<CVector2f, 8> Tex;
     TBoneIndices BoneIndices{};
     TBoneWeights BoneWeights{};
-    std::array<uint8, 8> MatrixIndices{};
+    std::array<uint8_t, 8> MatrixIndices{};
 
     constexpr CVertex() = default;
     constexpr CVertex(const CVector3f& pos) : Position{pos}

@@ -1,7 +1,8 @@
 #ifndef CSPLINEPROPERTY_H
 #define CSPLINEPROPERTY_H
 
-#include "IProperty.h"
+#include "Core/Resource/Script/Property/IProperty.h"
+#include <vector>
 
 class CSplineProperty : public TTypedProperty<std::vector<char>, EPropertyType::Spline>
 {

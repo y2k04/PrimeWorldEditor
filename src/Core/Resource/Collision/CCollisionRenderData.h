@@ -1,10 +1,12 @@
 #ifndef CCOLLISIONRENDERDATA_H
 #define CCOLLISIONRENDERDATA_H
 
-#include "SCollisionIndexData.h"
-#include "SOBBTreeNode.h"
-#include "Core/OpenGL/CVertexBuffer.h"
 #include "Core/OpenGL/CIndexBuffer.h"
+#include "Core/OpenGL/CVertexBuffer.h"
+#include "Core/Resource/Collision/SCollisionIndexData.h"
+#include "Core/Resource/Collision/SOBBTreeNode.h"
+
+#include <vector>
 
 class CCollidableOBBTree;
 
@@ -18,8 +20,8 @@ class CCollisionRenderData
 
     /** Index buffer offset for the start of each collision material.
      *  This has an extra index at the end, which is the end index for the last material. */
-    std::vector<uint>   mMaterialIndexOffsets;
-    std::vector<uint>   mMaterialWireIndexOffsets;
+    std::vector<uint32_t> mMaterialIndexOffsets;
+    std::vector<uint32_t> mMaterialWireIndexOffsets;
 
     /** Cached vertex/index buffer for the bounding hierarchy (octree or OBB tree) */
     CVertexBuffer       mBoundingVertexBuffer;
@@ -27,7 +29,7 @@ class CCollisionRenderData
 
     /** Index buffer offset for different depth levels of the bounding hierarchy.
      *  This allows you to i.e. render only the first (n) levels of the hierarchy. */
-    std::vector<uint>   mBoundingDepthOffsets;
+    std::vector<uint32_t> mBoundingDepthOffsets;
 
     /** Whether render data has been built */
     bool mBuilt = false;
@@ -48,7 +50,7 @@ public:
     int MaxBoundingHierarchyDepth() const;
 
     /** Accessors */
-    bool IsBuilt() const                     { return mBuilt; }
+    bool IsBuilt() const { return mBuilt; }
 };
 
 #endif // CCOLLISIONRENDERDATA_H
