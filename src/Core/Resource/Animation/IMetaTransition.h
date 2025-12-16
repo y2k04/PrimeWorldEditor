@@ -53,11 +53,10 @@ public:
 class CMetaTransTrans : public IMetaTransition
 {
     EMetaTransType mType;
-    float mUnknownA = 0.0f;
-    uint32_t mUnknownB = 0;
+    CCharAnimTime mTransDuration;
     bool mUnknownC = false;
-    bool mUnknownD = false;
-    uint32_t mUnknownE = 0;
+    bool mRunA = false;
+    uint32_t mFlags = 0;
 
 public:
     CMetaTransTrans(EMetaTransType Type, IInputStream& rInput, EGame Game);

@@ -29,18 +29,17 @@ std::unique_ptr<IMetaAnimation> CMetaAnimFactory::LoadFromStream(IInputStream& r
 }
 
 // ************ CMetaAnimationPlay ************
-CMetaAnimPlay::CMetaAnimPlay(const CAnimPrimitive& rkPrimitive, float UnkA, uint32 UnkB)
+CMetaAnimPlay::CMetaAnimPlay(const CAnimPrimitive& rkPrimitive, float time, CCharAnimTime::EType type)
     : mPrimitive(rkPrimitive)
-    , mUnknownA(UnkA)
-    , mUnknownB(UnkB)
+    , mTime(time, type)
 {
 }
 
 CMetaAnimPlay::CMetaAnimPlay(IInputStream& rInput, EGame Game)
 {
     mPrimitive = CAnimPrimitive(rInput, Game);
-    mUnknownA = rInput.ReadFloat();
-    mUnknownB = rInput.ReadLong();
+    mTime.SetTime(rInput.ReadFloat());
+    mTime.SetType(static_cast<CCharAnimTime::EType>(rInput.ReadLong()));
 }
 
 EMetaAnimType CMetaAnimPlay::Type() const
@@ -60,8 +59,8 @@ CMetaAnimBlend::CMetaAnimBlend(EMetaAnimType Type, IInputStream& rInput, EGame G
     mType = Type;
     mpMetaAnimA = gMetaAnimFactory.LoadFromStream(rInput, Game);
     mpMetaAnimB = gMetaAnimFactory.LoadFromStream(rInput, Game);
-    mUnknownA = rInput.ReadFloat();
-    mUnknownB = rInput.ReadBool();
+    mBlend = rInput.ReadFloat();
+    mUnknown = rInput.ReadBool();
 }
 
 CMetaAnimBlend::~CMetaAnimBlend() = default;

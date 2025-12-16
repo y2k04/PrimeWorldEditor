@@ -34,7 +34,7 @@ struct SAnimation
 
 struct STransition
 {
-    uint32_t Unknown;
+    uint32_t ID;
     uint32_t AnimIdA;
     uint32_t AnimIdB;
     std::unique_ptr<IMetaTransition> pMetaTrans;

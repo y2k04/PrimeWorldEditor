@@ -147,7 +147,7 @@ void CAnimSetLoader::LoadReturnsCHAR(IInputStream& rCHAR)
 
         // small hack - create a meta-anim for it so we can generate asset names for the ANIM files correctly
         SAnimation Anim;
-        Anim.pMetaAnim = std::make_unique<CMetaAnimPlay>(CAnimPrimitive(AnimID, AnimIdx, AnimName), 0.f, 0);
+        Anim.pMetaAnim = std::make_unique<CMetaAnimPlay>(CAnimPrimitive(AnimID, AnimIdx, AnimName), 0.f, CCharAnimTime::EType::NonZero);
         Anim.Name = std::move(AnimName);
         pSet->mAnimations.push_back(std::move(Anim));
     }
@@ -343,7 +343,7 @@ void CAnimSetLoader::LoadAnimationSet(IInputStream& rANCS)
     for (uint32 i = 0; i < NumTransitions; i++)
     {
         pSet->mTransitions.push_back({
-            .Unknown = rANCS.ReadULong(),
+            .ID = rANCS.ReadULong(),
             .AnimIdA = rANCS.ReadULong(),
             .AnimIdB = rANCS.ReadULong(),
             .pMetaTrans = gMetaTransFactory.LoadFromStream(rANCS, mGame),

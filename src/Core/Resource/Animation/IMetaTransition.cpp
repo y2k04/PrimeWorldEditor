@@ -55,11 +55,11 @@ CMetaTransTrans::CMetaTransTrans(EMetaTransType Type, IInputStream& rInput, EGam
 
     if (Game <= EGame::Echoes)
     {
-        mUnknownA = rInput.ReadFloat();
-        mUnknownB = rInput.ReadLong();
+        mTransDuration.SetTime(rInput.ReadFloat());
+        mTransDuration.SetType(static_cast<CCharAnimTime::EType>(rInput.ReadLong()));
         mUnknownC = rInput.ReadBool();
-        mUnknownD = rInput.ReadBool();
-        mUnknownE = rInput.ReadLong();
+        mRunA = rInput.ReadBool();
+        mFlags = rInput.ReadLong();
     }
     else
     {

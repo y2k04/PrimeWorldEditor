@@ -55,8 +55,34 @@ public:
 
     // Accessors
     CAnimation* Animation() const   { return mpAnim; }
-    uint32_t ID() const               { return mID; }
+    uint32_t ID() const             { return mID; }
     const TString& Name() const     { return mName; }
+};
+
+class CCharAnimTime
+{
+public:
+    enum class EType
+    {
+        NonZero,
+        ZeroIncreasing,
+        ZeroSteady,
+        ZeroDecreasing,
+        Infinity,
+    };
+
+    CCharAnimTime() = default;
+    explicit CCharAnimTime(float time, EType type) : mTime{time}, mType{type} {}
+
+    float Seconds() const { return mTime; }
+    EType Type() const { return mType; }
+
+    void SetTime(float time) { mTime = time; }
+    void SetType(EType type) { mType = type; }
+
+private:
+    float mTime{};
+    EType mType{};
 };
 
 // Base MetaAnimation interface
@@ -77,19 +103,18 @@ class CMetaAnimPlay : public IMetaAnimation
 {
 protected:
     CAnimPrimitive mPrimitive;
-    float mUnknownA;
-    uint32_t mUnknownB;
+    CCharAnimTime mTime;
 
 public:
-    CMetaAnimPlay(const CAnimPrimitive& rkPrimitive, float UnkA, uint32_t UnkB);
+    CMetaAnimPlay(const CAnimPrimitive& rkPrimitive, float time, CCharAnimTime::EType type);
     CMetaAnimPlay(IInputStream& rInput, EGame Game);
     EMetaAnimType Type() const override;
     void GetUniquePrimitives(std::set<CAnimPrimitive>& rPrimSet) const override;
 
     // Accessors
-    CAnimPrimitive Primitive() const { return mPrimitive; }
-    float UnknownA() const           { return mUnknownA; }
-    uint32_t UnknownB() const          { return mUnknownB; }
+    const CAnimPrimitive& Primitive() const { return mPrimitive; }
+    float Seconds() const                   { return mTime.Seconds(); }
+    CCharAnimTime::EType AnimType() const   { return mTime.Type(); }
 };
 
 // CMetaAnimBlend - blend between two animations
@@ -99,8 +124,8 @@ protected:
     EMetaAnimType mType;
     std::unique_ptr<IMetaAnimation> mpMetaAnimA;
     std::unique_ptr<IMetaAnimation> mpMetaAnimB;
-    float mUnknownA;
-    bool mUnknownB;
+    float mBlend;
+    bool mUnknown;
 
 public:
     CMetaAnimBlend(EMetaAnimType Type, IInputStream& rInput, EGame Game);
@@ -111,8 +136,8 @@ public:
     // Accessors
     IMetaAnimation* BlendAnimationA() const  { return mpMetaAnimA.get(); }
     IMetaAnimation* BlendAnimationB() const  { return mpMetaAnimB.get(); }
-    float UnknownA() const                   { return mUnknownA; }
-    bool UnknownB() const                    { return mUnknownB; }
+    float Blend() const                      { return mBlend; }
+    bool Unknown() const                     { return mUnknown; }
 };
 
 // SAnimProbabilityPair - structure used by CMetaAnimationRandom to associate an animation with a probability value
