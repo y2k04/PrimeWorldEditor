@@ -200,7 +200,7 @@ void CStringTable::AddString(size_t AtIndex)
     {
         if (mStringNames.size() > AtIndex)
         {
-            mStringNames.insert(mStringNames.begin() + AtIndex, 1, "");
+            mStringNames.emplace(mStringNames.begin() + AtIndex);
         }
     }
     else
@@ -210,7 +210,7 @@ void CStringTable::AddString(size_t AtIndex)
 
     for (SLanguageData& Language : mLanguages)
     {
-        Language.Strings.insert(Language.Strings.begin() + AtIndex, 1, SStringData());
+        Language.Strings.emplace(Language.Strings.begin() + AtIndex);
     }
 }
 
