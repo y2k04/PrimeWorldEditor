@@ -2,6 +2,7 @@
 #define EVERTEXATTRIBUTE
 
 #include <Common/Flags.h>
+#include <cstdint>
 
 enum class EVertexAttribute
 {
@@ -31,8 +32,8 @@ enum class EVertexAttribute
 };
 DECLARE_FLAGS_ENUMCLASS(EVertexAttribute, FVertexDescription)
 
-extern const uint32 gkNumVertexAttribs;
-uint32 VertexAttributeSize(EVertexAttribute Attrib);
+extern const uint32_t gkNumVertexAttribs;
+uint32_t VertexAttributeSize(EVertexAttribute Attrib);
 
 #endif // EVERTEXATTRIBUTE
 

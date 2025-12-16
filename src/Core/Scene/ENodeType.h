@@ -2,8 +2,9 @@
 #define ENODETYPE_H
 
 #include <Common/Flags.h>
+#include <cstdint>
 
-enum class ENodeType : uint32
+enum class ENodeType : uint32_t
 {
     None            = 0x0,
     Root            = 0x1,

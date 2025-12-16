@@ -1,7 +1,12 @@
-#include "CGraphics.h"
+#include "Core/Render/CGraphics.h"
+
 #include "Core/OpenGL/CShader.h"
+#include "Core/OpenGL/CUniformBuffer.h"
+#include "Core/OpenGL/CVertexArrayManager.h"
+#include "Core/Render/CBoneTransformData.h"
 #include "Core/Resource/CMaterial.h"
-#include <Common/Log.h>
+
+#include <Common/Math/CTransform4f.h>
 
 // ************ MEMBER INITIALIZATION ************
 CUniformBuffer* CGraphics::mpMVPBlockBuffer;

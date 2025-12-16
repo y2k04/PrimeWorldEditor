@@ -1,6 +1,7 @@
-#include "CLight.h"
+#include "Core/Resource/CLight.h"
+
 #include "Core/Render/CGraphics.h"
-#include <Common/Common.h>
+#include <Common/Macros.h>
 #include <cfloat>
 #include <cmath>
 

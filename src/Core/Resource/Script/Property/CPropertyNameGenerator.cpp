@@ -1,7 +1,11 @@
-#include "CPropertyNameGenerator.h"
-#include "IUIRelay.h"
+#include "Core/Resource/Script/Property/CPropertyNameGenerator.h"
+
+#include "Core/IProgressNotifier.h"
+#include "Core/IUIRelay.h"
 #include "Core/Resource/Script/CGameTemplate.h"
 #include "Core/Resource/Script/NPropertyMap.h"
+#include <Common/Macros.h>
+#include <Common/NBasics.h>
 #include <Common/Hash/CCRC32.h>
 
 #include <memory>

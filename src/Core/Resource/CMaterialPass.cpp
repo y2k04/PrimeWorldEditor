@@ -1,7 +1,10 @@
-#include "CMaterialPass.h"
-#include "CMaterial.h"
+#include "Core/Resource/CMaterialPass.h"
+
 #include "Core/Render/CGraphics.h"
+#include "Core/Resource/CMaterial.h"
+#include "Core/Resource/CTexture.h"
 #include <Common/CTimer.h>
+#include <Common/Math/CTransform4f.h>
 
 CMaterialPass::CMaterialPass(CMaterial *pParent)
     : mpParentMat(pParent)

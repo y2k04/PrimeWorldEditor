@@ -1,5 +1,8 @@
 #include "Core/OpenGL/CShaderGenerator.h"
+
 #include <Common/Macros.h>
+#include "Core/OpenGL/CShader.h"
+#include "Core/Resource/CMaterial.h"
 #include <array>
 #include <fstream>
 #include <sstream>

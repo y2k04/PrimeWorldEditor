@@ -1,9 +1,8 @@
-#include "EVertexAttribute.h"
-#include <Common/Log.h>
+#include "Core/Resource/Model/EVertexAttribute.h"
 
-const uint32 gkNumVertexAttribs = 22;
+const uint32_t gkNumVertexAttribs = 22;
 
-uint32 VertexAttributeSize(EVertexAttribute Attrib)
+uint32_t VertexAttributeSize(EVertexAttribute Attrib)
 {
     switch (Attrib)
     {

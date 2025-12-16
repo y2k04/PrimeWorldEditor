@@ -1,7 +1,9 @@
-#include "CTweakManager.h"
+#include "Core/Tweaks/CTweakManager.h"
+
 #include "Core/GameProject/CGameProject.h"
 #include "Core/GameProject/CResourceIterator.h"
 #include "Core/Tweaks/CTweakCooker.h"
+#include "Core/Tweaks/CTweakData.h"
 #include "Core/Tweaks/CTweakLoader.h"
 
 CTweakManager::CTweakManager(CGameProject* pInProject)

@@ -1,4 +1,4 @@
-#include "CFlagsProperty.h"
+#include "Core/Resource/Script/Property/CFlagsProperty.h"
 #include "Core/Resource/Script/CGameTemplate.h"
 
 void CFlagsProperty::Serialize(IArchive& rArc)
@@ -26,7 +26,7 @@ void CFlagsProperty::PostInitialize()
 
 void CFlagsProperty::SerializeValue(void* pData, IArchive& rArc) const
 {
-    rArc.SerializePrimitive((uint32&)ValueRef(pData), SH_HexDisplay);
+    rArc.SerializePrimitive((uint32_t&)ValueRef(pData), SH_HexDisplay);
 }
 
 void CFlagsProperty::InitFromArchetype(IProperty* pOther)

@@ -2,6 +2,7 @@
 #define CSHORTPROPERTY_H
 
 #include "Core/Resource/Script/Property/IProperty.h"
+#include <cstdint>
 
 class CShortProperty : public TNumericalProperty<int16_t, EPropertyType::Short>
 {
@@ -20,7 +21,7 @@ public:
 
     TString ValueAsString(void* pData) const override
     {
-        return TString::FromInt32((int32)Value(pData), 0, 10);
+        return TString::FromInt32((int32_t)Value(pData), 0, 10);
     }
 };
 

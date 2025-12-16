@@ -29,6 +29,7 @@
 #include "Core/Resource/CMapArea.h"
 #include "Core/Resource/CStringList.h"
 #include "Core/Resource/Resources.h"
+#include "Core/Tweaks/CTweakData.h"
 #include "Core/Tweaks/CTweakLoader.h"
 
 // Static helper class to allow spawning resources based on an EResType

@@ -1,5 +1,7 @@
-#include "CVertexBuffer.h"
-#include "CVertexArrayManager.h"
+#include "Core/OpenGL/CVertexBuffer.h"
+
+#include "Core/Resource/Animation/CSkin.h"
+#include "Core/OpenGL/CVertexArrayManager.h"
 
 CVertexBuffer::CVertexBuffer()
 {

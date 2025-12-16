@@ -1,6 +1,9 @@
-#include "CTextureDecoder.h"
-#include <Common/Log.h>
+#include "Core/Resource/Factory/CTextureDecoder.h"
+
+#include "Core/Resource/CTexture.h"
 #include <Common/CColor.h>
+#include <Common/Macros.h>
+#include <Common/FileIO/IOutputStream.h>
 #include <array>
 
 // A cleanup is warranted at some point. Trying to support both partial + full decode ended up really messy.

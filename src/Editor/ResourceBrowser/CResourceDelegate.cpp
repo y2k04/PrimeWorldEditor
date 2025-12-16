@@ -9,6 +9,8 @@
 #include <QLineEdit>
 #include <QPainter>
 
+#include <algorithm>
+
 // Geometry Info
 struct SResDelegateGeometryInfo
 {
@@ -27,7 +29,7 @@ static SResDelegateGeometryInfo GetGeometryInfo(const SDelegateFontInfo& rkFontI
 
     // Calculate icon
     int IdealIconSize = CResourceBrowserDelegate::skIconSize;
-    int IconSize = Math::Min(IdealIconSize, Info.InnerRect.height());
+    int IconSize = std::min(IdealIconSize, Info.InnerRect.height());
     int IconX = Info.InnerRect.left() + ((IdealIconSize - IconSize) / 2);
     int IconY = Info.InnerRect.top() + ((Info.InnerRect.height() - IconSize) / 2);
     Info.IconRect = QRect(IconX, IconY, IconSize, IconSize);

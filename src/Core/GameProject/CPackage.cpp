@@ -1,8 +1,10 @@
-#include "CPackage.h"
-#include "DependencyListBuilders.h"
-#include "CGameProject.h"
+#include "Core/GameProject/CPackage.h"
+
 #include "Core/CompressionUtil.h"
+#include "Core/GameProject/DependencyListBuilders.h"
+#include "Core/GameProject/CGameProject.h"
 #include "Core/Resource/Cooker/CWorldCooker.h"
+#include <Common/CScopedTimer.h>
 #include <Common/Macros.h>
 #include <Common/FileIO.h>
 #include <Common/FileUtil.h>

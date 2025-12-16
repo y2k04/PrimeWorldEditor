@@ -7,7 +7,7 @@
 #include <memory>
 #include <vector>
 
-enum class EOBBTreeNodeType : uint8
+enum class EOBBTreeNodeType : uint8_t
 {
     Branch = 0,
     Leaf = 1

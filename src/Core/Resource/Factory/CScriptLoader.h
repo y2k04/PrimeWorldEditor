@@ -4,6 +4,7 @@
 #include <Common/EGame.h>
 #include "Core/Resource/Script/Property/TPropertyRef.h"
 
+#include <cstdint>
 #include <memory>
 
 class CGameArea;
@@ -26,7 +27,7 @@ class CScriptLoader
     void* mpCurrentData = nullptr;
 
     CScriptLoader();
-    void ReadProperty(IProperty* pProp, uint32 Size, IInputStream& rSCLY);
+    void ReadProperty(IProperty* pProp, uint32_t Size, IInputStream& rSCLY);
 
     void LoadStructMP1(IInputStream& rSCLY, CStructProperty* pStruct);
     CScriptObject* LoadObjectMP1(IInputStream& rSCLY);

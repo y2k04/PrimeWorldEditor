@@ -1,9 +1,11 @@
 #ifndef CFRAMEBUFFER_H
 #define CFRAMEBUFFER_H
 
-#include "Core/OpenGL/CRenderbuffer.h"
-#include "Core/Resource/CTexture.h"
 #include <GL/glew.h>
+#include <cstdint>
+
+class CRenderbuffer;
+class CTexture;
 
 class CFramebuffer
 {

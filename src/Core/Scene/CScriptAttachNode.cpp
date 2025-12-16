@@ -3,6 +3,7 @@
 #include "Core/SRayIntersection.h"
 #include "Core/Render/CGraphics.h"
 #include "Core/Render/CRenderer.h"
+#include "Core/Resource/Animation/CSkeleton.h"
 #include "Core/Resource/Model/SSurface.h"
 #include "Core/Resource/Script/CScriptObject.h"
 #include "Core/Resource/Script/Property/IProperty.h"
@@ -20,7 +21,8 @@ CScriptAttachNode::CScriptAttachNode(CScene *pScene, const SAttachment& rkAttach
     mpAttachAssetProp = pBaseStruct->ChildByIDString(rkAttachment.AttachProperty);
     mAttachAssetRef = CAssetRef(pParent->Instance()->PropertyData(), mpAttachAssetProp);
     mAttachAnimSetRef = CAnimationSetRef(pParent->Instance()->PropertyData(), mpAttachAssetProp);
-    if (mpAttachAssetProp) AttachPropertyModified();
+    if (mpAttachAssetProp)
+        AttachPropertyModified();
 
     ParentDisplayAssetChanged(mpScriptNode->DisplayAsset());
 }
@@ -29,32 +31,30 @@ CScriptAttachNode::~CScriptAttachNode() = default;
 
 void CScriptAttachNode::AttachPropertyModified()
 {
-    if (mpAttachAssetProp)
-    {
-        if (mAttachAssetRef.IsValid())
-            mpAttachAsset = gpResourceStore->LoadResource<CModel>(mAttachAssetRef.Get());
-        else if (mAttachAnimSetRef.IsValid())
-            mpAttachAsset = mAttachAnimSetRef.Get().AnimSet();
+    if (!mpAttachAssetProp)
+        return;
 
-        CModel* pModel = Model();
+    if (mAttachAssetRef.IsValid())
+        mpAttachAsset = gpResourceStore->LoadResource<CModel>(mAttachAssetRef.Get());
+    else if (mAttachAnimSetRef.IsValid())
+        mpAttachAsset = mAttachAnimSetRef.Get().AnimSet();
 
-        if (pModel && pModel->Type() == EResourceType::Model)
-            mLocalAABox = pModel->AABox();
-        else
-            mLocalAABox = CAABox::Infinite();
+    const CModel* pModel = Model();
+    if (pModel && pModel->Type() == EResourceType::Model)
+        mLocalAABox = pModel->AABox();
+    else
+        mLocalAABox = CAABox::Infinite();
 
-        MarkTransformChanged();
-    }
+    MarkTransformChanged();
 }
 
 void CScriptAttachNode::ParentDisplayAssetChanged(CResource* pNewDisplayAsset)
 {
     if (pNewDisplayAsset->Type() == EResourceType::AnimSet)
     {
-        CSkeleton* pSkel = mpScriptNode->ActiveSkeleton();
+        const CSkeleton* pSkel = mpScriptNode->ActiveSkeleton();
         mpLocator = pSkel->BoneByName(mLocatorName);
     }
-
     else
     {
         mpLocator = nullptr;
@@ -70,7 +70,7 @@ CModel* CScriptAttachNode::Model() const
         if (mpAttachAsset->Type() == EResourceType::Model)
             return static_cast<CModel*>(mpAttachAsset.RawPointer());
 
-        else if (mpAttachAsset->Type() == EResourceType::AnimSet)
+        if (mpAttachAsset->Type() == EResourceType::AnimSet)
             return mAttachAnimSetRef.Get().GetCurrentModel();
     }
 
@@ -80,7 +80,8 @@ CModel* CScriptAttachNode::Model() const
 void CScriptAttachNode::AddToRenderer(CRenderer *pRenderer, const SViewInfo& rkViewInfo)
 {
     CModel *pModel = Model();
-    if (!pModel) return;
+    if (!pModel)
+        return;
 
     if (rkViewInfo.ViewFrustum.BoxInFrustum(AABox()))
     {

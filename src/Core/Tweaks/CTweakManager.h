@@ -1,8 +1,11 @@
 #ifndef CTWEAKMANAGER_H
 #define CTWEAKMANAGER_H
 
-#include "Core/Tweaks/CTweakData.h"
+#include <Common/TString.h>
 #include <vector>
+
+class CTweakData;
+class CGameProject;
 
 /** Class responsible for managing game tweak data, including saving/loading and providing access */
 class CTweakManager

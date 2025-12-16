@@ -10,6 +10,8 @@
 #include <Common/FileIO.h>
 #include <Common/FileUtil.h>
 #include <Common/TString.h>
+#include <Common/Serialization/CBinaryReader.h>
+#include <Common/Serialization/CBinaryWriter.h>
 #include <Common/Serialization/CXMLReader.h>
 #include <Common/Serialization/CXMLWriter.h>
 

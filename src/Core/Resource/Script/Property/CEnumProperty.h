@@ -2,6 +2,7 @@
 #define CENUMPROPERTY_H
 
 #include "Core/Resource/Script/Property/IProperty.h"
+#include <cstdint>
 
 /** There are two types of enum properties in the game data: enum and choice.
  *
@@ -19,7 +20,7 @@ class TEnumPropertyBase : public TSerializeableTypedProperty<int32_t, TypeEnum>
     struct SEnumValue
     {
         TString Name;
-        uint32 ID = 0;
+        uint32_t ID = 0;
 
         SEnumValue() = default;
         SEnumValue(TString rkInName, uint32_t InID)
@@ -66,7 +67,7 @@ public:
 
         // Serialize default value
         auto* pArchetype = static_cast<TEnumPropertyBase*>(base::mpArchetype);
-        uint32 DefaultValueFlags = SH_Optional | (TypeEnum == EPropertyType::Enum ? SH_HexDisplay : 0);
+        uint32_t DefaultValueFlags = SH_Optional | (TypeEnum == EPropertyType::Enum ? SH_HexDisplay : 0);
         rArc << SerialParameter("DefaultValue", base::mDefaultValue, DefaultValueFlags, pArchetype ? pArchetype->mDefaultValue : 0);
 
         // Only serialize type name override for root archetypes.
@@ -88,7 +89,7 @@ public:
 
     void InitFromArchetype(IProperty* pOther) override
     {
-        TTypedProperty<int32, TypeEnum>::InitFromArchetype(pOther);
+        TTypedProperty<int32_t, TypeEnum>::InitFromArchetype(pOther);
         auto* pOtherEnum = static_cast<TEnumPropertyBase*>(pOther);
         mValues = pOtherEnum->mValues;
     }

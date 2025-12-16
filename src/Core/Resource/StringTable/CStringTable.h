@@ -3,9 +3,8 @@
 
 #include "Core/Resource/StringTable/ELanguage.h"
 #include "Core/Resource/CResource.h"
-#include <Common/BasicTypes.h>
-#include <Common/CFourCC.h>
 #include <Common/TString.h>
+#include <cstdint>
 #include <vector>
 
 /** A table of localized strings from STRG assets.
@@ -50,7 +49,8 @@ class CStringTable : public CResource
 
 public:
     /** Constructor */
-    explicit CStringTable(CResourceEntry *pEntry = nullptr) : CResource(pEntry) {}
+    explicit CStringTable(CResourceEntry* pEntry = nullptr);
+    ~CStringTable() override;
 
     /** Returns the number of languages in the table */
     size_t NumLanguages() const    { return mLanguages.size(); }

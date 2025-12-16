@@ -1,12 +1,12 @@
 #ifndef CVERTEXARRAYMANAGER_H
 #define CVERTEXARRAYMANAGER_H
 
-#include "Core/OpenGL/CDynamicVertexBuffer.h"
-#include "Core/OpenGL/CVertexBuffer.h"
-
 #include <unordered_map>
 #include <vector>
 #include <GL/glew.h>
+
+class CDynamicVertexBuffer;
+class CVertexBuffer;
 
 class CVertexArrayManager
 {

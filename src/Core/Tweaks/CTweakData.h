@@ -4,6 +4,7 @@
 #include "Core/Resource/CResource.h"
 #include "Core/Resource/Script/CScriptTemplate.h"
 #include "Core/Resource/Script/Property/TPropertyRef.h"
+#include <cstdint>
 #include <vector>
 
 /** Tweak data assets for MP1 */
@@ -18,7 +19,7 @@ class CTweakData : public CResource
     uint32_t mTweakID;
 
     /** Tweak data */
-    std::vector<uint8> mTweakData;
+    std::vector<uint8_t> mTweakData;
 
 public:
     CTweakData(CScriptTemplate* pTemplate, uint32_t TweakID, CResourceEntry* pEntry = nullptr)

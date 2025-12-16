@@ -1,7 +1,12 @@
-#include "CTextureEncoder.h"
-#include <Common/Log.h>
+#include "Core/Resource/Cooker/CTextureEncoder.h"
+
+#include "Core/Resource/CTexture.h"
+
+#include <Common/Macros.h>
+#include <Common/FileIO/CMemoryInStream.h>
 
 CTextureEncoder::CTextureEncoder() = default;
+CTextureEncoder::~CTextureEncoder() = default;
 
 void CTextureEncoder::WriteTXTR(IOutputStream& rTXTR)
 {

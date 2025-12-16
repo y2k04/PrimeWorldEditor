@@ -2,8 +2,9 @@
 #define FSHOWFLAGS
 
 #include <Common/Flags.h>
+#include <cstdint>
 
-enum class EShowFlag : uint32
+enum class EShowFlag : uint32_t
 {
     None                = 0x00,
     SplitWorld          = 0x01,

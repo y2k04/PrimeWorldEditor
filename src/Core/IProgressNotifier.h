@@ -1,8 +1,10 @@
 #ifndef IPROGRESSNOTIFIER_H
 #define IPROGRESSNOTIFIER_H
 
-#include <Common/Common.h>
-#include <Common/Math/MathUtil.h>
+#include <Common/Macros.h>
+#include <Common/TString.h>
+#include <algorithm>
+#include <cstdint>
 
 class IProgressNotifier
 {
@@ -25,16 +27,16 @@ public:
     {
         mTaskName = std::move(TaskName);
         mTaskIndex = TaskIndex;
-        mTaskCount = Math::Max(mTaskCount, TaskIndex + 1);
+        mTaskCount = std::max(mTaskCount, TaskIndex + 1);
     }
 
-    void Report(uint64 StepIndex, uint64 StepCount, const TString& rkStepDesc = "")
+    void Report(uint64_t StepIndex, uint64_t StepCount, const TString& rkStepDesc = "")
     {
         ASSERT(mTaskCount >= 1);
 
         // Make sure TaskCount and StepCount are at least 1 so we don't have divide-by-zero errors
-        int TaskCount = Math::Max(mTaskCount, 1);
-        StepCount = Math::Max<uint64>(StepCount, 1);
+        int TaskCount = std::max(mTaskCount, 1);
+        StepCount = std::max(StepCount, 1ULL);
 
         // Calculate percentage
         double TaskPercent = 1.f / (double) TaskCount;

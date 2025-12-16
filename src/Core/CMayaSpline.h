@@ -31,7 +31,7 @@ class CMayaSpline
 
     mutable int mCachedKnotIndex = 0; // 0x20
     mutable int mUnknown1 = 0; // 0x24
-    mutable uint8 mDirtyFlags = 0; // 0x28
+    mutable uint8_t mDirtyFlags = 0; // 0x28
     mutable float mCachedMinTime = 0.0f; // 0x2C
     mutable float mCachedHermiteCoefficients[4] = {}; // 0x30, 0x34, 0x38, 0x3C
 

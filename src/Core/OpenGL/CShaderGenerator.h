@@ -1,8 +1,8 @@
 #ifndef SHADERGEN_H
 #define SHADERGEN_H
 
-#include "Core/OpenGL/CShader.h"
-#include "Core/Resource/CMaterial.h"
+class CMaterial;
+class CShader;
 
 /**
  * @todo Would be great to have a more complex shader system that would allow

@@ -1,9 +1,12 @@
-#include "NCoreTests.h"
-#include "IUIRelay.h"
+#include "Core/NCoreTests.h"
+
+#include "Core/IUIRelay.h"
 #include "Core/GameProject/CGameProject.h"
 #include "Core/GameProject/CResourceEntry.h"
 #include "Core/GameProject/CResourceIterator.h"
 #include "Core/Resource/Cooker/CResourceCooker.h"
+
+#include <algorithm>
 
 namespace NCoreTests
 {
@@ -13,16 +16,16 @@ const char* ParseParameter(const char* pkParmName, int argc, char* argv[])
 {
     const uint kParmLen = strlen(pkParmName);
 
-    for (int i=0; i<argc; i++)
+    for (int i = 0; i < argc; i++)
     {
-        if( strncmp(argv[i], pkParmName, kParmLen) == 0 )
+        if (strncmp(argv[i], pkParmName, kParmLen) == 0)
         {
             // Found the parameter. Make sure there is enough space in the
             // string for the parameter value before returning it.
-            if( strlen(argv[i]) >= kParmLen+2 &&
+            if (strlen(argv[i]) >= kParmLen + 2 &&
                 argv[i][kParmLen] == '=')
             {
-                return &argv[i][kParmLen+1];
+                return &argv[i][kParmLen + 1];
             }
         }
     }
@@ -34,9 +37,9 @@ const char* ParseParameter(const char* pkParmName, int argc, char* argv[])
 /** Checks for the existence of a token in the commandline stream */
 bool ParseToken(const char* pkToken, int argc, char* argv[])
 {
-    for (int i=0; i<argc; i++)
+    for (int i = 0; i < argc; i++)
     {
-        if( strcmp(argv[i], pkToken) == 0 )
+        if (strcmp(argv[i], pkToken) == 0)
         {
             return true;
         }
@@ -49,18 +52,18 @@ bool ParseToken(const char* pkToken, int argc, char* argv[])
 /** Check commandline input to see if the user is running a test */
 bool RunTests(int argc, char* argv[])
 {
-    if( ParseToken("ValidateCooker", argc, argv) )
+    if (ParseToken("ValidateCooker", argc, argv))
     {
         // Fetch parameters
         const char* pkType = ParseParameter("-type", argc, argv);
         EResourceType Type = TEnumReflection<EResourceType>::ConvertStringToValue(pkType);
         bool AllowDump = ParseToken("-allowdump", argc, argv);
 
-        if( Type == EResourceType::Invalid )
+        if (Type == EResourceType::Invalid)
         {
             gpUIRelay->ShowMessageBox("ValidateCooker", "Usage: ValidateCooker -type=<ResourceType> [-allowdump] [-project=<Project>]");
         }
-        else if( gpUIRelay->OpenProject(ParseParameter("-project", argc, argv)) )
+        else if (gpUIRelay->OpenProject(ParseParameter("-project", argc, argv)))
         {
             ValidateCooker(Type, AllowDump);
         }
@@ -74,8 +77,8 @@ bool RunTests(int argc, char* argv[])
 /** Validate all cooker output for the given resource type matches the original asset data */
 bool ValidateCooker(EResourceType ResourceType, bool DumpInvalidFileContents)
 {
-    debugf( "Validating output of %s cooker...",
-            TEnumReflection<EResourceType>::ConvertValueToString(ResourceType) );
+    debugf("Validating output of %s cooker...",
+           TEnumReflection<EResourceType>::ConvertValueToString(ResourceType));
 
     // There must be a project loaded
     CResourceStore* pStore = gpResourceStore;
@@ -103,7 +106,7 @@ bool ValidateCooker(EResourceType ResourceType, bool DumpInvalidFileContents)
         if (!FileStream.IsValid())
             continue;
 
-        std::vector<uint8> OriginalData( FileStream.Size() );
+        std::vector<uint8> OriginalData(FileStream.Size());
         FileStream.ReadBytes(OriginalData.data(), OriginalData.size());
         FileStream.Close();
 
@@ -114,30 +117,30 @@ bool ValidateCooker(EResourceType ResourceType, bool DumpInvalidFileContents)
 
         // Start our comparison by making sure the sizes match up
         const uint kAlignment           = (It->Game() >= EGame::Corruption ? 64 : 32);
-        const uint kAlignedOriginalSize = VAL_ALIGN( (uint) OriginalData.size(), kAlignment );
-        const uint kAlignedNewSize      = VAL_ALIGN( (uint) NewData.size(), kAlignment );
+        const uint kAlignedOriginalSize = VAL_ALIGN((uint) OriginalData.size(), kAlignment);
+        const uint kAlignedNewSize      = VAL_ALIGN((uint) NewData.size(), kAlignment);
         const char* pkInvalidReason     = "";
         bool IsValid                    = false;
 
-        if( kAlignedOriginalSize == kAlignedNewSize &&
-            OriginalData.size() >= NewData.size() )
+        if (kAlignedOriginalSize == kAlignedNewSize &&
+            OriginalData.size() >= NewData.size())
         {
             // Compare actual data. Note that the original asset can have alignment padding
             // at the end, which is applied by the pak but usually preserved in extracted
             // files. We do not include this in the comparison as missing padding does not
             // indicate malformed data.
-            uint DataSize = Math::Min(OriginalData.size(), NewData.size());
+            const auto DataSize = std::min(OriginalData.size(), NewData.size());
 
-            if( memcmp(OriginalData.data(), NewData.data(), DataSize) == 0 )
+            if (memcmp(OriginalData.data(), NewData.data(), DataSize) == 0)
             {
                 // Verify any missing data at the end is padding.
                 bool MissingData = false;
 
-                if( OriginalData.size() > NewData.size() )
+                if (OriginalData.size() > NewData.size())
                 {
-                    for( uint i=DataSize; i<OriginalData.size(); i++ )
+                    for (size_t i = DataSize; i < OriginalData.size(); i++)
                     {
-                        if( OriginalData[i] != 0xFF )
+                        if (OriginalData[i] != 0xFF)
                         {
                             MissingData = true;
                             break;
@@ -145,7 +148,7 @@ bool ValidateCooker(EResourceType ResourceType, bool DumpInvalidFileContents)
                     }
                 }
 
-                if( !MissingData )
+                if (!MissingData)
                 {
                     // All tests passed!
                     IsValid = true;
@@ -166,40 +169,40 @@ bool ValidateCooker(EResourceType ResourceType, bool DumpInvalidFileContents)
         }
 
         // Print test results
-        if( IsValid )
+        if (IsValid)
         {
-            debugf( "[SUCCESS] %s", *CookedPath );
+            debugf("[SUCCESS] %s", *CookedPath);
             NumValid++;
         }
         else
         {
-            debugf( "[FAILED: %s] %s", pkInvalidReason, *CookedPath );
+            debugf("[FAILED: %s] %s", pkInvalidReason, *CookedPath);
             NumInvalid++;
         }
 
-        if( DumpInvalidFileContents )
+        if (DumpInvalidFileContents)
         {
             TString DumpPath = "dump" / CookedPath;
-            FileUtil::MakeDirectory( DumpPath.GetFileDirectory() );
+            FileUtil::MakeDirectory(DumpPath.GetFileDirectory());
 
             CFileOutStream DumpFile(DumpPath, EEndian::BigEndian);
-            DumpFile.WriteBytes( NewData.data(), NewData.size() );
+            DumpFile.WriteBytes(NewData.data(), NewData.size());
             DumpFile.Close();
         }
 
-        if( NumInvalid >= 100 )
+        if (NumInvalid >= 100)
         {
-            debugf( "Test aborted; at least 100 invalid resources. Checked %d resources, %d passed, %d failed",
-                    NumValid + NumInvalid, NumValid, NumInvalid );
+            debugf("Test aborted; at least 100 invalid resources. Checked %d resources, %d passed, %d failed",
+                   NumValid + NumInvalid, NumValid, NumInvalid);
             return false;
         }
     }
 
     // Test complete
     bool TestSuccess = (NumInvalid == 0);
-    debugf( "Test %s; checked %d resources, %d passed, %d failed",
-            TestSuccess ? "SUCCEEDED" : "FAILED",
-            NumValid + NumInvalid, NumValid, NumInvalid );
+    debugf("Test %s; checked %d resources, %d passed, %d failed",
+           TestSuccess ? "SUCCEEDED" : "FAILED",
+           NumValid + NumInvalid, NumValid, NumInvalid);
 
     return TestSuccess;
 }

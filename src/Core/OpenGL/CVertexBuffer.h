@@ -2,12 +2,14 @@
 #define CVERTEXBUFFER_H
 
 #include "Core/Resource/TResPtr.h"
-#include "Core/Resource/Animation/CSkin.h"
 #include "Core/Resource/Model/CVertex.h"
 #include "Core/Resource/Model/EVertexAttribute.h"
 #include <array>
+#include <cstdint>
 #include <vector>
 #include <GL/glew.h>
+
+class CSkin;
 
 class CVertexBuffer
 {
@@ -26,6 +28,7 @@ public:
     CVertexBuffer();
     explicit CVertexBuffer(FVertexDescription Desc);
     ~CVertexBuffer();
+
     uint16_t AddVertex(const CVertex& rkVtx);
     uint16_t AddIfUnique(const CVertex& rkVtx, uint16_t Start);
     void Reserve(size_t Size);

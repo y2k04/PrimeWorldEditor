@@ -1,4 +1,7 @@
-#include "CVertexArrayManager.h"
+#include "Core/OpenGL/CVertexArrayManager.h"
+
+#include "Core/OpenGL/CDynamicVertexBuffer.h"
+#include "Core/OpenGL/CVertexBuffer.h"
 
 // ************ STATIC MEMBER INITIALIZATION ************
 std::vector<CVertexArrayManager*> CVertexArrayManager::sVAManagers;

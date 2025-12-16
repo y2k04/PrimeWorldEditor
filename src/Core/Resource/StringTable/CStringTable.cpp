@@ -1,6 +1,7 @@
-#include "CStringTable.h"
+#include "Core/Resource/StringTable/CStringTable.h"
+
 #include "Core/GameProject/CGameProject.h"
-#include <Common/Math/MathUtil.h>
+#include <Common/Macros.h>
 #include <algorithm>
 #include <array>
 #include <utility>
@@ -87,6 +88,11 @@ static int FindLanguageIndex(const CStringTable* pkInTable, ELanguage InLanguage
 
     return -1;
 }
+
+CStringTable::CStringTable(CResourceEntry* pEntry)
+    : CResource(pEntry) {}
+
+CStringTable::~CStringTable() = default;
 
 /** Returns a string given a language/index pair */
 TString CStringTable::GetString(ELanguage Language, size_t StringIndex) const

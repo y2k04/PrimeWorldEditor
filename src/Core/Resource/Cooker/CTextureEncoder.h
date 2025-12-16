@@ -1,8 +1,12 @@
 #ifndef CTEXTUREENCODER_H
 #define CTEXTUREENCODER_H
 
-#include "Core/Resource/CTexture.h"
+#include "Core/Resource/ETexelFormat.h"
 #include "Core/Resource/TResPtr.h"
+
+class CTexture;
+class IInputStream;
+class IOutputStream;
 
 // Class contains basic functionality right now - only supports directly converting DXT1 to CMPR
 // More advanced functions (including actual encoding!) coming later
@@ -13,6 +17,8 @@ class CTextureEncoder
     ETexelFormat mOutputFormat{};
 
     CTextureEncoder();
+    ~CTextureEncoder();
+
     void WriteTXTR(IOutputStream& rTXTR);
     void DetermineBestOutputFormat();
     void ReadSubBlockCMPR(IInputStream& rSource, IOutputStream& rDest);

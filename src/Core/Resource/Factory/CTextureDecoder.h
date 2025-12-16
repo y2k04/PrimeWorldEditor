@@ -1,13 +1,17 @@
 #ifndef CTEXTUREDECODER_H
 #define CTEXTUREDECODER_H
 
-#include "Core/Resource/CTexture.h"
 #include "Core/Resource/ETexelFormat.h"
-#include <Common/CColor.h>
-#include <Common/FileIO.h>
+#include <Common/FileIO/CMemoryInStream.h>
 
 #include <memory>
 #include <vector>
+
+class CColor;
+class CResourceEntry;
+class CTexture;
+class IInputStream;
+class IOutputStream;
 
 class CTextureDecoder
 {

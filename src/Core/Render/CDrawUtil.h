@@ -11,6 +11,7 @@
 #include "Core/Resource/CTexture.h"
 
 #include <array>
+#include <cstdint>
 #include <memory>
 #include <optional>
 
@@ -103,7 +104,7 @@ public:
     static void UseCollisionShader(bool IsFloor, bool IsUnstandable, const CColor& TintColor = CColor::White());
 
     static CShader* GetTextShader();
-    static void LoadCheckerboardTexture(uint32 GLTextureUnit);
+    static void LoadCheckerboardTexture(uint32_t GLTextureUnit);
     static CTexture* GetLightTexture(ELightType Type);
     static CTexture* GetLightMask(ELightType Type);
     static CModel* GetCubeModel();

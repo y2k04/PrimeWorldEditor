@@ -4,6 +4,7 @@
 #include <Common/EGame.h>
 #include <Core/Resource/TResPtr.h>
 
+#include <cstdint>
 #include <memory>
 
 class CAnimSet;
@@ -21,7 +22,7 @@ class CAnimSetLoader
     void LoadCorruptionCHAR(IInputStream& rCHAR);
     void LoadReturnsCHAR(IInputStream& rCHAR);
     void LoadPASDatabase(IInputStream& rPAS4);
-    void LoadParticleResourceData(IInputStream& rFile, SSetCharacter *pChar, uint16 Version);
+    void LoadParticleResourceData(IInputStream& rFile, SSetCharacter *pChar, uint16_t Version);
 
     void LoadAnimationSet(IInputStream& rANCS);
     void ProcessPrimitives();

@@ -1,16 +1,17 @@
 #ifndef CMATERIALPASS_H
 #define CMATERIALPASS_H
 
-#include "Core/Resource/CTexture.h"
 #include "Core/Resource/ETevEnums.h"
 #include "Core/Resource/TResPtr.h"
 #include "Core/Render/FRenderOptions.h"
 #include <Common/CFourCC.h>
-#include <Common/Hash/CFNV1A.h>
+#include <Common/TString.h>
 #include <array>
 #include <cstdint>
+#include <memory>
 
 class CMaterial;
+class CTexture;
 
 enum class EPassSettings
 {
@@ -50,6 +51,7 @@ class CMaterialPass
 public:
     explicit CMaterialPass(CMaterial *pParent);
     ~CMaterialPass();
+
     std::unique_ptr<CMaterialPass> Clone(CMaterial *pParent) const;
     void HashParameters(CFNV1A& rHash);
     void LoadTexture(uint32_t PassIndex);

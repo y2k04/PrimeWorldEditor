@@ -4,6 +4,7 @@
 #include <Common/EGame.h>
 #include <Core/Resource/TResPtr.h>
 
+#include <cstdint>
 #include <memory>
 
 class CCollisionMaterial;
@@ -27,7 +28,7 @@ class CCollisionLoader
 public:
     static std::unique_ptr<CCollisionMeshGroup> LoadAreaCollision(IInputStream& rMREA);
     static std::unique_ptr<CCollisionMeshGroup> LoadDCLN(IInputStream& rDCLN, CResourceEntry *pEntry);
-    static EGame GetFormatVersion(uint32 Version);
+    static EGame GetFormatVersion(uint32_t Version);
 };
 
 #endif // CCOLLISIONLOADER_H

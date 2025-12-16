@@ -1,5 +1,8 @@
-#include "CFramebuffer.h"
-#include <Common/Log.h>
+#include "Core/OpenGL/CFramebuffer.h"
+
+#include "Core/OpenGL/CRenderbuffer.h"
+#include "Core/Resource/CTexture.h"
+#include <Common/Macros.h>
 
 CFramebuffer::CFramebuffer() = default;
 

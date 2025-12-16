@@ -1,7 +1,7 @@
 #ifndef ETEVENUMS
 #define ETEVENUMS
 
-#include <Common/BasicTypes.h>
+#include <cstdint>
 
 enum ETevColorInput
 {
@@ -105,13 +105,13 @@ enum class EUVAnimMode
     NoUVAnim            = -1
 };
 
-enum class EUVAnimUVSource : uint16
+enum class EUVAnimUVSource : uint16_t
 {
     Position,
     Normal,
     UV
 };
-enum class EUVAnimMatrixConfig : uint16
+enum class EUVAnimMatrixConfig : uint16_t
 {
     NoMtxNoPost,
     MtxNoPost,

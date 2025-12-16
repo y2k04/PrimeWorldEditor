@@ -1,15 +1,21 @@
 #ifndef CGRAPHICS_H
 #define CGRAPHICS_H
 
-#include "Core/OpenGL/CUniformBuffer.h"
-#include "Core/OpenGL/CVertexArrayManager.h"
-#include "Core/Render/CBoneTransformData.h"
 #include "Core/Resource/CLight.h"
 #include <Common/CColor.h>
 #include <Common/Math/CMatrix4f.h>
 #include <Common/Math/CVector3f.h>
 #include <Common/Math/CVector4f.h>
+
+#include <GL/glew.h>
+
 #include <array>
+#include <cstdint>
+#include <vector>
+
+class CBoneTransformData;
+class CUniformBuffer;
+class CVertexArrayManager;
 
 /**
  * todo: this entire thing needs to be further abstracted, other classes shouldn't
@@ -87,7 +93,7 @@ public:
     // Lighting-related
     enum class ELightingMode { None, Basic, World };
     static ELightingMode sLightMode;
-    static uint32 sNumLights;
+    static uint32_t sNumLights;
     static constexpr CColor skDefaultAmbientColor{0.5f, 0.5f, 0.5f, 0.0f};
     static CColor sAreaAmbientColor;
     static float sWorldLightMultiplier;

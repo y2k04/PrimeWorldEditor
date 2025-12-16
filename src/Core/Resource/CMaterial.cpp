@@ -27,7 +27,7 @@ CMaterial::~CMaterial()
     ClearShader();
 }
 
-std::unique_ptr<CMaterial> CMaterial::Clone()
+std::unique_ptr<CMaterial> CMaterial::Clone() const
 {
     std::unique_ptr<CMaterial> pOut = std::make_unique<CMaterial>();
     pOut->mName = mName;
@@ -75,7 +75,6 @@ void CMaterial::GenerateShader(bool AllowRegen /*= true*/)
             mpShader = rShader.pShader;
             rShader.NumReferences++;
         }
-
         else
         {
             ClearShader();
@@ -87,7 +86,6 @@ void CMaterial::GenerateShader(bool AllowRegen /*= true*/)
                 delete mpShader;
                 mpShader = nullptr;
             }
-
             else
             {
                 mShaderStatus = EShaderStatus::ShaderExists;
@@ -126,7 +124,8 @@ bool CMaterial::SetCurrent(FRenderOptions Options)
     if (sCurrentMaterial != HashParameters())
     {
         // Shader setup
-        if (mShaderStatus == EShaderStatus::NoShader) GenerateShader();
+        if (mShaderStatus == EShaderStatus::NoShader)
+            GenerateShader();
         mpShader->SetCurrent();
 
         if (mShaderStatus == EShaderStatus::ShaderFailed)

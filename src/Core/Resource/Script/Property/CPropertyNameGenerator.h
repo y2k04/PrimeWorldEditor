@@ -1,15 +1,17 @@
 #ifndef CPROPERTYNAMEGENERATOR_H
 #define CPROPERTYNAMEGENERATOR_H
 
-#include "Core/IProgressNotifier.h"
-#include <Common/Common.h>
+#include <Common/TString.h>
 
 #include <atomic>
+#include <cstdint>
 #include <list>
 #include <mutex>
 #include <set>
 #include <unordered_map>
 #include <vector>
+
+class IProgressNotifier;
 
 /** Name casing parameter */
 enum class ENameCasing
@@ -109,10 +111,10 @@ class CPropertyNameGenerator
     std::mutex mPropertyCheckMutex;
 
     /** Total number of tests to perform */
-    uint64 TotalTests;
+    uint64_t TotalTests;
 
     /** Current number of tests performed */
-    std::atomic<uint64> TotalTestsDone{0};
+    std::atomic<uint64_t> TotalTestsDone{0};
 
     void GenerateTask(const SPropertyNameGenerationParameters& rkParams,
                       SPropertyNameGenerationTaskParameters taskParams,

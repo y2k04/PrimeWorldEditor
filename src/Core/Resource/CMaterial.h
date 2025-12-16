@@ -116,7 +116,7 @@ public:
     CMaterial(EGame Version, FVertexDescription VtxDesc);
     ~CMaterial();
 
-    std::unique_ptr<CMaterial> Clone();
+    std::unique_ptr<CMaterial> Clone() const;
     void GenerateShader(bool AllowRegen = true);
     void ClearShader();
     bool SetCurrent(FRenderOptions Options);
