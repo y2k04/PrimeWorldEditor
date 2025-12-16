@@ -22,12 +22,6 @@ CResourceTableView::CResourceTableView(QWidget *pParent)
 
 CResourceTableView::~CResourceTableView() = default;
 
-void CResourceTableView::setModel(QAbstractItemModel *pModel)
-{
-    if (qobject_cast<CResourceProxyModel*>(pModel) != nullptr)
-        QTableView::setModel(pModel);
-}
-
 void CResourceTableView::dragEnterEvent(QDragEnterEvent *pEvent)
 {
     // need to reimplement this to fix a bug in QAbstractItemView
@@ -47,11 +41,11 @@ void CResourceTableView::dragEnterEvent(QDragEnterEvent *pEvent)
 // ************ SLOTS ************
 void CResourceTableView::DeleteSelected()
 {
-    QModelIndexList List = selectionModel()->selectedIndexes();
+    const QModelIndexList List = selectionModel()->selectedIndexes();
 
     // Figure out which indices can actually be deleted
-    CResourceProxyModel *pProxy = static_cast<CResourceProxyModel*>(model());
-    CResourceTableModel *pModel = static_cast<CResourceTableModel*>(pProxy->sourceModel());
+    auto* pProxy = static_cast<CResourceProxyModel*>(model());
+    auto* pModel = static_cast<CResourceTableModel*>(pProxy->sourceModel());
     QList<CResourceEntry*> ResourcesToDelete;
     QList<CVirtualDirectory*> DirsToDelete;
 

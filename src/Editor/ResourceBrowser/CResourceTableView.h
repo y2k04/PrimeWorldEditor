@@ -18,7 +18,6 @@ public:
     explicit CResourceTableView(QWidget *pParent = nullptr);
     ~CResourceTableView() override;
 
-    void setModel(QAbstractItemModel *pModel) override;
     void dragEnterEvent(QDragEnterEvent *pEvent) override;
 
 public slots:
