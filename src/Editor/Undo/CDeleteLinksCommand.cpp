@@ -5,6 +5,18 @@
 
 #include <QCoreApplication>
 
+struct CDeleteLinksCommand::SDeletedLink
+{
+    uint32 State;
+    uint32 Message;
+    CInstancePtr pSender;
+    CInstancePtr pReceiver;
+    uint32 SenderIndex;
+    uint32 ReceiverIndex;
+};
+
+CDeleteLinksCommand::CDeleteLinksCommand() = default;
+
 CDeleteLinksCommand::CDeleteLinksCommand(CWorldEditor *pEditor, CScriptObject *pObject, ELinkType Type, const QList<uint32>& rkIndices)
     : IUndoCommand(QCoreApplication::translate("CDeleteLinksCommand", "Delete Links"))
     , mpEditor(pEditor)
@@ -15,14 +27,15 @@ CDeleteLinksCommand::CDeleteLinksCommand(CWorldEditor *pEditor, CScriptObject *p
     {
         const CLink *pLink = pObject->Link(Type, index);
 
-        SDeletedLink DelLink;
-        DelLink.State = pLink->State();
-        DelLink.Message = pLink->Message();
-        DelLink.pSender = pLink->Sender();
-        DelLink.pReceiver = pLink->Receiver();
-        DelLink.SenderIndex = pLink->SenderIndex();
-        DelLink.ReceiverIndex = pLink->ReceiverIndex();
-        mLinks.push_back(DelLink);
+        mLinks.push_back({
+            .State = pLink->State(),
+            .Message = pLink->Message(),
+            .pSender = pLink->Sender(),
+            .pReceiver = pLink->Receiver(),
+            .SenderIndex = pLink->SenderIndex(),
+            .ReceiverIndex = pLink->ReceiverIndex(),
+        });
+        const auto& DelLink = mLinks.back();
 
         if (Type == ELinkType::Outgoing)
         {
@@ -37,38 +50,41 @@ CDeleteLinksCommand::CDeleteLinksCommand(CWorldEditor *pEditor, CScriptObject *p
     }
 }
 
+CDeleteLinksCommand::~CDeleteLinksCommand() = default;
+
 void CDeleteLinksCommand::undo()
 {
     struct SNewLink
     {
         SDeletedLink *pDelLink;
         CLink *pLink;
-    };
-    QList<SNewLink> NewLinks;
 
+        static bool SenderIndexSorter(const SNewLink& l, const SNewLink& r) {
+            return l.pDelLink->SenderIndex < r.pDelLink->SenderIndex;
+        }
+        static bool ReceiverIndexSorter(const SNewLink& l, const SNewLink& r) {
+            return l.pDelLink->ReceiverIndex < r.pDelLink->ReceiverIndex;
+        }
+    };
+
+    QList<SNewLink> NewLinks;
     for (SDeletedLink& rDelLink : mLinks)
     {
-        SNewLink Link;
-        Link.pDelLink = &rDelLink;
-        Link.pLink = new CLink(mpEditor->ActiveArea(), rDelLink.State, rDelLink.Message, rDelLink.pSender.InstanceID(), rDelLink.pReceiver.InstanceID());
-        NewLinks.push_back(Link);
+        NewLinks.push_back({
+            .pDelLink = &rDelLink,
+            .pLink = new CLink(mpEditor->ActiveArea(), rDelLink.State, rDelLink.Message, rDelLink.pSender.InstanceID(), rDelLink.pReceiver.InstanceID()),
+        });
     }
 
     // Add to senders
-    std::sort(NewLinks.begin(), NewLinks.end(), [](const SNewLink& rLinkA, const SNewLink& rLinkB) {
-        return rLinkA.pDelLink->SenderIndex < rLinkB.pDelLink->SenderIndex;
-    });
-
+    std::sort(NewLinks.begin(), NewLinks.end(), &SNewLink::SenderIndexSorter);
     for (SNewLink& rNew : NewLinks)
     {
         rNew.pDelLink->pSender->AddLink(ELinkType::Outgoing, rNew.pLink, rNew.pDelLink->SenderIndex);
     }
 
     // Add to receivers
-    std::sort(NewLinks.begin(), NewLinks.end(), [](const SNewLink& rLinkA, const SNewLink& rLinkB) {
-        return rLinkA.pDelLink->ReceiverIndex < rLinkB.pDelLink->ReceiverIndex;
-    });
-
+    std::sort(NewLinks.begin(), NewLinks.end(), &SNewLink::ReceiverIndexSorter);
     for (SNewLink& rNew : NewLinks)
     {
         rNew.pDelLink->pReceiver->AddLink(ELinkType::Incoming, rNew.pLink, rNew.pDelLink->ReceiverIndex);

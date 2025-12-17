@@ -12,20 +12,14 @@ class CDeleteLinksCommand : public IUndoCommand
     CWorldEditor *mpEditor = nullptr;
     CInstancePtrList mAffectedInstances;
 
-    struct SDeletedLink
-    {
-        uint32 State;
-        uint32 Message;
-        CInstancePtr pSender;
-        CInstancePtr pReceiver;
-        uint32 SenderIndex;
-        uint32 ReceiverIndex;
-    };
+    struct SDeletedLink;
     QList<SDeletedLink> mLinks;
 
 public:
-    CDeleteLinksCommand() = default;
-    CDeleteLinksCommand(CWorldEditor *pEditor, CScriptObject *pObject, ELinkType Type, const QList<uint32>& rkIndices);
+    CDeleteLinksCommand();
+    CDeleteLinksCommand(CWorldEditor *pEditor, CScriptObject *pObject, ELinkType Type, const QList<uint32_t>& rkIndices);
+    ~CDeleteLinksCommand() override;
+
     void undo() override;
     void redo() override;
     bool AffectsCleanState() const override { return true; }
