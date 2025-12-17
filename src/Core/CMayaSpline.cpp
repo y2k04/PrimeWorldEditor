@@ -1,16 +1,17 @@
 #include "Core/CMayaSpline.h"
-#include <Common/Math/MathUtil.h>
 
-void ValidateTangent(CVector2f& Tangent)
+#include <algorithm>
+#include <cmath>
+#include <cstdlib>
+
+[[maybe_unused]] static void ValidateTangent(CVector2f& Tangent)
 {
-    if (Tangent.X < 0.f)
-        Tangent.X = 0.f;
-
+    Tangent.X = std::max(Tangent.X, 0.f);
     Tangent = Tangent.Normalized();
 
     if (Tangent.X == 0.f && Tangent.Y != 0.f)
     {
-        float Mul = (Tangent.Y >= 0.f ? 1.f : -1.f);
+        const float Mul = (Tangent.Y >= 0.f ? 1.f : -1.f);
         Tangent.X = 0.0001f;
         Tangent.Y = 5729578 * Tangent.X * Mul; // not sure where that number comes from!
     }
@@ -18,7 +19,7 @@ void ValidateTangent(CVector2f& Tangent)
 
 void CMayaSplineKnot::GetTangents(const CMayaSplineKnot* pkPrev, const CMayaSplineKnot* pkNext, CVector2f& OutTangentA, CVector2f& OutTangentB) const
 {
-    if (Flags & 0x8000)
+    if ((Flags & 0x8000) != 0)
         CalculateTangents(pkPrev, pkNext);
 
     OutTangentA = CachedTangentA;
@@ -32,8 +33,8 @@ void CMayaSplineKnot::CalculateTangents(const CMayaSplineKnot* pkPrev, const CMa
 
     if ((Flags >> 24) == 4 && pkPrev)
     {
-        float PrevAmpDiff = Math::Abs(pkPrev->Amplitude - Amplitude);
-        float NextAmpDiff = (pkNext ? Math::Abs(pkNext->Amplitude - Amplitude) : PrevAmpDiff);
+        float PrevAmpDiff = std::abs(pkPrev->Amplitude - Amplitude);
+        float NextAmpDiff = (pkNext ? std::abs(pkNext->Amplitude - Amplitude) : PrevAmpDiff);
 
         if (PrevAmpDiff > 0.05f && NextAmpDiff <= 0.05f)
         {
@@ -42,7 +43,7 @@ void CMayaSplineKnot::CalculateTangents(const CMayaSplineKnot* pkPrev, const CMa
         }
     }
 
-    uint32_t TopFlagByte = (Flags >> 24) & 0xFF;
+    const uint32_t TopFlagByte = (Flags >> 24) & 0xFF;
 
     if (TopFlagByte == 0)
     {
@@ -61,23 +62,25 @@ const std::vector<CMayaSplineKnot>& CMayaSpline::GetKnots() const
 
 float CMayaSpline::GetMinTime() const
 {
-    return (mKnots.empty() ? 0.f : mKnots.front().Time);
+    return mKnots.empty() ? 0.f : mKnots.front().Time;
 }
 
 float CMayaSpline::GetMaxTime() const
 {
-    return (mKnots.empty() ? 0.f : mKnots.back().Time);
+    return mKnots.empty() ? 0.f : mKnots.back().Time;
 }
 
 float CMayaSpline::GetDuration() const
 {
-    if (mKnots.empty()) return 0.f;
-    else return GetMaxTime() - mKnots.front().Time;
+    if (mKnots.empty())
+        return 0.f;
+    
+    return GetMaxTime() - mKnots.front().Time;
 }
 
 float CMayaSpline::EvaluateAt(float Time) const
 {
-    float Amplitude = EvaluateAtUnclamped(Time);
+    const float Amplitude = EvaluateAtUnclamped(Time);
 
     if (mClampMode == 0)
     {
@@ -85,7 +88,7 @@ float CMayaSpline::EvaluateAt(float Time) const
     }
     else if (mClampMode == 1)
     {
-        return Math::Clamp(mMinAmplitude, mMaxAmplitude, Amplitude);
+        return std::clamp(Amplitude, mMinAmplitude, mMaxAmplitude);
     }
     else if (mClampMode == 2)
     {
@@ -103,7 +106,7 @@ float CMayaSpline::EvaluateAt(float Time) const
 
 float CMayaSpline::EvaluateAtUnclamped(float Time) const
 {
-    if (mKnots.size() == 0)
+    if (mKnots.empty())
         return 0.f;
 
     // Check for infinity
@@ -134,21 +137,20 @@ float CMayaSpline::EvaluateAtUnclamped(float Time) const
         if ((mCachedKnotIndex < LastKnotIndex) && (Time > mKnots.back().Time))
         {
             // You will notice we already did that check earlier, so this code can't execute...
-            float KnotTime = mKnots[mCachedKnotIndex + 1].Time;
+            const float KnotTime = mKnots[mCachedKnotIndex + 1].Time;
 
             if (Time == KnotTime)
             {
                 mCachedKnotIndex = LastKnotIndex;
                 return mKnots.back().Amplitude;
             }
-
-            else if (Time < KnotTime)
+            
+            if (Time < KnotTime)
             {
                 KnotIndex = mCachedKnotIndex + 1;
                 ValidKnot = true;
             }
         }
-
         else if (mCachedKnotIndex > 0)
         {
             float KnotTime = mKnots[mCachedKnotIndex].Time;
@@ -175,7 +177,7 @@ float CMayaSpline::EvaluateAtUnclamped(float Time) const
     // Find new knot index if needed
     if (!ValidKnot)
     {
-        bool ExactMatch = FindKnot(Time, KnotIndex);
+        const bool ExactMatch = FindKnot(Time, KnotIndex);
 
         if (ExactMatch)
         {
@@ -185,7 +187,7 @@ float CMayaSpline::EvaluateAtUnclamped(float Time) const
                 return mKnots[KnotIndex].Amplitude;
             }
 
-            else if (KnotIndex == mKnots.size())
+            if (KnotIndex == mKnots.size())
             {
                 mCachedKnotIndex = 0;
                 return mKnots.back().Amplitude;
@@ -194,18 +196,17 @@ float CMayaSpline::EvaluateAtUnclamped(float Time) const
     }
 
     // Update Hermite coefficients
-    int PrevKnot = KnotIndex - 1;
+    const int PrevKnot = KnotIndex - 1;
 
     if (mUnknown1 != PrevKnot)
     {
         mCachedKnotIndex = PrevKnot;
         mUnknown1 = PrevKnot;
 
-        if ( ((mKnots[PrevKnot].Flags >> 16) & 0xFF) == 3)
+        if (((mKnots[PrevKnot].Flags >> 16) & 0xFF) == 3)
         {
             mDirtyFlags |= 0x80;
         }
-
         else
         {
             mDirtyFlags &= ~0x80;
@@ -218,7 +219,7 @@ float CMayaSpline::EvaluateAtUnclamped(float Time) const
     }
 
     // Evaluate Hermite
-    if (mDirtyFlags & 0x80)
+    if ((mDirtyFlags & 0x80) != 0)
         return mKnots[mCachedKnotIndex].Amplitude;
     else
         return EvaluateHermite(Time);
@@ -260,13 +261,16 @@ bool CMayaSpline::FindKnot(float Time, int& OutKnotIndex) const
 
     while (Lower < Upper)
     {
-        uint32_t Index = (Lower + Upper) >> 1;
+        const uint32_t Index = (Lower + Upper) >> 1;
 
         if (mKnots[Index].Time > Time)
+        {
             Lower = Index + 1;
+        }
         else if (mKnots[Index].Time < Time)
+        {
             Upper = Index - 1;
-
+        }
         else
         {
             OutKnotIndex = Index;
