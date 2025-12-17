@@ -299,7 +299,7 @@ void IProperty::GatherAllSubInstances(std::list<IProperty*>& OutList, bool Recur
     }
 }
 
-TString IProperty::GetTemplateFileName()
+TString IProperty::GetTemplateFileName() const
 {
     // We want to return the path to the XML file that this property originally belongs to.
     // So, for example, if this is a property of a script template, we want to return that script template.
@@ -307,7 +307,7 @@ TString IProperty::GetTemplateFileName()
     // archetype property (for instance a DamageInfo struct instance), then we want to return the template
     // that contains the instance. However, if we are a sub-property of an archetype, then we want to return
     // the path to that archetype instead. Hopefully that makes sense!
-    IProperty* pTemplateRoot = this;
+    const IProperty* pTemplateRoot = this;
 
     // If our archetype has a parent, then our archetype is a sub-property of the main archetype, and we
     // need to go deeper to find the original source XML file.
@@ -333,7 +333,7 @@ TString IProperty::GetTemplateFileName()
     }
 }
 
-bool IProperty::ShouldCook(void* pPropertyData) const
+bool IProperty::ShouldCook(const void* pPropertyData) const
 {
     ECookPreference Preference = mCookPreference;
 

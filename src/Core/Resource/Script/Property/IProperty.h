@@ -196,8 +196,8 @@ public:
     IProperty* ChildByID(uint32_t ID) const;
     IProperty* ChildByIDString(const TIDString& rkIdString);
     void GatherAllSubInstances(std::list<IProperty*>& OutList, bool Recursive);
-    TString GetTemplateFileName();
-    bool ShouldCook(void* pPropertyData) const;
+    TString GetTemplateFileName() const;
+    bool ShouldCook(const void* pPropertyData) const;
     void SetName(const TString& rkNewName);
     void SetDescription(const TString& rkNewDescription);
     void SetSuffix(const TString& rkNewSuffix);
@@ -212,17 +212,21 @@ public:
     ECookPreference CookPreference() const { return mCookPreference; }
     size_t NumChildren() const { return mChildren.size(); }
 
-    IProperty* ChildByIndex(size_t ChildIndex) const
+    template <typename Self>
+    auto* ChildByIndex(this Self&& self, size_t ChildIndex)
     {
-        ASSERT(ChildIndex < mChildren.size());
-        return mChildren[ChildIndex];
+        ASSERT(ChildIndex < self.mChildren.size());
+        return std::forward<Self>(self).mChildren[ChildIndex];
     }
 
-    IProperty* Parent() const { return mpParent; }
-    IProperty* RootParent()
+    IProperty* Parent() { return mpParent; }
+    const IProperty* Parent() const { return mpParent; }
+
+    template <typename Self>
+    auto* RootParent(this Self&& self)
     {
-        IProperty* pParent = Parent();
-        IProperty* pOut = this;
+        auto* pParent = std::forward<Self>(self).Parent();
+        decltype(pParent) pOut = &self;
 
         while (pParent)
         {
@@ -233,11 +237,14 @@ public:
         return pOut;
     }
 
-    IProperty* Archetype() const { return mpArchetype; }
-    IProperty* RootArchetype()
+    IProperty* Archetype() { return mpArchetype; }
+    const IProperty* Archetype() const { return mpArchetype; }
+
+    template <typename Self>
+    auto* RootArchetype(this Self&& self)
     {
-        IProperty* pArchetype = Archetype();
-        IProperty* pOut = this;
+        auto* pArchetype = std::forward<Self>(self).Archetype();
+        decltype(pArchetype) pOut = &self;
 
         while (pArchetype)
         {
@@ -248,7 +255,9 @@ public:
         return pOut;
     }
 
-    CScriptTemplate* ScriptTemplate() const { return mpScriptTemplate; }
+    CScriptTemplate* ScriptTemplate() { return mpScriptTemplate; }
+    const CScriptTemplate* ScriptTemplate() const { return mpScriptTemplate; }
+
     const TString& Name() const { return mName; }
     const TString& Description() const { return mDescription; }
     const TString& Suffix() const { return mSuffix; }
