@@ -110,15 +110,20 @@ void CGizmo::UpdateForCamera(const CCamera& rkCamera)
 
 bool CGizmo::CheckSelectedAxes(const CRay& rkRay)
 {
-    CRay LocalRay = rkRay.Transformed(mTransform.Inverse());
-    CRay BillRay = rkRay.Transformed(mBillboardTransform.Inverse());
+    const CRay LocalRay = rkRay.Transformed(mTransform.Inverse());
+    const CRay BillRay = rkRay.Transformed(mBillboardTransform.Inverse());
 
     // Do raycast on each model
-    SModelPart *pPart = mpCurrentParts;
+    const SModelPart* pPart = mpCurrentParts;
 
     struct SResult {
-        SModelPart *pPart;
+        const SModelPart *pPart;
         float Dist;
+
+        static bool DistanceLessThan(const SResult& left, const SResult& right)
+        {
+            return left.Dist < right.Dist;
+        }
     };
     std::list<SResult> Results;
 
@@ -130,8 +135,8 @@ bool CGizmo::CheckSelectedAxes(const CRay& rkRay)
             continue;
         }
 
-        CModel *pModel = pPart->pModel;
-        CRay& rPartRay = (pPart->IsBillboard ? BillRay : LocalRay);
+        const CModel* pModel = pPart->pModel;
+        const CRay& rPartRay = (pPart->IsBillboard ? BillRay : LocalRay);
 
         // Ray/Model AABox test - allow buffer room because lines are small
         CAABox AABox = pModel->AABox();
@@ -160,10 +165,10 @@ bool CGizmo::CheckSelectedAxes(const CRay& rkRay)
 
             if (Hit)
             {
-                SResult Result;
-                Result.pPart = pPart;
-                Result.Dist = Dist;
-                Results.push_back(Result);
+                Results.push_back({
+                    .pPart = pPart,
+                    .Dist = Dist,
+                });
             }
         }
 
@@ -178,11 +183,9 @@ bool CGizmo::CheckSelectedAxes(const CRay& rkRay)
     }
 
     // Otherwise, we have at least one hit - sort results and set selected axes
-    Results.sort([](const SResult& rkLeft, SResult& rkRight) {
-        return rkLeft.Dist < rkRight.Dist;
-    });
+    Results.sort(SResult::DistanceLessThan);
 
-    CRay& rPartRay = (pPart->IsBillboard ? BillRay : LocalRay);
+    const CRay& rPartRay = (pPart->IsBillboard ? BillRay : LocalRay);
     mSelectedAxes = Results.front().pPart->ModelAxes;
     mHitPoint = mTransform * rPartRay.PointOnRay(Results.front().Dist);
 
