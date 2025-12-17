@@ -3,8 +3,8 @@
 
 #include "Editor/CEditorApplication.h"
 #include "Editor/Widgets/CResourceSelector.h"
-#include <Common/Math/MathUtil.h>
 
+#include <algorithm>
 #include <QScreen>
 
 CSelectResourcePanel::CSelectResourcePanel(CResourceSelector *pSelector)
@@ -13,7 +13,7 @@ CSelectResourcePanel::CSelectResourcePanel(CResourceSelector *pSelector)
     , mpSelector(pSelector)
     , mModel(pSelector)
 {
-    setWindowFlags( windowFlags() | Qt::FramelessWindowHint | Qt::Window );
+    setWindowFlags(windowFlags() | Qt::FramelessWindowHint | Qt::Window);
 
     mpUI->setupUi(this);
     mProxyModel.setSourceModel(&mModel);
@@ -25,18 +25,18 @@ CSelectResourcePanel::CSelectResourcePanel(CResourceSelector *pSelector)
     connect(mpUI->ResourceTableView, &QTableView::clicked, this, &CSelectResourcePanel::ResourceClicked);
 
     // Determine size
-    QPoint SelectorPos = pSelector->parentWidget()->mapToGlobal( pSelector->pos() );
-    QRect ScreenRect = gpEdApp->primaryScreen()->availableGeometry();
+    const QPoint SelectorPos = pSelector->parentWidget()->mapToGlobal(pSelector->pos());
+    const QRect ScreenRect = gpEdApp->primaryScreen()->availableGeometry();
 
-    int MaxWidthLeft = SelectorPos.x();
-    int MaxWidthRight = ScreenRect.width() - SelectorPos.x() - pSelector->width();
-    int MaxWidth = Math::Max(MaxWidthLeft, MaxWidthRight);
+    const int MaxWidthLeft = SelectorPos.x();
+    const int MaxWidthRight = ScreenRect.width() - SelectorPos.x() - pSelector->width();
+    const int MaxWidth = std::max(MaxWidthLeft, MaxWidthRight);
 
-    int MaxHeightTop = SelectorPos.y();
-    int MaxHeightBottom = ScreenRect.height() - SelectorPos.y() - pSelector->height();
-    int MaxHeight = Math::Max(MaxHeightTop, MaxHeightBottom);
+    const int MaxHeightTop = SelectorPos.y();
+    const int MaxHeightBottom = ScreenRect.height() - SelectorPos.y() - pSelector->height();
+    const int MaxHeight = std::max(MaxHeightTop, MaxHeightBottom);
 
-    QSize PanelSize(Math::Min(width(), MaxWidth), Math::Min(height(), MaxHeight));
+    const QSize PanelSize(std::min(width(), MaxWidth), std::min(height(), MaxHeight));
 
     // Determine position; place wherever we have the most amount of space
     QPoint PanelPos;
@@ -52,16 +52,16 @@ CSelectResourcePanel::CSelectResourcePanel(CResourceSelector *pSelector)
         PanelPos.rx() = SelectorPos.x();
 
     // Clamp position to screen boundaries
-    PanelPos.rx() = Math::Clamp(0, ScreenRect.width() - PanelSize.width(), PanelPos.x());
-    PanelPos.ry() = Math::Clamp(0, ScreenRect.height() - PanelSize.height(), PanelPos.y());
+    PanelPos.rx() = std::clamp(PanelPos.x(), 0, ScreenRect.width() - PanelSize.width());
+    PanelPos.ry() = std::clamp(PanelPos.y(), 0, ScreenRect.height() - PanelSize.height());
 
     // Create widget geometry
-    QRect PanelRect(PanelPos, PanelSize);
+    const QRect PanelRect(PanelPos, PanelSize);
     setGeometry(PanelRect);
 
     // Jump to the currently-selected resource
-    QModelIndex Index = mModel.InitialIndex();
-    QModelIndex ProxyIndex = mProxyModel.mapFromSource(Index);
+    const QModelIndex Index = mModel.InitialIndex();
+    const QModelIndex ProxyIndex = mProxyModel.mapFromSource(Index);
 
     mpUI->ResourceTableView->scrollTo(ProxyIndex, QAbstractItemView::PositionAtCenter);
     mpUI->ResourceTableView->selectionModel()->setCurrentIndex(ProxyIndex, QItemSelectionModel::ClearAndSelect);
@@ -88,7 +88,7 @@ void CSelectResourcePanel::SearchStringChanged(const QString& SearchString)
 
 void CSelectResourcePanel::ResourceClicked(const QModelIndex& Index)
 {
-    QModelIndex SourceIndex = mProxyModel.mapToSource(Index);
+    const QModelIndex SourceIndex = mProxyModel.mapToSource(Index);
     CResourceEntry *pEntry = mModel.EntryForIndex(SourceIndex);
     mpSelector->SetResource(pEntry);
     close();
