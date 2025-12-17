@@ -32,6 +32,15 @@ if(MSVC)
         /wd4100 # 'identifier' : unreferenced formal parameter
         /wd4101 # 'identifier': unreferenced local variable
         /wd4189 # 'identifier' : local variable is initialized but not referenced
+
+        # Compiler conformance settings
+        /permissive-
+        /volatile:iso
+        /Zc:enumTypes
+        /Zc:inline
+        /Zc:preprocessor
+        /Zc:templateScope
+        /Zc:throwingNew
     )
 
     # TODO: EXT Deprecation warnings can be removed when nod gets updated.
