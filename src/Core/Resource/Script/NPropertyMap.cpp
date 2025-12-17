@@ -218,15 +218,9 @@ void SaveMap(bool Force)
             // This mostly occurs when type names are changed - unneeded pairings with the old type can be left in the map
             NGameList::LoadAllGameTemplates();
 
-            for (auto Iter = gNameMap.begin(); Iter != gNameMap.end(); ++Iter)
-            {
-                SNameValue& Value = Iter->second;
-
-                if (Value.PropertyList.empty())
-                {
-                    Iter = gNameMap.erase(Iter);
-                }
-            }
+            std::erase_if(gNameMap, [](const auto& entry) {
+                return entry.second.PropertyList.empty();
+            });
 
             // Perform the actual save
             CXMLWriter Writer(gDataDir + gpkMapPath, "PropertyMap");
