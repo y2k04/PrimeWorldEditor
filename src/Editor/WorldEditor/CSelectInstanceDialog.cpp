@@ -18,8 +18,8 @@ CSelectInstanceDialog::CSelectInstanceDialog(CWorldEditor *pEditor, QWidget *pPa
     mTypesModel.SetModelType(CInstancesModel::EInstanceModelType::Types);
     mTypesModel.SetShowColumnEnabled(false);
 
-    int Col0Width = ui->LayersTreeView->width() * 0.9;
-    int Col1Width = ui->LayersTreeView->width() * 0.1;
+    const auto Col0Width = static_cast<int>(ui->LayersTreeView->width() * 0.9f);
+    const auto Col1Width = static_cast<int>(ui->LayersTreeView->width() * 0.1f);
     mLayersProxyModel.setSourceModel(&mLayersModel);
     ui->LayersTreeView->setModel(&mLayersProxyModel);
     ui->LayersTreeView->header()->setSortIndicator(0, Qt::AscendingOrder);
