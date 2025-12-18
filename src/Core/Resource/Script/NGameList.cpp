@@ -38,6 +38,10 @@ struct SGameInfo
         }
     }
 };
+
+// See comment in CTemplateEditDialog.cpp by UpdateTypeName for why
+// this exists (silly reasons!).
+constexpr auto GamesMinusMP1R = static_cast<size_t>(EGame::Max) - 1;
 std::array<SGameInfo, static_cast<size_t>(EGame::Max)> gGameList;
 
 /** Whether the game list has been loaded */
@@ -59,7 +63,7 @@ void SerializeGameList(IArchive& Arc)
 
     if (Arc.IsWriter())
     {
-        for (uint32 GameIdx = 0; GameIdx < static_cast<uint32>(EGame::Max); GameIdx++)
+        for (uint32 GameIdx = 0; GameIdx < GamesMinusMP1R; GameIdx++)
         {
             if (gGameList[GameIdx].IsValid)
                 NumGames++;
@@ -69,7 +73,7 @@ void SerializeGameList(IArchive& Arc)
     Arc.SerializeArraySize(NumGames);
 
     // Serialize the actual game info
-    for (uint32 GameIdx = 0; GameIdx < static_cast<uint32>(EGame::Max); GameIdx++)
+    for (uint32 GameIdx = 0; GameIdx < GamesMinusMP1R; GameIdx++)
     {
         // Skip games that don't have game templates when writing.
         if (Arc.IsWriter() && !gGameList[GameIdx].IsValid)
@@ -116,14 +120,14 @@ void SaveGameList()
 /** Load all game templates into memory */
 void LoadAllGameTemplates()
 {
-    for (int GameIdx = 0; GameIdx < static_cast<int>(EGame::Max); GameIdx++)
+    for (size_t GameIdx = 0; GameIdx < GamesMinusMP1R; GameIdx++)
         GetGameTemplate(static_cast<EGame>(GameIdx));
 }
 
 /** Resave templates. If ForceAll is false, only saves templates that have been modified. */
 void SaveTemplates(bool ForceAll)
 {
-    for (int GameIdx = 0; GameIdx < static_cast<int>(EGame::Max); GameIdx++)
+    for (size_t GameIdx = 0; GameIdx < GamesMinusMP1R; GameIdx++)
     {
         const auto Game = static_cast<EGame>(GameIdx);
         if (IsGameTemplateLoaded(Game))
@@ -143,7 +147,7 @@ CGameTemplate* GetGameTemplate(EGame Game)
         return nullptr;
     }
 
-    ASSERT(Game >= static_cast<EGame>(0) && Game < EGame::Max);
+    ASSERT(Game >= EGame::PrimeDemo && static_cast<size_t>(Game) < GamesMinusMP1R);
 
     // Initialize the game list, if it hasn't been loaded yet.
     if (!gLoadedGameList)
@@ -168,7 +172,7 @@ CGameTemplate* GetGameTemplate(EGame Game)
 /** Clean up game list resources. This needs to be called on app shutdown to ensure things are cleaned up in the right order. */
 void Shutdown()
 {
-    for (int GameIdx = 0; GameIdx < static_cast<int>(EGame::Max); GameIdx++)
+    for (size_t GameIdx = 0; GameIdx < GamesMinusMP1R; GameIdx++)
     {
         gGameList[GameIdx].Name = "";
         gGameList[GameIdx].TemplatePath = "";

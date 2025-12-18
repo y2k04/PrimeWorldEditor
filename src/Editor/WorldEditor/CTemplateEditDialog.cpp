@@ -250,6 +250,16 @@ void CTemplateEditDialog::UpdateDescription(const TString& rkNewDesc)
     }
 }
 
+// TODO: For whatever reason, the templates for Metroid Prime: Remastered were added to the
+//       templates folder without actually adding support for any of the new data types (STRP, etc)
+//       so actually trying to use the templates window will crash.
+//
+//       I really don't like stubbing out support like this, but it would've been really cool if
+//       support was added by those that actually know the formats at the time!
+//
+//       When removing, make sure to do the same to the constant in NGameList.cpp as well.
+constexpr auto GamesMinusMP1R = static_cast<int>(EGame::Max) - 1;
+
 void CTemplateEditDialog::UpdateTypeName(const TString& kNewTypeName, bool AllowOverride)
 {
     if (mOriginalTypeName != kNewTypeName || mOriginalAllowTypeNameOverride != AllowOverride)
@@ -259,7 +269,7 @@ void CTemplateEditDialog::UpdateTypeName(const TString& kNewTypeName, bool Allow
             bool WasUnknown = mOriginalTypeName.Contains("Unknown") || mOriginalTypeName.Contains("Struct");
 
             // Get a list of properties to update.
-            for (int GameIdx = 0; GameIdx < (int) EGame::Max; GameIdx++)
+            for (int GameIdx = 0; GameIdx < GamesMinusMP1R; GameIdx++)
             {
                 if (WasUnknown && (EGame) GameIdx != mpProperty->Game())
                     continue;
@@ -295,7 +305,8 @@ void CTemplateEditDialog::FindEquivalentProperties(IProperty* pProperty)
     // This function creates a list of properties in other games that are equivalent to this one.
     // In this case "equivalent" means same template file and same ID string.
     // Since MP1 doesn't have property IDs, we don't apply this to MP1.
-    if (mGame <= EGame::Prime) return;
+    if (mGame <= EGame::Prime)
+        return;
 
     // Find the lowest-level archetype and retrieve the ID string relative to that archetype's XML file.
     while (pProperty->Archetype())
@@ -308,7 +319,7 @@ void CTemplateEditDialog::FindEquivalentProperties(IProperty* pProperty)
     CScriptTemplate* pScript = pProperty->ScriptTemplate();
 
     // Now iterate over all games, check for an equivalent property in an equivalent XML file.
-    for (int GameIdx = 0; GameIdx < int(EGame::Max); GameIdx++)
+    for (int GameIdx = 0; GameIdx < GamesMinusMP1R; GameIdx++)
     {
         const auto Game = static_cast<EGame>(GameIdx);
         if (Game <= EGame::Prime || Game == mGame)
