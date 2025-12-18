@@ -96,9 +96,7 @@ CTemplateEditDialog::CTemplateEditDialog(IProperty *pProperty, QWidget *pParent)
     {
         NGameList::LoadAllGameTemplates();
 
-        std::set<TString> Templates;
-        NPropertyMap::RetrieveXMLsWithProperty( pProperty->ID(), pProperty->HashableTypeName(), Templates );
-
+        const auto Templates = NPropertyMap::RetrieveXMLsWithProperty(pProperty->ID(), pProperty->HashableTypeName());
         for (const auto& Template : Templates)
             mpUI->TemplatesListWidget->addItem(TO_QSTRING(Template));
 

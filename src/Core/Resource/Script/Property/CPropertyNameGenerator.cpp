@@ -215,14 +215,14 @@ void CPropertyNameGenerator::GenerateTask(const SPropertyNameGenerationParameter
                 std::unique_lock lock{mPropertyCheckMutex};
 
                 SGeneratedPropertyName PropertyName;
-                NPropertyMap::RetrieveXMLsWithProperty(PropertyID, pkTypeName, PropertyName.XmlList);
+                PropertyName.XmlList = NPropertyMap::RetrieveXMLsWithProperty(PropertyID, pkTypeName);
 
                 // Generate a string with the complete name. (We wait to do this until now to avoid needless string allocation)
                 PropertyName.Name = rkParams.Prefix;
 
                 for (size_t WordIdx = 0; WordIdx < WordCache.size(); WordIdx++)
                 {
-                    const int Index = WordCache[WordIdx].WordIndex;
+                    const auto Index = WordCache[WordIdx].WordIndex;
 
                     if (WordIdx > 0 && rkParams.Casing == ENameCasing::Snake_Case)
                     {

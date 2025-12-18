@@ -40,7 +40,7 @@ bool IsValidPropertyID(uint32_t ID, const char* pkTypeName, bool* pOutIsValid = 
 std::vector<IProperty*> RetrievePropertiesWithID(uint32_t ID, const char* pkTypeName);
 
 /** Retrieves a list of all XML templates that contain a given property ID. */
-void RetrieveXMLsWithProperty(uint32_t ID, const char* pkTypeName, std::set<TString>& OutSet);
+std::set<TString> RetrieveXMLsWithProperty(uint32_t ID, const char* pkTypeName);
 
 /** Updates the name of a given property in the map */
 void SetPropertyName(uint32_t ID, const char* pkTypeName, const char* pkNewName);

@@ -304,20 +304,22 @@ std::vector<IProperty*> RetrievePropertiesWithID(uint32 ID, const char* pkTypeNa
 }
 
 /** Retrieves a list of all XML templates that contain a given property ID. */
-void RetrieveXMLsWithProperty(uint32 ID, const char* pkTypeName, std::set<TString>& OutSet)
+std::set<TString> RetrieveXMLsWithProperty(uint32 ID, const char* pkTypeName)
 {
     const SNameKey Key = CreateKey(ID, pkTypeName);
     const auto MapFind = gNameMap.find(Key);
 
     if (MapFind == gNameMap.cend())
-        return;
+        return {};
 
-    SNameValue& NameValue = MapFind->second;
+    const SNameValue& NameValue = MapFind->second;
 
-    for (auto* pProperty : NameValue.PropertyList)
+    std::set<TString> OutSet;
+    for (const auto* pProperty : NameValue.PropertyList)
     {
         OutSet.insert(pProperty->GetTemplateFileName());
     }
+    return OutSet;
 }
 
 /** Updates the name of a given property in the map */
