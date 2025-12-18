@@ -28,28 +28,25 @@
  */
 
 #define DEFINE_PTR_LIST_CLASS(ClassName, PtrClassName, DereferencedClassName) \
-    class ClassName : public QList<PtrClassName> \
-    { \
-    public: \
-        ClassName() : QList<PtrClassName>() {} \
-        \
-        ClassName(const QList<DereferencedClassName>& rkIn) \
-        { \
-            foreach (DereferencedClassName InObj, rkIn) \
-            { \
-                *this << InObj; \
-            } \
-        } \
-        \
+    class ClassName : public QList<PtrClassName>             \
+    {                                                        \
+    public:                                                  \
+        ClassName() = default;                               \
+                                                             \
+        ClassName(const QList<DereferencedClassName>& rkIn)  \
+        {                                                    \
+             assign(rkIn.begin(), rkIn.end());               \
+        }                                                    \
+                                                             \
         QList<DereferencedClassName> DereferenceList() const \
-        { \
-            QList<DereferencedClassName> Out; \
-            \
-            foreach (const PtrClassName& rkPtr, *this) \
-                Out << *rkPtr; \
-            \
-            return Out; \
-        } \
+        {                                                    \
+            QList<DereferencedClassName> Out;                \
+            Out.reserve(size());                             \
+            for (const PtrClassName& rkPtr : *this)          \
+                Out.push_back(*rkPtr);                       \
+                                                             \
+            return Out;                                      \
+        }                                                    \
     };
 
 class CNodePtr
