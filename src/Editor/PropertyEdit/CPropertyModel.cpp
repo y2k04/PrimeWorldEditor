@@ -11,6 +11,15 @@
 #include <QSize>
 
 #include <array>
+#include <vector>
+
+struct CPropertyModel::SProperty
+{
+    IProperty* pProperty;
+    QModelIndex Index;
+    int ParentID;
+    std::vector<int> ChildIDs;
+};
 
 CPropertyModel::CPropertyModel(QObject *pParent)
     : QAbstractItemModel(pParent)

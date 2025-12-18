@@ -6,7 +6,6 @@
 #include <QFont>
 #include <QList>
 #include <QMap>
-#include <vector>
 
 class CGameProject;
 class CScriptObject;
@@ -16,13 +15,7 @@ class CPropertyModel : public QAbstractItemModel
 {
     Q_OBJECT
 
-    struct SProperty
-    {
-        IProperty* pProperty;
-        QModelIndex Index;
-        int ParentID;
-        std::vector<int> ChildIDs;
-    };
+    struct SProperty;
     QList<SProperty> mProperties;
     QMap<const IProperty*, int> mPropertyToIDMap;
     int mFirstUnusedID = -1;
