@@ -47,7 +47,7 @@ public:
     void InitUI(QString ExportDir);
     bool ValidateGame();
     bool RequestWiiPortGame();
-    float FindBuildVersion();
+    float FindBuildVersion() const;
 
     // Disc Tree
     void RecursiveAddToTree(const nod::Node *pkNode, class QTreeWidgetItem *pParent);

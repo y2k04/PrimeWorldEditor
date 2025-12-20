@@ -282,12 +282,13 @@ bool CExportGameDialog::RequestWiiPortGame()
     return false;
 }
 
-float CExportGameDialog::FindBuildVersion()
+float CExportGameDialog::FindBuildVersion() const
 {
     ASSERT(mpDisc != nullptr);
 
     // MP1 demo build doesn't have a build version
-    if (mGame == EGame::PrimeDemo) return 0.f;
+    if (mGame == EGame::PrimeDemo)
+        return 0.f;
 
     // Get DOL buffer
     std::unique_ptr<uint8_t[]> pDolData = mpDisc->getDataPartition()->getDOLBuf();
