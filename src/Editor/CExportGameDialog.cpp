@@ -338,10 +338,8 @@ void CExportGameDialog::RecursiveAddToTree(const nod::Node *pkNode, QTreeWidgetI
     static const QIcon skFileIcon{QStringLiteral(":/icons/New_16px.svg")};
     static const QIcon skDirIcon{QStringLiteral(":/icons/Open_16px.svg")};
 
-    for (auto Iter = NodeList.begin(); Iter != NodeList.end(); Iter++)
+    for (const auto* node : NodeList)
     {
-        const nod::Node *node = *Iter;
-
         if (!mpExporter->ShouldExportDiscNode(node, pParent->parent() == nullptr))
             continue;
 
