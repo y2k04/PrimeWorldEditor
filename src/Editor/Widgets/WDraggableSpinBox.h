@@ -6,12 +6,12 @@
 class WDraggableSpinBox : public QDoubleSpinBox
 {
     Q_OBJECT
-    bool mBeingDragged = false;
-    bool mBeenDragged = false;
     double mDefaultValue = 0.0;
     int mLastY = 0;
     int mMinDecimals = 1;
     bool mTrimTrailingZeroes = true;
+    bool mBeingDragged = false;
+    bool mBeenDragged = false;
 
 public:
     explicit WDraggableSpinBox(QWidget *pParent = nullptr);
