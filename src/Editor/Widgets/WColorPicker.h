@@ -17,7 +17,8 @@ public:
     void keyPressEvent(QKeyEvent* pEvent) override;
     void mousePressEvent(QMouseEvent*) override;
     void mouseReleaseEvent(QMouseEvent* pEvent) override;
-    QColor Color() const;
+
+    const QColor& Color() const { return mColor; }
     void SetColor(const QColor& Color);
 
 signals:

@@ -1,8 +1,9 @@
-#include "WColorPicker.h"
+#include "Editor/Widgets/WColorPicker.h"
+
+#include <QColorDialog>
+#include <QMouseEvent>
 #include <QPainter>
 #include <QRectF>
-#include <QMouseEvent>
-#include <QColorDialog>
 
 WColorPicker::WColorPicker(QWidget *parent)
     : QWidget(parent)
@@ -37,18 +38,18 @@ void WColorPicker::paintEvent(QPaintEvent *)
 
 void WColorPicker::keyPressEvent(QKeyEvent *pEvent)
 {
-    if (pEvent->key() == Qt::Key_Return)
-    {
-        QColorDialog ColorPick;
-        ColorPick.setOptions(QColorDialog::ShowAlphaChannel);
-        ColorPick.setCurrentColor(mColor);
-        int result = ColorPick.exec();
+    if (pEvent->key() != Qt::Key_Return)
+        return;
 
-        if (result)
-        {
-            mColor = ColorPick.currentColor();
-            emit ColorChanged(mColor);
-        }
+    QColorDialog ColorPick;
+    ColorPick.setOptions(QColorDialog::ShowAlphaChannel);
+    ColorPick.setCurrentColor(mColor);
+    const int result = ColorPick.exec();
+
+    if (result)
+    {
+        mColor = ColorPick.currentColor();
+        emit ColorChanged(mColor);
     }
 }
 
@@ -60,39 +61,33 @@ void WColorPicker::mousePressEvent(QMouseEvent *)
 void WColorPicker::mouseReleaseEvent(QMouseEvent *pEvent)
 {
     const auto pos = pEvent->position().toPoint();
+    if (pos.x() >= width() || pos.y() >= height())
+        return;
 
-    if (pos.x() < width() && pos.y() < height())
+    mOldColor = mColor;
+
+    QColorDialog ColorPick(this);
+    ColorPick.setOptions(QColorDialog::ShowAlphaChannel);
+    ColorPick.setCurrentColor(mColor);
+    connect(&ColorPick, &QColorDialog::currentColorChanged, this, &WColorPicker::DialogColorChanged);
+    connect(&ColorPick, &QColorDialog::rejected, this, &WColorPicker::DialogRejected);
+    const int Result = ColorPick.exec();
+
+    if (Result)
     {
-        mOldColor = mColor;
-
-        QColorDialog ColorPick(this);
-        ColorPick.setOptions(QColorDialog::ShowAlphaChannel);
-        ColorPick.setCurrentColor(mColor);
-        connect(&ColorPick, &QColorDialog::currentColorChanged, this, &WColorPicker::DialogColorChanged);
-        connect(&ColorPick, &QColorDialog::rejected, this, &WColorPicker::DialogRejected);
-        int Result = ColorPick.exec();
-
-        if (Result)
-        {
-            mColor = ColorPick.currentColor();
-            emit ColorEditComplete(mColor);
-        }
+        mColor = ColorPick.currentColor();
+        emit ColorEditComplete(mColor);
     }
-}
-
-QColor WColorPicker::Color() const
-{
-    return mColor;
 }
 
 void WColorPicker::SetColor(const QColor& Color)
 {
-    if (mColor != Color)
-    {
-        mColor = Color;
-        emit ColorEditComplete(mColor);
-        update();
-    }
+    if (mColor == Color)
+        return;
+
+    mColor = Color;
+    emit ColorEditComplete(mColor);
+    update();
 }
 
 void WColorPicker::DialogColorChanged(const QColor& NewColor)

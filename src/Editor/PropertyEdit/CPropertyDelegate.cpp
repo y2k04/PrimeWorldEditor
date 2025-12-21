@@ -458,7 +458,7 @@ void CPropertyDelegate::setModelData(QWidget *pEditor, QAbstractItemModel* /*pMo
                     WColorPicker* pColorPicker = static_cast<WColorPicker*>(pEditor);
                     CColorProperty* pColor = static_cast<CColorProperty*>(pProp);
 
-                    QColor Color = pColorPicker->Color();
+                    const QColor& Color = pColorPicker->Color();
                     pColor->ValueRef(pData) = TO_CCOLOR(Color);
                     break;
                 }
