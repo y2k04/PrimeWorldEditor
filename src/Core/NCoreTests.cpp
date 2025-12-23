@@ -104,7 +104,7 @@ bool ValidateCooker(EResourceType ResourceType, bool DumpInvalidFileContents)
 
         // Get original cooked data
         TString CookedPath = It->CookedAssetPath(true);
-        CFileInStream FileStream(ResourcesDir / CookedPath, EEndian::BigEndian);
+        CFileInStream FileStream(ResourcesDir / CookedPath, std::endian::big);
 
         if (!FileStream.IsValid())
             continue;
@@ -115,7 +115,7 @@ bool ValidateCooker(EResourceType ResourceType, bool DumpInvalidFileContents)
 
         // Generate new cooked data
         std::vector<char> NewData;
-        CVectorOutStream MemoryStream(&NewData, EEndian::BigEndian);
+        CVectorOutStream MemoryStream(&NewData, std::endian::big);
         CResourceCooker::CookResource(*It, MemoryStream);
 
         // Start our comparison by making sure the sizes match up
@@ -188,7 +188,7 @@ bool ValidateCooker(EResourceType ResourceType, bool DumpInvalidFileContents)
             TString DumpPath = "dump" / CookedPath;
             FileUtil::MakeDirectory(DumpPath.GetFileDirectory());
 
-            CFileOutStream DumpFile(DumpPath, EEndian::BigEndian);
+            CFileOutStream DumpFile(DumpPath, std::endian::big);
             DumpFile.WriteBytes(NewData.data(), NewData.size());
             DumpFile.Close();
         }

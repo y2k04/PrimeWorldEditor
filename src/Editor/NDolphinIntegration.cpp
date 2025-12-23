@@ -194,7 +194,7 @@ EQuickplayLaunchResult LaunchQuickplay(QWidget* pParentWidget,
     }
 
     auto symbols = LoadSymbols(MapData);
-    auto inStream = CMemoryInStream(DolData.data(), DolData.size(), EEndian::BigEndian);
+    auto inStream = CMemoryInStream(DolData.data(), DolData.size(), std::endian::big);
     SDolHeader header(inStream);
 
     // Append the patch data to the end of the dol
@@ -212,7 +212,7 @@ EQuickplayLaunchResult LaunchQuickplay(QWidget* pParentWidget,
     uint32 callToHook = symbols["PPCSetFpIEEEMode"] + 4;
     uint32 branchTarget = symbols["rel_loader_hook"];
 
-    CMemoryOutStream Mem(DolData.data(), DolData.size(), EEndian::BigEndian);
+    CMemoryOutStream Mem(DolData.data(), DolData.size(), std::endian::big);
     header.Write(Mem);
     Mem.GoTo(header.OffsetForAddress(callToHook));
     Mem.WriteLong(AssembleBranchInstruction(callToHook, branchTarget));

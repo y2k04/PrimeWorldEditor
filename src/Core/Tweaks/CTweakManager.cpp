@@ -59,7 +59,7 @@ void CTweakManager::LoadTweaks()
 
         if (FileUtil::Exists(mStandardFilePath))
         {
-            CFileInStream StandardNTWK(mStandardFilePath, EEndian::BigEndian);
+            CFileInStream StandardNTWK(mStandardFilePath, std::endian::big);
             CTweakLoader::LoadNTWK(StandardNTWK, mpProject->Game(), mTweakObjects);
         }
     }
@@ -100,7 +100,7 @@ bool CTweakManager::SaveTweaks()
     // MP2+ - Save tweaks to Standard.ntwk
     else
     {
-        CFileOutStream StandardNTWK(mStandardFilePath, EEndian::BigEndian);
+        CFileOutStream StandardNTWK(mStandardFilePath, std::endian::big);
         return CTweakCooker::CookNTWK(mTweakObjects, StandardNTWK);
     }
 }

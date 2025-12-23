@@ -97,7 +97,7 @@ CDeleteSelectionCommand::CDeleteSelectionCommand(CWorldEditor *pEditor, const QS
                 }
             }
 
-            CVectorOutStream PropertyDataOut(&rNode.InstanceData, EEndian::BigEndian);
+            CVectorOutStream PropertyDataOut(&rNode.InstanceData, std::endian::big);
             CScriptCooker Cooker(pEditor->CurrentGame());
             Cooker.WriteInstance(PropertyDataOut, pInst);
         }
@@ -131,7 +131,7 @@ void CDeleteSelectionCommand::undo()
     {
         mpEditor->NotifyNodeAboutToBeSpawned();
 
-        CMemoryInStream Mem(rNode.InstanceData.data(), rNode.InstanceData.size(), EEndian::BigEndian);
+        CMemoryInStream Mem(rNode.InstanceData.data(), rNode.InstanceData.size(), std::endian::big);
         CScriptObject *pInstance = CScriptLoader::LoadInstance(Mem, rNode.pArea, rNode.pLayer, rNode.pArea->Game(), rNode.pArea->Game() > EGame::Prime);
         CScriptNode *pNode = mpEditor->Scene()->CreateScriptNode(pInstance, rNode.NodeID);
         rNode.pArea->AddInstanceToArea(pInstance);

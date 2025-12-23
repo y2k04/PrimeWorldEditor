@@ -75,7 +75,7 @@ public:
                 CScriptObject *pInst = static_cast<CScriptNode*>(*It)->Instance();
                 rNode.OriginalInstanceID = pInst->InstanceID();
 
-                CVectorOutStream Out(&rNode.InstanceData, EEndian::BigEndian);
+                CVectorOutStream Out(&rNode.InstanceData, std::endian::big);
 
                 CScriptCooker Cooker(mGame);
                 Cooker.WriteInstance(Out, static_cast<CScriptNode*>(*It)->Instance());

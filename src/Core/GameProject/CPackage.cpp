@@ -99,7 +99,7 @@ void CPackage::Cook(IProgressNotifier *pProgress)
 
     // Write new pak
     const TString PakPath = CookedPackagePath(false);
-    CFileOutStream Pak(PakPath, EEndian::BigEndian);
+    CFileOutStream Pak(PakPath, std::endian::big);
 
     if (!Pak.IsValid())
     {
@@ -213,7 +213,7 @@ void CPackage::Cook(IProgressNotifier *pProgress)
         rTableInfo.Offset = (Game <= EGame::Echoes ? AssetOffset : AssetOffset - ResDataOffset);
 
         // Load resource data
-        CFileInStream CookedAsset(pEntry->CookedAssetPath(), EEndian::BigEndian);
+        CFileInStream CookedAsset(pEntry->CookedAssetPath(), std::endian::big);
         ASSERT(CookedAsset.IsValid());
         const uint32 ResourceSize = CookedAsset.Size();
 
@@ -368,7 +368,7 @@ void CPackage::CompareOriginalAssetList(const std::list<CAssetID>& rkNewList)
 
     // Read the original pak
     const TString CookedPath = CookedPackagePath(false);
-    CFileInStream Pak(CookedPath, EEndian::BigEndian);
+    CFileInStream Pak(CookedPath, std::endian::big);
 
     if (!Pak.IsValid() || Pak.Size() == 0)
     {

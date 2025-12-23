@@ -146,7 +146,7 @@ float CTexture::ReadTexelAlpha(const CVector2f& rkTexCoord)
 
     if (mTexelFormat == ETexelFormat::DXT1 && mBufferExists)
     {
-        CMemoryInStream Buffer(mpImgDataBuffer, mImgDataSize, EEndian::SystemEndian);
+        CMemoryInStream Buffer(mpImgDataBuffer, mImgDataSize, std::endian::native);
 
         // 8 bytes per 4x4 16-pixel block, left-to-right top-to-bottom
         const uint32 BlockIdxX = TexelX / 4;

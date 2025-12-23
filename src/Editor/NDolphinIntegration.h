@@ -60,7 +60,7 @@ struct SQuickplayParameters
     /** Serialize to disk */
     void Write(const TString& kPath) const
     {
-        CFileOutStream Stream(kPath, EEndian::BigEndian);
+        CFileOutStream Stream(kPath, std::endian::big);
         ASSERT(Stream.IsValid());
 
         // Magic/Version

@@ -8,7 +8,7 @@
 /** Save the current state of the object properties to the given data buffer */
 void IEditPropertyCommand::SaveObjectStateToArray(std::vector<char>& rVector)
 {
-    CVectorOutStream MemStream(&rVector, EEndian::SystemEndian);
+    CVectorOutStream MemStream(&rVector, std::endian::native);
     CBasicBinaryWriter Writer(&MemStream, CSerialVersion(IArchive::skCurrentArchiveVersion, 0, mpProperty->Game()));
 
     QList<void*> DataPointers;

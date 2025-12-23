@@ -361,7 +361,7 @@ bool CResourceEntry::Cook()
     FileUtil::MakeDirectory(Dir);
 
     // Attempt to open output cooked file
-    CFileOutStream File(Path, EEndian::BigEndian);
+    CFileOutStream File(Path, std::endian::big);
     if (!File.IsValid())
     {
         errorf("Failed to open cooked file for writing: %s", *Path);
@@ -422,7 +422,7 @@ CResource* CResourceEntry::Load()
     ASSERT(!mpResource);
     if (HasCookedVersion())
     {
-        CFileInStream File(CookedAssetPath(), EEndian::BigEndian);
+        CFileInStream File(CookedAssetPath(), std::endian::big);
 
         if (!File.IsValid())
         {

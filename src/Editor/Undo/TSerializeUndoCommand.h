@@ -33,7 +33,7 @@ public:
         , mIsActionComplete(IsActionComplete)
     {
         // Save old state of object
-        CVectorOutStream Out(&mOldData, EEndian::SystemEndian);
+        CVectorOutStream Out(&mOldData, std::endian::native);
         CBasicBinaryWriter Writer(&Out, 0, EGame::Invalid);
         mpObject->Serialize(Writer);
     }
@@ -47,7 +47,7 @@ public:
     void undo() override
     {
         // Restore old state of object
-        CMemoryInStream In(&mOldData[0], mOldData.size(), EEndian::SystemEndian);
+        CMemoryInStream In(&mOldData[0], mOldData.size(), std::endian::native);
         CBasicBinaryReader Reader(&In, CSerialVersion(0,0,EGame::Invalid));
         mpObject->Serialize(Reader);
     }
@@ -57,7 +57,7 @@ public:
         // First call when command is pushed - save new state of object
         if (mNewData.empty())
         {
-            CVectorOutStream Out(&mNewData, EEndian::SystemEndian);
+            CVectorOutStream Out(&mNewData, std::endian::native);
             CBasicBinaryWriter Writer(&Out, 0, EGame::Invalid);
             mpObject->Serialize(Writer);
 
@@ -76,7 +76,7 @@ public:
         // Subsequent calls - restore new state of object
         else
         {
-            CMemoryInStream In(&mNewData[0], mNewData.size(), EEndian::SystemEndian);
+            CMemoryInStream In(&mNewData[0], mNewData.size(), std::endian::native);
             CBasicBinaryReader Reader(&In, CSerialVersion(0,0,EGame::Invalid));
             mpObject->Serialize(Reader);
         }

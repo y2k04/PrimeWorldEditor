@@ -280,7 +280,7 @@ void CGameExporter::LoadPaks()
     for (auto It = mPaks.begin(); It != mPaks.end(); It++)
     {
         TString PakPath = *It;
-        CFileInStream Pak(PakPath, EEndian::BigEndian);
+        CFileInStream Pak(PakPath, std::endian::big);
 
         if (!Pak.IsValid())
         {
@@ -446,7 +446,7 @@ void CGameExporter::LoadPaks()
 
 void CGameExporter::LoadResource(const SResourceInstance& rkResource, std::vector<uint8>& rBuffer)
 {
-    CFileInStream Pak(rkResource.PakFile, EEndian::BigEndian);
+    CFileInStream Pak(rkResource.PakFile, std::endian::big);
 
     if (Pak.IsValid())
     {
@@ -659,7 +659,7 @@ void CGameExporter::ExportResource(SResourceInstance& rRes)
         // Save cooked asset
         const TString OutCookedPath = pEntry->CookedAssetPath();
         FileUtil::MakeDirectory(OutCookedPath.GetFileDirectory());
-        CFileOutStream Out(OutCookedPath, EEndian::BigEndian);
+        CFileOutStream Out(OutCookedPath, std::endian::big);
 
         if (Out.IsValid())
             Out.WriteBytes(ResourceData.data(), ResourceData.size());

@@ -785,11 +785,11 @@ void CModelEditorWindow::ConvertToDDS()
     if (Input.isEmpty()) return;
 
     TString TexFilename = TO_TSTRING(Input);
-    CFileInStream InTextureFile(TexFilename, EEndian::LittleEndian);
+    CFileInStream InTextureFile(TexFilename, std::endian::little);
     auto pTex = CTextureDecoder::LoadTXTR( InTextureFile, nullptr );
 
     const TString OutName = TexFilename.GetFilePathWithoutExtension() + ".dds";
-    CFileOutStream Out(OutName, EEndian::LittleEndian);
+    CFileOutStream Out(OutName, std::endian::little);
     if (!Out.IsValid())
     {
         QMessageBox::warning(this, tr("Error"), tr("Couldn't open output DDS!"));
@@ -810,7 +810,7 @@ void CModelEditorWindow::ConvertToTXTR()
     if (Input.isEmpty()) return;
 
     TString TexFilename = TO_TSTRING(Input);
-    CFileInStream InTextureFile = CFileInStream(TexFilename, EEndian::LittleEndian);
+    CFileInStream InTextureFile = CFileInStream(TexFilename, std::endian::little);
     auto pTex = CTextureDecoder::LoadDDS(InTextureFile, nullptr);
     TString OutName = TexFilename.GetFilePathWithoutExtension() + ".txtr";
 
@@ -820,7 +820,7 @@ void CModelEditorWindow::ConvertToTXTR()
     }
     else
     {
-        CFileOutStream Out(OutName, EEndian::BigEndian);
+        CFileOutStream Out(OutName, std::endian::big);
         if (!Out.IsValid())
         {
             QMessageBox::warning(this, tr("Error"), tr("Couldn't open output TXTR!"));

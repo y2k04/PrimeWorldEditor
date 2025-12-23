@@ -260,7 +260,7 @@ void CTextureDecoder::ReadTXTR(IInputStream& rTXTR)
         mPalettes.resize(PaletteEntryCount * 2);
         rTXTR.ReadBytes(mPalettes.data(), mPalettes.size());
 
-        mPaletteInput.SetData(mPalettes.data(), mPalettes.size(), EEndian::BigEndian);
+        mPaletteInput.SetData(mPalettes.data(), mPalettes.size(), std::endian::big);
     }
     else
     {
@@ -336,7 +336,7 @@ void CTextureDecoder::PartialDecodeGXTexture(IInputStream& TXTR)
         mDataBufferSize *= 2;
     mpDataBuffer = new uint8[mDataBufferSize];
 
-    CMemoryOutStream Out(mpDataBuffer, mDataBufferSize, EEndian::SystemEndian);
+    CMemoryOutStream Out(mpDataBuffer, mDataBufferSize, std::endian::native);
 
     // Initializing more stuff before we start the mipmap loop
     uint32 MipW = mWidth;
@@ -444,7 +444,7 @@ void CTextureDecoder::FullDecodeGXTexture(IInputStream& rTXTR)
     mDataBufferSize = ImageSize * (32 / gskSourceBpp[static_cast<size_t>(mTexelFormat)]);
     mpDataBuffer = new uint8[mDataBufferSize];
 
-    CMemoryOutStream Out(mpDataBuffer, mDataBufferSize, EEndian::SystemEndian);
+    CMemoryOutStream Out(mpDataBuffer, mDataBufferSize, std::endian::native);
 
     // Initializing more stuff before we start the mipmap loop
     uint32 MipW = mWidth;
@@ -476,14 +476,14 @@ void CTextureDecoder::FullDecodeGXTexture(IInputStream& rTXTR)
                         if (mTexelFormat == ETexelFormat::GX_I4)
                         {
                             const uint8 Byte = rTXTR.ReadUByte();
-                            Out.WriteLong(DecodePixelI4(Byte, 0).ToLongARGB());
-                            Out.WriteLong(DecodePixelI4(Byte, 1).ToLongARGB());
+                            Out.WriteULong(DecodePixelI4(Byte, 0).ToLongARGB());
+                            Out.WriteULong(DecodePixelI4(Byte, 1).ToLongARGB());
                         }
                         else if (mTexelFormat == ETexelFormat::GX_C4)
                         {
                             const uint8 Byte = rTXTR.ReadUByte();
-                            Out.WriteLong(DecodePixelC4(Byte, 0, mPaletteInput).ToLongARGB());
-                            Out.WriteLong(DecodePixelC4(Byte, 1, mPaletteInput).ToLongARGB());
+                            Out.WriteULong(DecodePixelC4(Byte, 0, mPaletteInput).ToLongARGB());
+                            Out.WriteULong(DecodePixelC4(Byte, 1, mPaletteInput).ToLongARGB());
                         }
                         else if (mTexelFormat == ETexelFormat::GX_CMPR)
                         {
@@ -501,7 +501,7 @@ void CTextureDecoder::FullDecodeGXTexture(IInputStream& rTXTR)
                             else if (mTexelFormat == ETexelFormat::GX_RGB5A3) Pixel = DecodePixelRGB5A3(rTXTR.ReadShort());
                             else if (mTexelFormat == ETexelFormat::GX_RGBA8)  Pixel = CColor(rTXTR, true);
 
-                            Out.WriteLong(Pixel.ToLongARGB());
+                            Out.WriteULong(Pixel.ToLongARGB());
                         }
                     }
                 }
@@ -543,7 +543,7 @@ void CTextureDecoder::DecodeDDS(IInputStream& rDDS)
         mDataBufferSize *= 4;
     mpDataBuffer = new uint8[mDataBufferSize];
 
-    CMemoryOutStream Out(mpDataBuffer, mDataBufferSize, EEndian::SystemEndian);
+    CMemoryOutStream Out(mpDataBuffer, mDataBufferSize, std::endian::native);
 
     // Initializing more stuff before we start the mipmap loop
     uint32 MipW = mWidth;
@@ -609,7 +609,7 @@ void CTextureDecoder::DecodeDDS(IInputStream& rDDS)
                         Out.Seek(OutPos, SEEK_SET);
 
                         const CColor Pixel = DecodeDDSPixel(rDDS);
-                        Out.WriteLong(Pixel.ToLongARGB());
+                        Out.WriteULong(Pixel.ToLongARGB());
                     }
                     else
                     {
@@ -898,7 +898,7 @@ void CTextureDecoder::DecodeSubBlockCMPR(IInputStream& rSrc, IOutputStream& rDst
             const uint8 Shift = static_cast<uint8>(6 - (iBlockX * 2));
             const uint8 PaletteIndex = (Byte >> Shift) & 0x3;
             const CColor& Pixel = Palettes[PaletteIndex];
-            rDst.WriteLong(Pixel.ToLongARGB());
+            rDst.WriteULong(Pixel.ToLongARGB());
         }
 
         rDst.Seek((Width - 4) * 4, SEEK_CUR);
@@ -937,7 +937,7 @@ void CTextureDecoder::DecodeBlockBC1(IInputStream& rSrc, IOutputStream& rDst, ui
             const uint8 Shift = static_cast<uint8>(iBlockX * 2);
             const uint8 PaletteIndex = (Byte >> Shift) & 0x3;
             const CColor& Pixel = Palettes[PaletteIndex];
-            rDst.WriteLong(Pixel.ToLongARGB());
+            rDst.WriteULong(Pixel.ToLongARGB());
         }
 
         rDst.Seek((Width - 4) * 4, SEEK_CUR);
@@ -974,7 +974,7 @@ void CTextureDecoder::DecodeBlockBC2(IInputStream& rSrc, IOutputStream& rDst, ui
             const uint8 Shift = static_cast<uint8>(iBlockX * 2);
             const uint8 PaletteIndex = (Byte >> Shift) & 0x3;
             const CColor& Pixel = CPalettes[PaletteIndex];
-            rDst.WriteLong(Pixel.ToLongARGB());
+            rDst.WriteULong(Pixel.ToLongARGB());
         }
 
         rDst.Seek((Width - 4) * 4, SEEK_CUR);
@@ -1011,7 +1011,7 @@ void CTextureDecoder::DecodeBlockBC3(IInputStream& rSrc, IOutputStream& rDst, ui
             const uint8 Shift = static_cast<uint8>(iBlockX * 2);
             const uint8 PaletteIndex = (Byte >> Shift) & 0x3;
             const CColor& Pixel = Palettes[PaletteIndex];
-            rDst.WriteLong(Pixel.ToLongARGB());
+            rDst.WriteULong(Pixel.ToLongARGB());
         }
 
         rDst.Seek((Width - 4) * 4, SEEK_CUR);
