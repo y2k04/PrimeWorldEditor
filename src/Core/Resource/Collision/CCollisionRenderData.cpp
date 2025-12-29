@@ -1,7 +1,9 @@
 #include "CCollisionRenderData.h"
 #include <Core/Render/CDrawUtil.h>
+
 #include <algorithm>
 #include <array>
+#include <numeric>
 #include <vector>
 
 /** Build from collision data */
@@ -23,15 +25,10 @@ void CCollisionRenderData::BuildRenderData(const SCollisionIndexData& kIndexData
 
     // Build list of triangle indices sorted by material index
     // Apparently some collision meshes have more triangle indices than actual triangles
-    const uint NumTris = std::min(kIndexData.TriangleIndices.size() / 3, kIndexData.TriangleMaterialIndices.size());
-    std::vector<uint16> SortedTris(NumTris);
-
-    for (uint16 i = 0; i < SortedTris.size(); i++)
-    {
-        SortedTris[i] = i;
-    }
-
-    std::sort(SortedTris.begin(), SortedTris.end(), [kIndexData](uint16 Left, uint16 Right) -> bool {
+    const auto NumTris = std::min(kIndexData.TriangleIndices.size() / 3, kIndexData.TriangleMaterialIndices.size());
+    std::vector<uint16_t> SortedTris(NumTris);
+    std::ranges::iota(SortedTris, uint16_t{0});
+    std::ranges::sort(SortedTris, [kIndexData](uint16_t Left, uint16_t Right) -> bool {
         return kIndexData.TriangleMaterialIndices[Left] < kIndexData.TriangleMaterialIndices[Right];
     });
 
@@ -70,7 +67,7 @@ void CCollisionRenderData::BuildRenderData(const SCollisionIndexData& kIndexData
         uint16 VertIdx2 = (LineBVertA != LineAVertA && LineBVertA != LineAVertB ? LineBVertA : LineBVertB);
 
         // Reverse vertex order if material indicates tri is flipped
-        if (kMaterial & eCF_FlippedTri)
+        if ((kMaterial & eCF_FlippedTri) != 0)
         {
             std::swap(VertIdx0, VertIdx2);
         }
@@ -111,7 +108,7 @@ void CCollisionRenderData::BuildRenderData(const SCollisionIndexData& kIndexData
     // Fill the rest of the material offsets, adding an extra index at the end
     for (; CurrentMatIdx <= kIndexData.Materials.size(); CurrentMatIdx++)
     {
-        mMaterialIndexOffsets.push_back( mIndexBuffer.GetSize() );
+        mMaterialIndexOffsets.push_back(mIndexBuffer.GetSize());
     }
 
     // Done
