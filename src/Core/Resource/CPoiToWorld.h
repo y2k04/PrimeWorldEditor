@@ -45,17 +45,15 @@ public:
     const SPoiMap* MapByID(uint32_t InstanceID) const
     {
         auto it = mPoiLookupMap.find(InstanceID);
-
-        if (it != mPoiLookupMap.end())
-            return it->second;
-        else
+        if (it == mPoiLookupMap.end())
             return nullptr;
+
+        return it->second;
     }
 
     bool HasPoiMappings(uint32_t InstanceID) const
     {
-        auto it = mPoiLookupMap.find(InstanceID);
-        return (it != mPoiLookupMap.end());
+        return mPoiLookupMap.contains(InstanceID);
     }
 };
 
