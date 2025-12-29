@@ -310,8 +310,8 @@ void CGameExporter::LoadPaks()
                     const CFourCC ResType = Pak.ReadULong();
                     const CAssetID ResID(Pak, mGame);
                     const uint32 NameLen = Pak.ReadULong();
-                    const TString Name = Pak.ReadString(NameLen);
-                    pPackage->AddResource(Name, ResID, ResType);
+                    TString Name = Pak.ReadString(NameLen);
+                    pPackage->AddResource(std::move(Name), ResID, ResType);
                 }
 
                 uint32 NumResources = Pak.ReadLong();
@@ -383,10 +383,10 @@ void CGameExporter::LoadPaks()
 
                     for (uint32 iName = 0; iName < NumNamedResources; iName++)
                     {
-                        const TString Name = Pak.ReadString();
+                        TString Name = Pak.ReadString();
                         const CFourCC ResType = Pak.ReadULong();
                         const CAssetID ResID(Pak, mGame);
-                        pPackage->AddResource(Name, ResID, ResType);
+                        pPackage->AddResource(std::move(Name), ResID, ResType);
                     }
                 }
                 else if (PakSections[iSec].Type == CFourCC("RSHD"))

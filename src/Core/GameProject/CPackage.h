@@ -57,7 +57,7 @@ public:
     bool Load();
     bool Save();
     void Serialize(IArchive& rArc);
-    void AddResource(const TString& rkName, const CAssetID& rkID, const CFourCC& rkType);
+    void AddResource(TString rkName, const CAssetID& rkID, const CFourCC& rkType);
     void UpdateDependencyCache() const;
     void MarkDirty();
 

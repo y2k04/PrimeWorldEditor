@@ -56,9 +56,9 @@ void CPackage::Serialize(IArchive& rArc)
          << SerialParameter("NamedResources", mResources);
 }
 
-void CPackage::AddResource(const TString& rkName, const CAssetID& rkID, const CFourCC& rkType)
+void CPackage::AddResource(TString rkName, const CAssetID& rkID, const CFourCC& rkType)
 {
-    mResources.push_back( SNamedResource { rkName, rkID, rkType } );
+    mResources.emplace_back(std::move(rkName), rkID, rkType);
     mCacheDirty = true;
 }
 
