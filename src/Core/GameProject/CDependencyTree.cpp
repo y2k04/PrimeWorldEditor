@@ -352,7 +352,7 @@ void CAreaDependencyTree::AddScriptLayer(CScriptLayer *pLayer, const std::vector
 
 void CAreaDependencyTree::GetModuleDependencies(EGame Game, std::vector<TString>& rModuleDepsOut, std::vector<uint32>& rModuleLayerOffsetsOut) const
 {
-    CGameTemplate *pGame = NGameList::GetGameTemplate(Game);
+    CGameTemplate* pGame = NGameList::GetGameTemplate(Game);
 
     // Output module list will be split per-script layer
     // The output offset list contains two offsets per layer - start index and end index
@@ -373,34 +373,25 @@ void CAreaDependencyTree::GetModuleDependencies(EGame Game, std::vector<TString>
             if (pNode->Type() != EDependencyNodeType::ScriptInstance)
                 continue;
 
-            const auto *pInst = static_cast<CScriptInstanceDependency*>(pNode.get());
+            const auto* pInst = static_cast<CScriptInstanceDependency*>(pNode.get());
             const uint32 ObjType = pInst->ObjectType();
+            if (UsedObjectTypes.contains(ObjType))
+                continue;
 
-            if (!UsedObjectTypes.contains(ObjType))
+            // Get the module list for this object type and check whether any of them are new before adding them to the output list
+            const auto* pTemplate = pGame->TemplateByID(ObjType);
+            const auto& rkModules = pTemplate->RequiredModules();
+
+            for (const auto& ModuleName : rkModules)
             {
-                // Get the module list for this object type and check whether any of them are new before adding them to the output list
-                const CScriptTemplate *pTemplate = pGame->TemplateByID(ObjType);
-                const std::vector<TString>& rkModules = pTemplate->RequiredModules();
+                const bool NewModule = std::none_of(rModuleDepsOut.begin() + ModuleStartIdx, rModuleDepsOut.end(),
+                                                    [&](const auto& name) { return name == ModuleName; });
 
-                for (const auto& ModuleName : rkModules)
-                {
-                    bool NewModule = true;
-
-                    for (uint32 iUsed = ModuleStartIdx; iUsed < rModuleDepsOut.size(); iUsed++)
-                    {
-                        if (rModuleDepsOut[iUsed] == ModuleName)
-                        {
-                            NewModule = false;
-                            break;
-                        }
-                    }
-
-                    if (NewModule)
-                        rModuleDepsOut.push_back(ModuleName);
-                }
-
-                UsedObjectTypes.insert(ObjType);
+                if (NewModule)
+                    rModuleDepsOut.push_back(ModuleName);
             }
+
+            UsedObjectTypes.insert(ObjType);
         }
 
         rModuleLayerOffsetsOut.push_back(static_cast<uint32>(rModuleDepsOut.size()));
