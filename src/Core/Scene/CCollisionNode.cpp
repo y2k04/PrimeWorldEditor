@@ -56,17 +56,16 @@ void CCollisionNode::Draw(FRenderOptions /*Options*/, int /*ComponentIndex*/, ER
 
     CColor BaseTint = TintColor(rkViewInfo);
 
-    for (size_t MeshIdx = 0; MeshIdx < mpCollision->NumMeshes(); MeshIdx++)
+    for (const auto& mesh : mpCollision->Meshes())
     {
-        CCollisionMesh *pMesh = mpCollision->MeshByIndex(MeshIdx);
-        CCollisionRenderData& RenderData = pMesh->GetRenderData();
-        const SCollisionIndexData& kIndexData = pMesh->GetIndexData();
+        CCollisionRenderData& RenderData = mesh->GetRenderData();
+        const SCollisionIndexData& kIndexData = mesh->GetIndexData();
 
         for (int MatIdx = 0; MatIdx < static_cast<int>(kIndexData.Materials.size()); MatIdx++)
         {
             const CCollisionMaterial& kMat = kIndexData.Materials[MatIdx];
 
-            if (rkViewInfo.CollisionSettings.HideMaterial & kMat)
+            if ((rkViewInfo.CollisionSettings.HideMaterial & kMat) != 0) 
                 continue;
 
             if (rkViewInfo.CollisionSettings.HideMask != 0 && (kMat.RawFlags() & rkViewInfo.CollisionSettings.HideMask) != 0)
@@ -94,9 +93,9 @@ void CCollisionNode::Draw(FRenderOptions /*Options*/, int /*ComponentIndex*/, ER
     {
         const int Depth = rkViewInfo.CollisionSettings.BoundingHierarchyRenderDepth;
 
-        for (size_t MeshIdx = 0; MeshIdx < mpCollision->NumMeshes(); MeshIdx++)
+        for (const auto& mesh : mpCollision->Meshes())
         {
-            mpCollision->MeshByIndex(MeshIdx)->GetRenderData().RenderBoundingHierarchy(Depth);
+            mesh->GetRenderData().RenderBoundingHierarchy(Depth);
         }
     }
 
@@ -111,7 +110,7 @@ void CCollisionNode::Draw(FRenderOptions /*Options*/, int /*ComponentIndex*/, ER
     {
         if (Parent() && Parent()->NodeType() == ENodeType::Root && Game != EGame::DKCReturns)
         {
-            CDrawUtil::DrawWireCube(mpCollision->MeshByIndex(0)->Bounds(), CColor::Red());
+            CDrawUtil::DrawWireCube(mpCollision->Meshes()[0]->Bounds(), CColor::Red());
         }
     }
 }
@@ -141,9 +140,6 @@ void CCollisionNode::SetCollision(CCollisionMeshGroup *pCollision)
     // Update bounds
     mLocalAABox = CAABox::Infinite();
 
-    for (size_t MeshIdx = 0; MeshIdx < pCollision->NumMeshes(); MeshIdx++)
-    {
-        const CCollisionMesh* pMesh = pCollision->MeshByIndex(MeshIdx);
-        mLocalAABox.ExpandBounds(pMesh->Bounds());
-    }
+    for (const auto& mesh : pCollision->Meshes())
+        mLocalAABox.ExpandBounds(mesh->Bounds());
 }
