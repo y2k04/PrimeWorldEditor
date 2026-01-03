@@ -181,238 +181,238 @@ void CResTypeInfo::CResTypeInfoFactory::AddExtension(CResTypeInfo *pType, CFourC
 void CResTypeInfo::CResTypeInfoFactory::InitTypes()
 {
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::Animation, "Animation", "ani");
+        auto* pType = new CResTypeInfo(EResourceType::Animation, "Animation", "ani");
         AddExtension(pType, CFourCC("ANIM"), EGame::PrimeDemo, EGame::DKCReturns);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::AnimCollisionPrimData, "Animation Collision Primitive Data", "?");
+        auto* pType = new CResTypeInfo(EResourceType::AnimCollisionPrimData, "Animation Collision Primitive Data", "?");
         AddExtension(pType, CFourCC("CPRM"), EGame::DKCReturns, EGame::DKCReturns);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::AnimEventData, "Animation Event Data", "evnt");
+        auto* pType = new CResTypeInfo(EResourceType::AnimEventData, "Animation Event Data", "evnt");
         AddExtension(pType, CFourCC("EVNT"), EGame::PrimeDemo, EGame::Prime);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::AnimSet, "Animation Character Set", "acs");
+        auto* pType = new CResTypeInfo(EResourceType::AnimSet, "Animation Character Set", "acs");
         AddExtension(pType, CFourCC("ANCS"), EGame::PrimeDemo, EGame::Echoes);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::Area, "Area", "mrea");
+        auto* pType = new CResTypeInfo(EResourceType::Area, "Area", "mrea");
         AddExtension(pType, CFourCC("MREA"), EGame::PrimeDemo, EGame::DKCReturns);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::AudioAmplitudeData, "Audio Amplitude Data", "?");
+        auto* pType = new CResTypeInfo(EResourceType::AudioAmplitudeData, "Audio Amplitude Data", "?");
         AddExtension(pType, CFourCC("CAAD"), EGame::Corruption, EGame::Corruption);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::AudioGroup, "Audio Group", "agsc");
+        auto* pType = new CResTypeInfo(EResourceType::AudioGroup, "Audio Group", "agsc");
         AddExtension(pType, CFourCC("AGSC"), EGame::PrimeDemo, EGame::CorruptionProto);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::AudioMacro, "Audio Macro", "caud");
+        auto* pType = new CResTypeInfo(EResourceType::AudioMacro, "Audio Macro", "caud");
         AddExtension(pType, CFourCC("CAUD"), EGame::CorruptionProto, EGame::DKCReturns);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::AudioSample, "Audio Sample", "csmp");
+        auto* pType = new CResTypeInfo(EResourceType::AudioSample, "Audio Sample", "csmp");
         AddExtension(pType, CFourCC("CSMP"), EGame::CorruptionProto, EGame::DKCReturns);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::AudioLookupTable, "Audio Lookup Table", "atbl");
+        auto* pType = new CResTypeInfo(EResourceType::AudioLookupTable, "Audio Lookup Table", "atbl");
         AddExtension(pType, CFourCC("ATBL"), EGame::PrimeDemo, EGame::Corruption);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::BinaryData, "Generic Data", "dat");
+        auto* pType = new CResTypeInfo(EResourceType::BinaryData, "Generic Data", "dat");
         AddExtension(pType, CFourCC("DUMB"), EGame::PrimeDemo, EGame::Corruption);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::BurstFireData, "Burst Fire Data", "bfre.bfrc");
+        auto* pType = new CResTypeInfo(EResourceType::BurstFireData, "Burst Fire Data", "bfre.bfrc");
         AddExtension(pType, CFourCC("BFRC"), EGame::CorruptionProto, EGame::Corruption);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::Character, "Character", "char");
+        auto* pType = new CResTypeInfo(EResourceType::Character, "Character", "char");
         AddExtension(pType, CFourCC("CHAR"), EGame::CorruptionProto, EGame::DKCReturns);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::DependencyGroup, "Dependency Group", "?");
+        auto* pType = new CResTypeInfo(EResourceType::DependencyGroup, "Dependency Group", "?");
         AddExtension(pType, CFourCC("DGRP"), EGame::PrimeDemo, EGame::DKCReturns);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::DynamicCollision, "Dynamic Collision", "dcln");
+        auto* pType = new CResTypeInfo(EResourceType::DynamicCollision, "Dynamic Collision", "dcln");
         AddExtension(pType, CFourCC("DCLN"), EGame::PrimeDemo, EGame::DKCReturns);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::Font, "Font", "rpff");
+        auto* pType = new CResTypeInfo(EResourceType::Font, "Font", "rpff");
         AddExtension(pType, CFourCC("FONT"), EGame::PrimeDemo, EGame::DKCReturns);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::GuiFrame, "Gui Frame", "frme");
+        auto* pType = new CResTypeInfo(EResourceType::GuiFrame, "Gui Frame", "frme");
         AddExtension(pType, CFourCC("FRME"), EGame::PrimeDemo, EGame::DKCReturns);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::GuiKeyFrame, "Gui Keyframe", "?");
+        auto* pType = new CResTypeInfo(EResourceType::GuiKeyFrame, "Gui Keyframe", "?");
         AddExtension(pType, CFourCC("KFAM"), EGame::PrimeDemo, EGame::PrimeDemo);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::HintSystem, "Hint System Data", "hint");
+        auto* pType = new CResTypeInfo(EResourceType::HintSystem, "Hint System Data", "hint");
         AddExtension(pType, CFourCC("HINT"), EGame::Prime, EGame::Corruption);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::MapArea, "Area Map", "mapa");
+        auto* pType = new CResTypeInfo(EResourceType::MapArea, "Area Map", "mapa");
         AddExtension(pType, CFourCC("MAPA"), EGame::PrimeDemo, EGame::Corruption);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::MapWorld, "World Map", "mapw");
+        auto* pType = new CResTypeInfo(EResourceType::MapWorld, "World Map", "mapw");
         AddExtension(pType, CFourCC("MAPW"), EGame::PrimeDemo, EGame::Corruption);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::MapUniverse, "Universe Map", "mapu");
+        auto* pType = new CResTypeInfo(EResourceType::MapUniverse, "Universe Map", "mapu");
         AddExtension(pType, CFourCC("MAPU"), EGame::PrimeDemo, EGame::Echoes);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::Midi, "MIDI", "?");
+        auto* pType = new CResTypeInfo(EResourceType::Midi, "MIDI", "?");
         AddExtension(pType, CFourCC("CSNG"), EGame::PrimeDemo, EGame::Echoes);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::Model, "Model", "cmdl");
+        auto* pType = new CResTypeInfo(EResourceType::Model, "Model", "cmdl");
         AddExtension(pType, CFourCC("CMDL"), EGame::PrimeDemo, EGame::DKCReturns);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::Particle, "Particle System", "gpsm.part");
+        auto* pType = new CResTypeInfo(EResourceType::Particle, "Particle System", "gpsm.part");
         AddExtension(pType, CFourCC("PART"), EGame::PrimeDemo, EGame::DKCReturns);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::ParticleCollisionResponse, "Collision Response Particle System", "crsm.crsc");
+        auto* pType = new CResTypeInfo(EResourceType::ParticleCollisionResponse, "Collision Response Particle System", "crsm.crsc");
         AddExtension(pType, CFourCC("CRSC"), EGame::PrimeDemo, EGame::Corruption);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::ParticleDecal, "Decal Particle System", "dpsm.dpsc");
+        auto* pType = new CResTypeInfo(EResourceType::ParticleDecal, "Decal Particle System", "dpsm.dpsc");
         AddExtension(pType, CFourCC("DPSC"), EGame::PrimeDemo, EGame::Corruption);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::ParticleElectric, "Electric Particle System", "elsm.elsc");
+        auto* pType = new CResTypeInfo(EResourceType::ParticleElectric, "Electric Particle System", "elsm.elsc");
         AddExtension(pType, CFourCC("ELSC"), EGame::PrimeDemo, EGame::Corruption);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::ParticleSorted, "Sorted Particle System", "srsm.srsc");
+        auto* pType = new CResTypeInfo(EResourceType::ParticleSorted, "Sorted Particle System", "srsm.srsc");
         AddExtension(pType, CFourCC("SRSC"), EGame::EchoesDemo, EGame::Echoes);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::ParticleSpawn, "Spawn Particle System", "spsm.spsc");
+        auto* pType = new CResTypeInfo(EResourceType::ParticleSpawn, "Spawn Particle System", "spsm.spsc");
         AddExtension(pType, CFourCC("SPSC"), EGame::EchoesDemo, EGame::DKCReturns);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::ParticleSwoosh, "Swoosh Particle System", "swsh.swhc");
+        auto* pType = new CResTypeInfo(EResourceType::ParticleSwoosh, "Swoosh Particle System", "swsh.swhc");
         AddExtension(pType, CFourCC("SWHC"), EGame::PrimeDemo, EGame::DKCReturns);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::ParticleTransform, "Transform Particle System", "xfsm.xfsc");
+        auto* pType = new CResTypeInfo(EResourceType::ParticleTransform, "Transform Particle System", "xfsm.xfsc");
         AddExtension(pType, CFourCC("XFSC"), EGame::DKCReturns, EGame::DKCReturns);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::ParticleWeapon, "Weapon Particle System", "wpsm.wpsc");
+        auto* pType = new CResTypeInfo(EResourceType::ParticleWeapon, "Weapon Particle System", "wpsm.wpsc");
         AddExtension(pType, CFourCC("WPSC"), EGame::PrimeDemo, EGame::Corruption);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::Pathfinding, "Pathfinding Mesh", "path");
+        auto* pType = new CResTypeInfo(EResourceType::Pathfinding, "Pathfinding Mesh", "path");
         AddExtension(pType, CFourCC("PATH"), EGame::PrimeDemo, EGame::Corruption);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::PortalArea, "Portal Area", "?");
+        auto* pType = new CResTypeInfo(EResourceType::PortalArea, "Portal Area", "?");
         AddExtension(pType, CFourCC("PTLA"), EGame::EchoesDemo, EGame::Corruption);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::RuleSet, "Rule Set", "rule");
+        auto* pType = new CResTypeInfo(EResourceType::RuleSet, "Rule Set", "rule");
         AddExtension(pType, CFourCC("RULE"), EGame::EchoesDemo, EGame::DKCReturns);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::SaveArea, "Area Save Info", "sava");
+        auto* pType = new CResTypeInfo(EResourceType::SaveArea, "Area Save Info", "sava");
         AddExtension(pType, CFourCC("SAVA"), EGame::CorruptionProto, EGame::Corruption);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::SaveWorld, "World Save Info", "savw");
+        auto* pType = new CResTypeInfo(EResourceType::SaveWorld, "World Save Info", "savw");
         AddExtension(pType, CFourCC("SAVW"), EGame::Prime, EGame::DKCReturns);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::Scan, "Scan", "scan");
+        auto* pType = new CResTypeInfo(EResourceType::Scan, "Scan", "scan");
         AddExtension(pType, CFourCC("SCAN"), EGame::PrimeDemo, EGame::Corruption);
         pType->mCanBeCreated = true;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::Skeleton, "Skeleton", "cin");
+        auto* pType = new CResTypeInfo(EResourceType::Skeleton, "Skeleton", "cin");
         AddExtension(pType, CFourCC("CINF"), EGame::PrimeDemo, EGame::DKCReturns);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::Skin, "Skin", "cskr");
+        auto* pType = new CResTypeInfo(EResourceType::Skin, "Skin", "cskr");
         AddExtension(pType, CFourCC("CSKR"), EGame::PrimeDemo, EGame::DKCReturns);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::SourceAnimData, "Source Animation Data", "sand");
+        auto* pType = new CResTypeInfo(EResourceType::SourceAnimData, "Source Animation Data", "sand");
         AddExtension(pType, CFourCC("SAND"), EGame::CorruptionProto, EGame::Corruption);
         pType->mCanHaveDependencies = false; // all dependencies are added to the CHAR dependency tree
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::SpatialPrimitive, "Spatial Primitive", "?");
+        auto* pType = new CResTypeInfo(EResourceType::SpatialPrimitive, "Spatial Primitive", "?");
         AddExtension(pType, CFourCC("CSPP"), EGame::EchoesDemo, EGame::Echoes);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::StateMachine, "State Machine", "afsm");
+        auto* pType = new CResTypeInfo(EResourceType::StateMachine, "State Machine", "afsm");
         AddExtension(pType, CFourCC("AFSM"), EGame::PrimeDemo, EGame::Echoes);
         AddExtension(pType, CFourCC("FSM2"), EGame::CorruptionProto, EGame::Corruption);
         AddExtension(pType, CFourCC("FSMC"), EGame::DKCReturns, EGame::DKCReturns);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::StateMachine2, "State Machine 2", "fsm2");
+        auto* pType = new CResTypeInfo(EResourceType::StateMachine2, "State Machine 2", "fsm2");
         AddExtension(pType, CFourCC("FSM2"), EGame::EchoesDemo, EGame::Corruption);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::StaticGeometryMap, "Static Scan Map", "egmc");
+        auto* pType = new CResTypeInfo(EResourceType::StaticGeometryMap, "Static Scan Map", "egmc");
         AddExtension(pType, CFourCC("EGMC"), EGame::EchoesDemo, EGame::Corruption);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::StreamedAudio, "Streamed Audio", "?");
+        auto* pType = new CResTypeInfo(EResourceType::StreamedAudio, "Streamed Audio", "?");
         AddExtension(pType, CFourCC("STRM"), EGame::CorruptionProto, EGame::DKCReturns);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::StringList, "String List", "stlc");
+        auto* pType = new CResTypeInfo(EResourceType::StringList, "String List", "stlc");
         AddExtension(pType, CFourCC("STLC"), EGame::EchoesDemo, EGame::CorruptionProto);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::StringTable, "String Table", "strg");
+        auto* pType = new CResTypeInfo(EResourceType::StringTable, "String Table", "strg");
         AddExtension(pType, CFourCC("STRG"), EGame::PrimeDemo, EGame::DKCReturns);
         pType->mCanBeSerialized = true;
         pType->mCanBeCreated = true;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::Texture, "Texture", "txtr");
+        auto* pType = new CResTypeInfo(EResourceType::Texture, "Texture", "txtr");
         AddExtension(pType, CFourCC("TXTR"), EGame::PrimeDemo, EGame::DKCReturns);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::Tweaks, "Tweak Data", "ctwk");
+        auto* pType = new CResTypeInfo(EResourceType::Tweaks, "Tweak Data", "ctwk");
         AddExtension(pType, CFourCC("CTWK"), EGame::PrimeDemo, EGame::Prime);
         pType->mCanHaveDependencies = false;
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::UserEvaluatorData, "User Evaluator Data", "user.usrc");
+        auto* pType = new CResTypeInfo(EResourceType::UserEvaluatorData, "User Evaluator Data", "user.usrc");
         AddExtension(pType, CFourCC("USRC"), EGame::CorruptionProto, EGame::Corruption);
     }
     {
-        CResTypeInfo *pType = new CResTypeInfo(EResourceType::World, "World", "mwld");
+        auto* pType = new CResTypeInfo(EResourceType::World, "World", "mwld");
         AddExtension(pType, CFourCC("MLVL"), EGame::PrimeDemo, EGame::DKCReturns);
         pType->mCanBeSerialized = true;
     }
