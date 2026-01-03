@@ -14,6 +14,7 @@
 #include "Core/Resource/Script/CScriptTemplate.h"
 
 #include <Common/CFourCC.h>
+#include <Common/Log.h>
 #include <Common/FileIO/CMemoryInStream.h>
 
 #include <algorithm>
@@ -108,7 +109,7 @@ void CAreaLoader::ReadSCLYPrime()
     CFourCC SCLY(*mpMREA);
     if (SCLY != FOURCC('SCLY'))
     {
-        errorf("%s [0x%X]: Invalid SCLY magic: %s", *mpMREA->GetSourceString(), mpMREA->Tell() - 4, *SCLY.ToString());
+        NLog::Error("{} [0x{:X}]: Invalid SCLY magic: {}", *mpMREA->GetSourceString(), mpMREA->Tell() - 4, *SCLY.ToString());
         return;
     }
     mpMREA->Seek(mVersion <= EGame::Prime ? 4 : 1, SEEK_CUR); // Skipping unknown value which is always 1
@@ -139,7 +140,7 @@ void CAreaLoader::ReadSCLYPrime()
 
         if (SCGN != FOURCC('SCGN'))
         {
-            errorf("%s [0x%X]: Invalid SCGN magic: %s", *mpMREA->GetSourceString(), mpMREA->Tell() - 4, *SCGN.ToString());
+            NLog::Error("{} [0x{:X}]: Invalid SCGN magic: {}", *mpMREA->GetSourceString(), mpMREA->Tell() - 4, *SCGN.ToString());
         }
         else
         {
@@ -283,7 +284,7 @@ void CAreaLoader::ReadSCLYEchoes()
         const CFourCC SCLY(*mpMREA);
         if (SCLY != FOURCC('SCLY'))
         {
-            errorf("%s [0x%X]: Layer %d - Invalid SCLY magic: %s", *mpMREA->GetSourceString(), mpMREA->Tell() - 4, iLyr, *SCLY.ToString());
+            NLog::Error("{} [0x{:X}]: Layer {} - Invalid SCLY magic: {}", *mpMREA->GetSourceString(), mpMREA->Tell() - 4, iLyr, *SCLY.ToString());
             mpSectionMgr->ToNextSection();
             continue;
         }
@@ -297,7 +298,7 @@ void CAreaLoader::ReadSCLYEchoes()
     const CFourCC SCGN(*mpMREA);
     if (SCGN != FOURCC('SCGN'))
     {
-        errorf("%s [0x%X]: Invalid SCGN magic: %s", *mpMREA->GetSourceString(), mpMREA->Tell() - 4, *SCGN.ToString());
+        NLog::Error("{} [0x{:X}]: Invalid SCGN magic: {}", *mpMREA->GetSourceString(), mpMREA->Tell() - 4, *SCGN.ToString());
         return;
     }
 
@@ -652,8 +653,8 @@ void CAreaLoader::SetUpObjects(CScriptLayer *pGenLayer)
             {
                 if (pInst->ObjectTypeID() != FOURCC('GCTR'))
                 {
-                    debugf("Duplicate SCGN object: [%s] %s (%08X)", *pInst->Template()->Name(), *pInst->InstanceName(),
-                           static_cast<uint32>(pInst->InstanceID()));
+                    NLog::Debug("Duplicate SCGN object: [{}] {} ({:08X})", *pInst->Template()->Name(), *pInst->InstanceName(),
+                                static_cast<uint32>(pInst->InstanceID()));
                 }
 
                 pGenLayer->RemoveInstance(pInst);
@@ -717,7 +718,7 @@ std::unique_ptr<CGameArea> CAreaLoader::LoadMREA(IInputStream& MREA, CResourceEn
     const uint32 DeadBeef = MREA.ReadULong();
     if (DeadBeef != 0xdeadbeef)
     {
-        errorf("%s: Invalid MREA magic: 0x%08X", *MREA.GetSourceString(), DeadBeef);
+        NLog::Error("{}: Invalid MREA magic: 0x{:08X}", *MREA.GetSourceString(), DeadBeef);
         return nullptr;
     }
 
@@ -787,7 +788,7 @@ std::unique_ptr<CGameArea> CAreaLoader::LoadMREA(IInputStream& MREA, CResourceEn
             }
             break;
         default:
-            errorf("%s: Unsupported MREA version: 0x%X", *MREA.GetSourceString(), Version);
+            NLog::Error("{}: Unsupported MREA version: 0x{:X}", *MREA.GetSourceString(), Version);
             Loader.mpArea.Delete();
             return nullptr;
     }

@@ -1,16 +1,16 @@
 #ifndef CRESOURCECOOKER_H
 #define CRESOURCECOOKER_H
 
+#include "Core/GameProject/CResourceEntry.h"
 #include "Core/Resource/Cooker/CAreaCooker.h"
 #include "Core/Resource/Cooker/CModelCooker.h"
 #include "Core/Resource/Cooker/CPoiToWorldCooker.h"
 #include "Core/Resource/Cooker/CScanCooker.h"
 #include "Core/Resource/Cooker/CStringCooker.h"
 #include "Core/Resource/Cooker/CWorldCooker.h"
-
 #include "Core/Tweaks/CTweakCooker.h"
 
-#include "Core/GameProject/CResourceEntry.h"
+#include <Common/Log.h>
 
 class CResourceCooker
 {
@@ -33,7 +33,7 @@ public:
         case EResourceType::World:                return CWorldCooker::CookMLVL((CWorld*) pRes, rOutput);
 
         default:
-            warnf("Failed to cook %s asset; this resource type is not supported for cooking", *pEntry->CookedExtension().ToString());
+            NLog::Warn("Failed to cook {} asset; this resource type is not supported for cooking", *pEntry->CookedExtension().ToString());
             return false;
         }
     }

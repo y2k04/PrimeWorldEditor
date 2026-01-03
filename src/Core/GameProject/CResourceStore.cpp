@@ -172,7 +172,7 @@ bool CResourceStore::LoadDatabaseCache()
 bool CResourceStore::SaveDatabaseCache()
 {
     TString Path = DatabasePath();
-    debugf("Saving database cache...");
+    NLog::Debug("Saving database cache...");
 
     CBasicBinaryWriter Writer(Path, FOURCC('CACH'), 0, mGame);
 
@@ -226,12 +226,12 @@ void CResourceStore::CloseProject()
     // If there are, that means something didn't clean up resource references properly on project close!!!
     if (!mLoadedResources.empty())
     {
-        warnf("%d resources still loaded on project close:", mLoadedResources.size());
+        NLog::Warn("{} resources still loaded on project close:", mLoadedResources.size());
 
         for (const auto& entry : mLoadedResources)
         {
             const CResourceEntry *pEntry = entry.second;
-            warnf("\t%s.%s", *pEntry->Name(), *pEntry->CookedExtension().ToString());
+            NLog::Warn("\t{}.{}", *pEntry->Name(), *pEntry->CookedExtension().ToString());
         }
 
         ASSERT(false);
@@ -336,9 +336,9 @@ void CResourceStore::ClearDatabase()
 
     if (!mLoadedResources.empty())
     {
-        debugf("ERROR: Resources still loaded:");
+        NLog::Debug("ERROR: Resources still loaded:");
         for (const auto& [asset, entry] : mLoadedResources)
-            debugf("\t[%s] %s", *asset.ToString(), *entry->CookedAssetPath(true));
+            NLog::Debug("\t[{}] {}", *asset.ToString(), *entry->CookedAssetPath(true));
         ASSERT(false);
     }
 
@@ -378,7 +378,7 @@ bool CResourceStore::BuildFromDirectory(bool ShouldGenerateCacheFile)
 
             if (!pTypeInfo)
             {
-                errorf("Found resource but couldn't register because failed to identify resource type: %s", *RelPath);
+                NLog::Error("Found resource but couldn't register because failed to identify resource type: {}", *RelPath);
                 continue;
             }
 
@@ -444,7 +444,7 @@ CResourceEntry* CResourceStore::CreateNewResource(const CAssetID& rkID, EResourc
 
     if (pEntry)
     {
-        errorf("Attempted to register resource that's already tracked in the database: %s / %s / %s", *rkID.ToString(), *rkDir, *rkName);
+        NLog::Error("Attempted to register resource that's already tracked in the database: {} / {} / {}", *rkID.ToString(), *rkDir, *rkName);
     }
     else
     {
@@ -464,13 +464,13 @@ CResourceEntry* CResourceStore::CreateNewResource(const CAssetID& rkID, EResourc
 
             if (!ExistingResource)
             {
-                debugf("CREATED NEW RESOURCE: [%s] %s", *rkID.ToString(), *resPtr->CookedAssetPath());
+                NLog::Debug("CREATED NEW RESOURCE: [{}] {}", *rkID.ToString(), *resPtr->CookedAssetPath());
             }
 
             return resPtr;
         }
 
-        errorf("Invalid resource path, failed to register: %s%s", *rkDir, *rkName);
+        NLog::Error("Invalid resource path, failed to register: {}{}", *rkDir, *rkName);
     }
 
     return pEntry;
@@ -485,7 +485,7 @@ CResource* CResourceStore::LoadResource(const CAssetID& rkID)
     if (!pEntry)
     {
         // Resource doesn't seem to exist
-        warnf("Can't find requested resource with ID \"%s\"", *rkID.ToString());
+        NLog::Warn("Can't find requested resource with ID \"{}\"", *rkID.ToString());
         return nullptr;
     }
 
@@ -508,7 +508,7 @@ CResource* CResourceStore::LoadResource(const CAssetID& rkID, EResourceType Type
             CResTypeInfo *pGotType = pRes->TypeInfo();
             ASSERT(pExpectedType && pGotType);
 
-            errorf("Resource with ID \"%s\" requested with the wrong type; expected %s asset, get %s asset", *rkID.ToString(), *pExpectedType->TypeName(), *pGotType->TypeName());
+            NLog::Error("Resource with ID \"{}\" requested with the wrong type; expected {} asset, get {} asset", *rkID.ToString(), *pExpectedType->TypeName(), *pGotType->TypeName());
             return nullptr;
         }
     }
@@ -628,7 +628,7 @@ void CResourceStore::ImportNamesFromPakContentsTxt(const TString& rkTxtPath, boo
 
     if (!pContentsFile)
     {
-        errorf("Failed to open .contents.txt file: %s", *rkTxtPath);
+        NLog::Error("Failed to open .contents.txt file: {}", *rkTxtPath);
         return;
     }
 

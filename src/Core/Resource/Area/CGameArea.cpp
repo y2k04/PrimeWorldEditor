@@ -4,6 +4,7 @@
 #include "Core/Resource/Script/CScriptLayer.h"
 #include "Core/Resource/Script/CScriptTemplate.h"
 #include "Core/Render/CRenderer.h"
+#include <Common/Log.h>
 
 CGameArea::CGameArea(CResourceEntry *pEntry)
     : CResource(pEntry)
@@ -164,7 +165,7 @@ CScriptObject* CGameArea::SpawnInstance(CScriptTemplate *pTemplate,
 
     if (NumInstances >= 0xFFFF)
     {
-        errorf("Unable to spawn a new script instance; too many instances in area (%zu)", NumInstances);
+        NLog::Error("Unable to spawn a new script instance; too many instances in area ({})", NumInstances);
         return nullptr;
     }
 
@@ -185,7 +186,7 @@ CScriptObject* CGameArea::SpawnInstance(CScriptTemplate *pTemplate,
 
         if (LayerIndex == UINT32_MAX)
         {
-            errorf("Unable to spawn a new script instance; invalid script layer passed in");
+            NLog::Error("Unable to spawn a new script instance; invalid script layer passed in");
             return nullptr;
         }
 

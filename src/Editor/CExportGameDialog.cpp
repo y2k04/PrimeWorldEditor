@@ -4,6 +4,7 @@
 #include "Editor/CProgressDialog.h"
 #include "Editor/UICommon.h"
 #include <Common/FileUtil.h>
+#include <Common/Log.h>
 #include <Common/Macros.h>
 #include <Core/GameProject/CAssetNameMap.h>
 #include <Core/GameProject/CGameExporter.h>
@@ -316,7 +317,7 @@ float CExportGameDialog::FindBuildVersion() const
         }
     }
 
-    errorf("Failed to find MetroidBuildInfo string. Build Version will be set to 0.");
+    NLog::Error("Failed to find MetroidBuildInfo string. Build Version will be set to 0.");
     return 0.f;
 }
 

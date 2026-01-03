@@ -6,6 +6,7 @@
 #include "Editor/ResourceBrowser/CResourceBrowser.h"
 #include <Core/GameProject/CResourceStore.h>
 #include <Core/GameProject/CVirtualDirectory.h>
+#include <Common/Log.h>
 
 #include <QCoreApplication>
 
@@ -54,7 +55,7 @@ protected:
             }
             else
             {
-                debugf("Directory delete failed, directory is not empty: %s", *(mParentPath + mDirName));
+                NLog::Debug("Directory delete failed, directory is not empty: {}", *(mParentPath + mDirName));
             }
         }
     }

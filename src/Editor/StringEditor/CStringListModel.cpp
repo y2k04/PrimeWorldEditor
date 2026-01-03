@@ -4,6 +4,7 @@
 #include "Editor/StringEditor/CStringEditor.h"
 #include "Editor/StringEditor/CStringMimeData.h"
 #include <Core/Resource/StringTable/CStringTable.h>
+#include <Common/Log.h>
 
 #include <QMimeData>
 
@@ -107,7 +108,7 @@ bool CStringListModel::canDropMimeData(const QMimeData* pkData, Qt::DropAction A
 
 bool CStringListModel::dropMimeData(const QMimeData* pkData, Qt::DropAction Action, int Row, int Column, const QModelIndex& kParent)
 {
-    debugf("Dropped onto row %d column %d", Row, Column);
+    NLog::Debug("Dropped onto row {} column {}", Row, Column);
 
     if (Action == Qt::MoveAction)
     {

@@ -14,6 +14,7 @@
 #include "Core/Resource/Script/CScriptLayer.h"
 #include "Core/Resource/Script/CScriptTemplate.h"
 #include <Common/FileUtil.h>
+#include <Common/Log.h>
 #include <Common/Math/MathUtil.h>
 
 #include <ranges>
@@ -94,12 +95,12 @@ void ApplyGeneratedName(CResourceEntry *pEntry, const TString& rkDir, const TStr
 
 void GenerateAssetNames(CGameProject *pProj)
 {
-    debugf("*** Generating Asset Names ***");
+    NLog::Debug("*** Generating Asset Names ***");
     CResourceStore *pStore = pProj->ResourceStore();
 
 #if REVERT_AUTO_NAMES
     // Revert all auto-generated asset names back to default to prevent name conflicts resulting in inconsistent results.
-    debugf("Reverting auto-generated names");
+    NLog::Debug("Reverting auto-generated names");
 
     for (CResourceIterator It(pStore); It; ++It)
     {
@@ -115,7 +116,7 @@ void GenerateAssetNames(CGameProject *pProj)
 
 #if PROCESS_PACKAGES
     // Generate names for package named resources
-    debugf("Processing packages");
+    NLog::Debug("Processing packages");
 
     for (const auto& pkg : pProj->Packages())
     {
@@ -133,7 +134,7 @@ void GenerateAssetNames(CGameProject *pProj)
 
 #if PROCESS_WORLDS
     // Generate world/area names
-    debugf("Processing worlds");
+    NLog::Debug("Processing worlds");
     const TString kWorldsRoot = "Worlds/";
 
     for (TResourceIterator<EResourceType::World> It(pStore); It; ++It)
@@ -408,7 +409,7 @@ void GenerateAssetNames(CGameProject *pProj)
 
 #if PROCESS_MODELS
     // Generate Model Lightmap names
-    debugf("Processing model lightmaps");
+    NLog::Debug("Processing model lightmaps");
 
     for (TResourceIterator<EResourceType::Model> It(pStore); It; ++It)
     {
@@ -452,7 +453,7 @@ void GenerateAssetNames(CGameProject *pProj)
 
 #if PROCESS_AUDIO_GROUPS
     // Generate Audio Group names
-    debugf("Processing audio groups");
+    NLog::Debug("Processing audio groups");
     const TString kAudioGrpDir = "Audio/";
 
     for (TResourceIterator<EResourceType::AudioGroup> It(pStore); It; ++It)
@@ -465,7 +466,7 @@ void GenerateAssetNames(CGameProject *pProj)
 
 #if PROCESS_AUDIO_MACROS
     // Process audio macro/sample names
-    debugf("Processing audio macros");
+    NLog::Debug("Processing audio macros");
     const TString kSfxDir = "Audio/Uncategorized/";
 
     for (TResourceIterator<EResourceType::AudioMacro> It(pStore); It; ++It)
@@ -494,7 +495,7 @@ void GenerateAssetNames(CGameProject *pProj)
 #if PROCESS_ANIM_CHAR_SETS
     // Generate animation format names
     // Hacky syntax because animsets are under eAnimSet in MP1/2 and eCharacter in MP3/DKCR
-    debugf("Processing animation data");
+    NLog::Debug("Processing animation data");
     CResourceIterator *pIter = (pProj->Game() <= EGame::Echoes ?
                                     (CResourceIterator*) new TResourceIterator<EResourceType::AnimSet> :
                                     (CResourceIterator*) new TResourceIterator<EResourceType::Character>);
@@ -582,7 +583,7 @@ void GenerateAssetNames(CGameProject *pProj)
 
 #if PROCESS_STRINGS
     // Generate string names
-    debugf("Processing strings");
+    NLog::Debug("Processing strings");
     const TString kStringsDir = "Strings/Uncategorized/";
 
     for (TResourceIterator<EResourceType::StringTable> It(pStore); It; ++It)
@@ -611,7 +612,7 @@ void GenerateAssetNames(CGameProject *pProj)
 
 #if PROCESS_SCANS
     // Generate scan names
-    debugf("Processing scans");
+    NLog::Debug("Processing scans");
     for (TResourceIterator<EResourceType::Scan> It(pStore); It; ++It)
     {
         if (It->IsNamed())
@@ -648,7 +649,7 @@ void GenerateAssetNames(CGameProject *pProj)
 
 #if PROCESS_FONTS
     // Generate font names
-    debugf("Processing fonts");
+    NLog::Debug("Processing fonts");
     for (TResourceIterator<EResourceType::Font> It(pStore); It; ++It)
     {
         if (auto* pFont = static_cast<CFont*>(It->Load()))
@@ -664,5 +665,5 @@ void GenerateAssetNames(CGameProject *pProj)
 
     pStore->RootDirectory()->DeleteEmptySubdirectories();
     pStore->ConditionalSaveStore();
-    debugf("*** Asset Name Generation FINISHED ***");
+    NLog::Debug("*** Asset Name Generation FINISHED ***");
 }

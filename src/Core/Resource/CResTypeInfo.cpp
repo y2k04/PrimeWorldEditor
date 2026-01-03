@@ -1,5 +1,6 @@
 #include "Core/Resource/CResTypeInfo.h"
 
+#include <Common/Log.h>
 #include <Common/Macros.h>
 #include <Common/Serialization/IArchive.h>
 
@@ -91,7 +92,7 @@ CResTypeInfo* CResTypeInfo::TypeForCookedExtension(EGame Game, CFourCC Ext)
     // Note UNKN is used to indicate unknown asset type
     if (Ext != FOURCC('UNKN'))
     {
-        errorf("Failed to find resource type for cooked extension: %s", *Ext.ToString());
+        NLog::Error("Failed to find resource type for cooked extension: {}", *Ext.ToString());
         DEBUG_BREAK;
     }
     sCachedTypeMap.insert_or_assign(Ext, nullptr);

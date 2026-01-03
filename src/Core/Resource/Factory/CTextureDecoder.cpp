@@ -2,6 +2,7 @@
 
 #include "Core/Resource/CTexture.h"
 #include <Common/CColor.h>
+#include <Common/Log.h>
 #include <Common/Macros.h>
 #include <Common/FileIO/IOutputStream.h>
 #include <Common/FileIO/CMemoryOutStream.h>
@@ -274,7 +275,7 @@ void CTextureDecoder::ReadDDS(IInputStream& rDDS)
     const CFourCC Magic(rDDS);
     if (Magic != FOURCC('DDS '))
     {
-        errorf("%s: Invalid DDS magic: 0x%08X", *rDDS.GetSourceString(), Magic.ToLong());
+        NLog::Error("{}: Invalid DDS magic: 0x{:08X}", *rDDS.GetSourceString(), Magic.ToLong());
         return;
     }
 

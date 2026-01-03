@@ -95,7 +95,7 @@ void CPackage::Cook(IProgressNotifier *pProgress)
     CPackageDependencyListBuilder Builder(this);
     std::list<CAssetID> AssetList;
     Builder.BuildDependencyList(true, AssetList);
-    debugf("%d assets in %s.pak", AssetList.size(), *Name());
+    NLog::Debug("{} assets in {}.pak", AssetList.size(), Name().ToStdString());
 
     // Write new pak
     const TString PakPath = CookedPackagePath(false);
@@ -103,7 +103,7 @@ void CPackage::Cook(IProgressNotifier *pProgress)
 
     if (!Pak.IsValid())
     {
-        errorf("Couldn't cook package %s; unable to open package for writing", *CookedPackagePath(true));
+        NLog::Error("Couldn't cook package {}; unable to open package for writing", CookedPackagePath(true).ToStdString());
         return;
     }
 
@@ -347,7 +347,7 @@ void CPackage::Cook(IProgressNotifier *pProgress)
 
         // Clear recook flag
         mNeedsRecook = false;
-        debugf("Finished writing %s", *PakPath);
+        NLog::Debug("Finished writing {}", PakPath.ToStdString());
     }
 
     Save();
@@ -372,7 +372,7 @@ void CPackage::CompareOriginalAssetList(const std::list<CAssetID>& rkNewList)
 
     if (!Pak.IsValid() || Pak.Size() == 0)
     {
-        errorf("Failed to compare to original asset list; couldn't open the original pak");
+        NLog::Error("Failed to compare to original asset list; couldn't open the original pak");
         return;
     }
 
@@ -433,7 +433,7 @@ void CPackage::CompareOriginalAssetList(const std::list<CAssetID>& rkNewList)
         {
             const CResourceEntry *pEntry = gpResourceStore->FindEntry(ID);
             const TString Extension = (pEntry != nullptr ? "." + pEntry->CookedExtension() : "");
-            warnf("Missing resource: %s%s", *ID.ToString(), *Extension);
+            NLog::Warn("Missing resource: {}{}", ID.ToString().ToStdString(), Extension.ToStdString());
         }
     }
 
@@ -444,7 +444,7 @@ void CPackage::CompareOriginalAssetList(const std::list<CAssetID>& rkNewList)
         {
             const CResourceEntry *pEntry = gpResourceStore->FindEntry(ID);
             const TString Extension = (pEntry != nullptr ? "." + pEntry->CookedExtension() : "");
-            warnf("Extra resource: %s%s", *ID.ToString(), *Extension);
+            NLog::Warn("Extra resource: {}{}", ID.ToString().ToStdString(), Extension.ToStdString());
         }
     }
 }

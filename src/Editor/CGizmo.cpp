@@ -1,5 +1,6 @@
 #include "Editor/CGizmo.h"
 
+#include <Common/Log.h>
 #include <Common/Math/MathUtil.h>
 #include <Core/GameProject/CResourceStore.h>
 #include <Core/Render/CDrawUtil.h>
@@ -40,7 +41,7 @@ static void LoadModels()
  {
      if (!smModelsLoaded)
      {
-         debugf("Loading transform gizmo models");
+         NLog::Debug("Loading transform gizmo models");
 
          smTranslateModels[CGIZMO_TRANSLATE_X]        = SGizmoModelPart(EAxis::X, true, false, gpEditorStore->LoadResource("editor/TranslateX.CMDL"));
          smTranslateModels[CGIZMO_TRANSLATE_Y]        = SGizmoModelPart(EAxis::Y, true, false, gpEditorStore->LoadResource("editor/TranslateY.CMDL"));

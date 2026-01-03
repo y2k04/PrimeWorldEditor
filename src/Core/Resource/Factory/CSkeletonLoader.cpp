@@ -98,7 +98,7 @@ std::unique_ptr<CSkeleton> CSkeletonLoader::LoadCINF(IInputStream& rCINF, CResou
             if (CBone* pChild = ptr->BoneByID(childID))
                 pBone->mChildren.push_back(pChild);
             else
-                errorf("%s: Bone %u has invalid child ID: %u", *rCINF.GetSourceString(), pBone->mID, childID);
+                NLog::Error("{}: Bone {} has invalid child ID: {}", *rCINF.GetSourceString(), pBone->mID, childID);
         }
 
         if (pBone->mpParent == nullptr)
@@ -106,7 +106,7 @@ std::unique_ptr<CSkeleton> CSkeletonLoader::LoadCINF(IInputStream& rCINF, CResou
             if (ptr->mpRootBone == nullptr)
                 ptr->mpRootBone = pBone;
             else
-                errorf("%s: Multiple root bones?", *rCINF.GetSourceString());
+                NLog::Error("{}: Multiple root bones?", *rCINF.GetSourceString());
         }
     }
 

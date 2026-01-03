@@ -5,6 +5,7 @@
 #include "Core/Resource/CAudioGroup.h"
 #include "Core/Resource/CAudioLookupTable.h"
 #include "Core/Resource/CStringList.h"
+#include <Common/Log.h>
 
 #include <algorithm>
 
@@ -97,10 +98,9 @@ void CAudioManager::LogSoundInfo(uint32_t SoundID) const
         return;
 
     if (mpProject->Game() >= EGame::EchoesDemo)
-        debugf("Sound Name:  %s", *SoundInfo.Name);
+        NLog::Debug("Sound Name:  {}", SoundInfo.Name.ToStdString());
 
-    debugf("Sound ID:    0x%04x", SoundInfo.SoundID);
-    debugf("Define ID:   0x%04x", SoundInfo.DefineID);
-    debugf("Audio Group: %s", *SoundInfo.pAudioGroup->Entry()->Name());
-    debugf("");
+    NLog::Debug("Sound ID:    0x{:04x}", SoundInfo.SoundID);
+    NLog::Debug("Define ID:   0x{:04x}", SoundInfo.DefineID);
+    NLog::Debug("Audio Group: {}\n", SoundInfo.pAudioGroup->Entry()->Name().ToStdString());
 }

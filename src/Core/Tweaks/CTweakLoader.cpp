@@ -5,6 +5,8 @@
 #include "Core/Resource/Script/NGameList.h"
 #include "Core/Tweaks/CTweakData.h"
 
+#include <Common/Log.h>
+
 #include <unordered_map>
 
 std::unique_ptr<CTweakData> CTweakLoader::LoadCTWK(IInputStream& CTWK, CResourceEntry* pEntry)
@@ -46,7 +48,7 @@ std::unique_ptr<CTweakData> CTweakLoader::LoadCTWK(IInputStream& CTWK, CResource
     // Verify
     if (!CTWK.EoF() && CTWK.PeekShort() != -1)
     {
-        errorf("%s: unread property data, tweak template may be malformed (%d bytes left)", *CTWK.GetSourceString(), CTWK.Size() - CTWK.Tell());
+        NLog::Error("{}: unread property data, tweak template may be malformed ({} bytes left)", *CTWK.GetSourceString(), CTWK.Size() - CTWK.Tell());
         return nullptr;
     }
 
@@ -62,13 +64,13 @@ void CTweakLoader::LoadNTWK(IInputStream& NTWK, EGame Game, std::vector<CTweakDa
 
     if (Magic != FOURCC('NTWK'))
     {
-        errorf("Unrecognized NTWK magic: 0x%08X", Magic);
+        NLog::Error("Unrecognized NTWK magic: 0x{:08X}", Magic);
         return;
     }
 
     if (LayerVersion != 1)
     {
-        errorf("Unrecognized layer version in NTWK: %d", LayerVersion);
+        NLog::Error("Unrecognized layer version in NTWK: {}", LayerVersion);
         return;
     }
 
@@ -114,7 +116,7 @@ void CTweakLoader::LoadNTWK(IInputStream& NTWK, EGame Game, std::vector<CTweakDa
 
         if (Find == skIdToTemplateName.cend())
         {
-            errorf("Unrecognized tweak ID: %s (0x%08X)", *CFourCC(TweakID).ToString(), TweakID);
+            NLog::Error("Unrecognized tweak ID: {} (0x{:08X})", *CFourCC(TweakID).ToString(), TweakID);
             NTWK.GoTo(NextTweak);
             continue;
         }

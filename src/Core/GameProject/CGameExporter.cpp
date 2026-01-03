@@ -285,7 +285,7 @@ void CGameExporter::LoadPaks()
 
         if (!Pak.IsValid())
         {
-            errorf("Couldn't open pak: %s", *PakPath);
+            NLog::Error("Couldn't open pak: {}", *PakPath);
             continue;
         }
 

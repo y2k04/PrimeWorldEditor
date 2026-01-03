@@ -1,6 +1,7 @@
 #include "Core/Resource/Factory/CScanLoader.h"
 
 #include <Common/CFourCC.h>
+#include <Common/Log.h>
 #include "Core/Resource/Factory/CScriptLoader.h"
 #include "Core/Resource/Scan/CScan.h"
 
@@ -11,7 +12,7 @@ std::unique_ptr<CScan> CScanLoader::LoadScanMP1(IInputStream& SCAN, CResourceEnt
 
     if (Magic != 0x0BADBEEF)
     {
-        errorf("Invalid magic in SCAN asset: 0x%08X", Magic);
+        NLog::Error("Invalid magic in SCAN asset: 0x{:08X}", Magic);
         return nullptr;
     }
 
@@ -36,7 +37,7 @@ std::unique_ptr<CScan> CScanLoader::LoadScanMP2(IInputStream& SCAN, CResourceEnt
 
     if (Version != 2)
     {
-        errorf("Unrecognized SCAN version: %d", Version);
+        NLog::Error("Unrecognized SCAN version: {}", Version);
         return nullptr;
     }
 
@@ -77,15 +78,11 @@ std::unique_ptr<CScan> CScanLoader::LoadSCAN(IInputStream& SCAN, CResourceEntry 
             CScanLoader Loader;
             return Loader.LoadScanMP1(SCAN, pEntry);
         }
-        else
-        {
-            errorf("%s: Unsupported SCAN version: %u", VersionCheck);
-            return nullptr;
-        }
-    }
-    else
-    {
-        errorf("Failed to identify SCAN version: 0x%X", VersionCheck);
+
+        NLog::Error("{}: Unsupported SCAN version: {}", *SCAN.GetSourceString(), VersionCheck);
         return nullptr;
     }
+
+    NLog::Error("Failed to identify SCAN version: 0x{:X}", VersionCheck);
+    return nullptr;
 }

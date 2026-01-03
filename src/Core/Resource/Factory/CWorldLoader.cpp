@@ -5,6 +5,8 @@
 #include "Core/GameProject/CResourceStore.h"
 #include "Core/Resource/CWorld.h"
 
+#include <Common/Log.h>
+
 CWorldLoader::CWorldLoader() = default;
 
 void CWorldLoader::LoadPrimeMLVL(IInputStream& rMLVL)
@@ -286,7 +288,7 @@ std::unique_ptr<CWorld> CWorldLoader::LoadMLVL(IInputStream& rMLVL, CResourceEnt
     const uint32 Magic = rMLVL.ReadULong();
     if (Magic != 0xDEAFBABE)
     {
-        errorf("%s: Invalid MLVL magic: 0x%08X", *rMLVL.GetSourceString(), Magic);
+        NLog::Error("{}: Invalid MLVL magic: 0x{:08X}", *rMLVL.GetSourceString(), Magic);
         return nullptr;
     }
 
@@ -294,7 +296,7 @@ std::unique_ptr<CWorld> CWorldLoader::LoadMLVL(IInputStream& rMLVL, CResourceEnt
     const EGame Version = GetFormatVersion(FileVersion);
     if (Version == EGame::Invalid)
     {
-        errorf("%s: Unsupported MLVL version: 0x%X", *rMLVL.GetSourceString(), FileVersion);
+        NLog::Error("{}: Unsupported MLVL version: 0x{:X}", *rMLVL.GetSourceString(), FileVersion);
         return nullptr;
     }
 

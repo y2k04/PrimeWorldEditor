@@ -7,6 +7,8 @@
 #include <Core/Resource/Script/NGameList.h>
 #include <Core/Resource/Script/NPropertyMap.h>
 #include <Common/FileUtil.h>
+#include <Common/Log.h>
+
 #include <QtConcurrentRun>
 #include <QThreadPool>
 #include <iterator>
@@ -52,7 +54,7 @@ void CGeneratePropertyNamesDialog::AddToIDPool(IProperty* pProperty)
 {
     if (!pProperty->UsesNameMap())
     {
-        errorf("Failed to add property %s to the generator ID pool because it doesn't use the name map", *pProperty->IDString(false));
+        NLog::Error("Failed to add property {} to the generator ID pool because it doesn't use the name map", *pProperty->IDString(false));
         return;
     }
 

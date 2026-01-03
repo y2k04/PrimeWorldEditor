@@ -2,7 +2,7 @@
 
 #include "Core/OpenGL/CRenderbuffer.h"
 #include "Core/Resource/CTexture.h"
-#include <Common/Macros.h>
+#include <Common/Log.h>
 
 CFramebuffer::CFramebuffer() = default;
 
@@ -98,7 +98,7 @@ void CFramebuffer::InitBuffers()
     mStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
     if (mStatus != GL_FRAMEBUFFER_COMPLETE)
-        errorf("Framebuffer not complete; error 0x%X", mStatus);
+        NLog::Error("Framebuffer not complete; error 0x{:X}", mStatus);
 }
 
 // ************ STATIC ************

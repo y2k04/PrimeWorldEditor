@@ -3,6 +3,7 @@
 #include "Editor/UICommon.h"
 #include "Editor/SDolHeader.h"
 #include <Common/FileUtil.h>
+#include <Common/Log.h>
 #include <Core/GameProject/CResourceStore.h>
 
 #include <QCoreApplication>
@@ -43,13 +44,13 @@ static CGameProject* gpQuickplayProject = nullptr;
 /** Quickplay relay implementation to detect when the active quickplay session closes */
 void CQuickplayRelay::QuickplayStarted()
 {
-    debugf("Quickplay session started.");
+    NLog::Debug("Quickplay session started.");
     connect(gpDolphinProcess, &QProcess::finished, this, &CQuickplayRelay::QuickplayFinished);
 }
 
 void CQuickplayRelay::QuickplayFinished(int ReturnCode, QProcess::ExitStatus exitStatus)
 {
-    debugf("Quickplay session finished.");
+    NLog::Debug("Quickplay session finished.");
     disconnect(gpDolphinProcess, 0, this, 0);
     CleanupQuickplayFiles(gpQuickplayProject);
     gpDolphinProcess->waitForFinished();
@@ -93,7 +94,7 @@ EQuickplayLaunchResult LaunchQuickplay(QWidget* pParentWidget,
                                        CGameProject* pProject,
                                        const SQuickplayParameters& kParms)
 {
-    debugf("Launching quickplay...");
+    NLog::Debug("Launching quickplay...");
 
     // Check if we have the files needed for this project's target game and version.
     // The required files are split into two parts:
@@ -109,7 +110,7 @@ EQuickplayLaunchResult LaunchQuickplay(QWidget* pParentWidget,
 
     if (!FileUtil::Exists(RelFile) || !FileUtil::Exists(PatchFile) || !FileUtil::Exists(PatchMapFile))
     {
-        warnf("Quickplay launch failed! Quickplay is not supported for this project.");
+        NLog::Warn("Quickplay launch failed! Quickplay is not supported for this project.");
         return EQuickplayLaunchResult::UnsupportedForProject;
     }
 
@@ -123,7 +124,7 @@ EQuickplayLaunchResult LaunchQuickplay(QWidget* pParentWidget,
         }
         else
         {
-            warnf("Quickplay launch failed! User is already running quickplay.");
+            NLog::Warn("Quickplay launch failed! User is already running quickplay.");
             return EQuickplayLaunchResult::AlreadyRunning;
         }
     }
@@ -145,7 +146,7 @@ EQuickplayLaunchResult LaunchQuickplay(QWidget* pParentWidget,
         if (!bGotDolphin)
         {
             // We don't have Dolphin
-            warnf("Quickplay launch failed! Dolphin is not configured.");
+            NLog::Warn("Quickplay launch failed! Dolphin is not configured.");
             return EQuickplayLaunchResult::DolphinNotSet;
         }
     }
@@ -173,7 +174,7 @@ EQuickplayLaunchResult LaunchQuickplay(QWidget* pParentWidget,
     if (!bLoadedDol || !bLoadedPatch || !bLoadedMap)
     {
         const char* failedPart = !bLoadedDol ? "game DOL" : (!bLoadedPatch ? "patch data" : "patch symbols");
-        warnf("Quickplay launch failed! Failed to load %s into memory.", failedPart);
+        NLog::Warn("Quickplay launch failed! Failed to load {} into memory.", failedPart);
 
         return EQuickplayLaunchResult::Failure;
     }
@@ -205,7 +206,7 @@ EQuickplayLaunchResult LaunchQuickplay(QWidget* pParentWidget,
 
     if (!header.AddTextSection(0x80002000, AlignedDolSize, AlignedPatchSize))
     {
-        warnf("Quickplay launch failed! Failed to patch DOL. Is it already patched?");
+        NLog::Warn("Quickplay launch failed! Failed to patch DOL. Is it already patched?");
         return EQuickplayLaunchResult::Failure;
     }
 
@@ -219,7 +220,7 @@ EQuickplayLaunchResult LaunchQuickplay(QWidget* pParentWidget,
 
     if (!FileUtil::SaveBufferToFile(DolPath, DolData))
     {
-        warnf("Quickplay launch failed! Failed to write patched DOL.");
+        NLog::Warn("Quickplay launch failed! Failed to write patched DOL.");
         return EQuickplayLaunchResult::Failure;
     }
 
@@ -239,7 +240,7 @@ EQuickplayLaunchResult LaunchQuickplay(QWidget* pParentWidget,
 
     if (gpDolphinProcess->state() != QProcess::Running)
     {
-        warnf("Quickplay launch failed! Process did not start correctly.");
+        NLog::Warn("Quickplay launch failed! Process did not start correctly.");
         delete gpDolphinProcess;
         gpDolphinProcess = nullptr;
         return EQuickplayLaunchResult::Failure;
@@ -267,7 +268,7 @@ void KillQuickplay()
 {
     if (gpDolphinProcess)
     {
-        debugf("Stopping active quickplay session.");
+        NLog::Debug("Stopping active quickplay session.");
         gpDolphinProcess->close();
         // CQuickplayRelay handles remaining destruction & cleanup
     }
@@ -340,14 +341,14 @@ bool SetDolphinPath(QWidget* pParentWidget, const QString& kDolphinPath, bool bS
         return false;
     }
 
-    debugf("Found %s version %s", *TO_TSTRING(VersionParts.first()), *TO_TSTRING(VersionParts.last()));
+    NLog::Debug("Found {} version {}", *TO_TSTRING(VersionParts.first()), *TO_TSTRING(VersionParts.last()));
 
     // Build is legit, stash it
     QSettings Settings;
     Settings.setValue(gkDolphinPathSetting, kDolphinPath);
 
     gDolphinPath = kDolphinPath;
-    debugf("Setting Dolphin path to %s.", *TO_TSTRING(kDolphinPath));
+    NLog::Debug("Setting Dolphin path to {}.", *TO_TSTRING(kDolphinPath));
 
     return true;
 }

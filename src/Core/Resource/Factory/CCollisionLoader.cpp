@@ -182,7 +182,7 @@ std::unique_ptr<CCollisionMeshGroup> CCollisionLoader::LoadAreaCollision(IInputS
     const uint32 DeafBabe = rMREA.ReadULong();
     if (DeafBabe != 0xDEAFBABE)
     {
-        errorf("%s [0x%X]: Invalid collision magic: 0x%08X", *rMREA.GetSourceString(), rMREA.Tell() - 4, DeafBabe);
+        NLog::Error("{} [0x{:X}]: Invalid collision magic: 0x{:08X}", *rMREA.GetSourceString(), rMREA.Tell() - 4, DeafBabe);
         return nullptr;
     }
 
@@ -223,7 +223,7 @@ std::unique_ptr<CCollisionMeshGroup> CCollisionLoader::LoadDCLN(IInputStream& rD
 
         if (DeafBabe != 0xDEAFBABE)
         {
-            errorf("%s [0x%X]: Invalid collision magic: 0x%08X", *rDCLN.GetSourceString(), rDCLN.Tell() - 4, DeafBabe);
+            NLog::Error("{} [0x{:X}]: Invalid collision magic: 0x{:08X}", *rDCLN.GetSourceString(), rDCLN.Tell() - 4, DeafBabe);
             return nullptr;
         }
 

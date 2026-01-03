@@ -4,6 +4,7 @@
 #include "Core/IUIRelay.h"
 #include "Core/Resource/Script/CGameTemplate.h"
 #include "Core/Resource/Script/NPropertyMap.h"
+#include <Common/Log.h>
 #include <Common/Macros.h>
 #include <Common/NBasics.h>
 #include <Common/Hash/CCRC32.h>
@@ -265,7 +266,7 @@ void CPropertyNameGenerator::GenerateTask(const SPropertyNameGenerationParameter
                         DelimitedXmlList += xml + '\n';
                     }
 
-                    debugf("%s [%s] : 0x%08X\n%s", *PropertyName.Name, *PropertyName.Type, PropertyName.ID, *DelimitedXmlList);
+                    NLog::Debug("{} [{}] : 0x{:08X}\n%s", *PropertyName.Name, *PropertyName.Type, PropertyName.ID, *DelimitedXmlList);
                 }
             }
         }

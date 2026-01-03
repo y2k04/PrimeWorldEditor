@@ -3,6 +3,7 @@
 #include "Core/GameProject/CResourceStore.h"
 #include "Core/Render/CGraphics.h"
 #include "Core/Resource/CMaterial.h"
+#include <Common/Log.h>
 #include <Common/Math/CTransform4f.h>
 
 // ************ PUBLIC ************
@@ -355,7 +356,7 @@ void CDrawUtil::Init()
 {
     if (!mDrawUtilInitialized)
     {
-        debugf("Initializing CDrawUtil");
+        NLog::Debug("Initializing CDrawUtil");
         InitGrid();
         InitSquare();
         InitLine();
@@ -371,7 +372,7 @@ void CDrawUtil::Init()
 
 void CDrawUtil::InitGrid()
 {
-    debugf("Creating grid");
+    NLog::Debug("Creating grid");
 
     const int kGridSize = 501; // must be odd
     const float kGridSpacing = 1.f;
@@ -407,7 +408,7 @@ void CDrawUtil::InitGrid()
 
 void CDrawUtil::InitSquare()
 {
-    debugf("Creating square");
+    NLog::Debug("Creating square");
     mSquareVertices.emplace();
     mSquareVertices->SetActiveAttribs(EVertexAttribute::Position |
                                       EVertexAttribute::Normal |
@@ -461,7 +462,7 @@ void CDrawUtil::InitSquare()
 
 void CDrawUtil::InitLine()
 {
-    debugf("Creating line");
+    NLog::Debug("Creating line");
     mLineVertices.emplace();
     mLineVertices->SetActiveAttribs(EVertexAttribute::Position);
     mLineVertices->SetVertexCount(2);
@@ -474,13 +475,13 @@ void CDrawUtil::InitLine()
 
 void CDrawUtil::InitCube()
 {
-    debugf("Creating cube");
+    NLog::Debug("Creating cube");
     mpCubeModel = gpEditorStore->LoadResource("Cube.CMDL");
 }
 
 void CDrawUtil::InitWireCube()
 {
-    debugf("Creating wire cube");
+    NLog::Debug("Creating wire cube");
     mWireCubeVertices.emplace();
     mWireCubeVertices->SetVertexDesc(EVertexAttribute::Position);
     mWireCubeVertices->Reserve(8);
@@ -513,20 +514,20 @@ void CDrawUtil::InitWireCube()
 
 void CDrawUtil::InitSphere()
 {
-    debugf("Creating sphere");
+    NLog::Debug("Creating sphere");
     mpSphereModel = gpEditorStore->LoadResource("Sphere.CMDL");
     mpDoubleSidedSphereModel = gpEditorStore->LoadResource("SphereDoubleSided.CMDL");
 }
 
 void CDrawUtil::InitWireSphere()
 {
-    debugf("Creating wire sphere");
+    NLog::Debug("Creating wire sphere");
     mpWireSphereModel = gpEditorStore->LoadResource("WireSphere.CMDL");
 }
 
 void CDrawUtil::InitShaders()
 {
-    debugf("Creating shaders");
+    NLog::Debug("Creating shaders");
     mpColorShader          = CShader::FromResourceFile("ColorShader");
     mpColorShaderLighting  = CShader::FromResourceFile("ColorShaderLighting");
     mpBillboardShader      = CShader::FromResourceFile("BillboardShader");
@@ -538,7 +539,7 @@ void CDrawUtil::InitShaders()
 
 void CDrawUtil::InitTextures()
 {
-    debugf("Loading textures");
+    NLog::Debug("Loading textures");
     mpCheckerTexture = gpEditorStore->LoadResource("Checkerboard.TXTR");
 
     mpLightTextures[0] = gpEditorStore->LoadResource("LightAmbient.TXTR");
@@ -557,7 +558,7 @@ void CDrawUtil::Shutdown()
     if (!mDrawUtilInitialized)
         return;
 
-    debugf("Shutting down");
+    NLog::Debug("Shutting down");
     mGridVertices.reset();
     mSquareVertices.reset();
     mLineVertices.reset();

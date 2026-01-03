@@ -2,6 +2,7 @@
 
 #include <Common/CAssetID.h>
 #include <Common/EGame.h>
+#include <Common/Log.h>
 #include "Core/GameProject/CGameProject.h"
 #include "Core/GameProject/CResourceIterator.h"
 #include "Core/Resource/CAudioMacro.h"
@@ -227,7 +228,7 @@ std::unique_ptr<CDependencyGroup> CUnsupportedFormatLoader::LoadFRME(IInputStrea
             }
             else
             {
-                errorf("Unrecognized FRME widget type: %s", *WidgetType.ToString());
+                NLog::Error("Unrecognized FRME widget type: {}", *WidgetType.ToString());
                 DEBUG_BREAK;
             }
 
@@ -259,7 +260,7 @@ std::unique_ptr<CDependencyGroup> CUnsupportedFormatLoader::LoadFRME(IInputStrea
     }
     else
     {
-        errorf("Unrecognized FRME version: %d", Version);
+        NLog::Error("Unrecognized FRME version: {}", Version);
         return nullptr;
     }
 
@@ -403,7 +404,7 @@ std::unique_ptr<CDependencyGroup> CUnsupportedFormatLoader::LoadHINT(IInputStrea
     }
     else
     {
-        errorf("Unrecognized HINT version: %d", Version);
+        NLog::Error("Unrecognized HINT version: {}", Version);
         return nullptr;
     }
 

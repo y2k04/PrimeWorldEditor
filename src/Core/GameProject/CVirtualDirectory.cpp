@@ -1,6 +1,7 @@
 #include "Core/GameProject/CVirtualDirectory.h"
 
 #include <Common/FileUtil.h>
+#include <Common/Log.h>
 #include <Common/Macros.h>
 #include "Core/GameProject/CResourceEntry.h"
 #include "Core/GameProject/CResourceStore.h"
@@ -284,7 +285,7 @@ void CVirtualDirectory::SortSubdirectories()
 
 bool CVirtualDirectory::Rename(const TString& rkNewName)
 {
-    debugf("MOVING DIRECTORY: %s --> %s", *FullPath(), *(mpParent->FullPath() + rkNewName + '/'));
+    NLog::Debug("MOVING DIRECTORY: {} --> {}", *FullPath(), *(mpParent->FullPath() + rkNewName + '/'));
 
     if (!IsRoot())
     {
@@ -303,7 +304,7 @@ bool CVirtualDirectory::Rename(const TString& rkNewName)
         }
     }
 
-    errorf("DIRECTORY MOVE FAILED");
+    NLog::Error("DIRECTORY MOVE FAILED");
     return false;
 }
 
@@ -354,7 +355,7 @@ bool CVirtualDirectory::CreateFilesystemDirectory()
         const bool CreateSuccess = FileUtil::MakeDirectory(AbsPath);
 
         if (!CreateSuccess)
-            errorf("FAILED to create filesystem directory: %s", *AbsPath);
+            NLog::Error("FAILED to create filesystem directory: {}", *AbsPath);
 
         return CreateSuccess;
     }
@@ -368,14 +369,14 @@ bool CVirtualDirectory::SetParent(CVirtualDirectory *pParent)
     if (mpParent == pParent)
         return true;
 
-    debugf("MOVING DIRECTORY: %s -> %s", *FullPath(), *(pParent->FullPath() + mName + '/'));
+    NLog::Debug("MOVING DIRECTORY: {} -> {}", *FullPath(), *(pParent->FullPath() + mName + '/'));
 
     // Check for a conflict
     CVirtualDirectory *pConflictDir = pParent->FindChildDirectory(mName, false);
 
     if (pConflictDir != nullptr)
     {
-        errorf("DIRECTORY MOVE FAILED: Conflicting directory exists at the destination path!");
+        NLog::Error("DIRECTORY MOVE FAILED: Conflicting directory exists at the destination path!");
         return false;
     }
 
@@ -392,7 +393,7 @@ bool CVirtualDirectory::SetParent(CVirtualDirectory *pParent)
     }
     else
     {
-        errorf("DIRECTORY MOVE FAILED: Filesystem move operation failed!");
+        NLog::Error("DIRECTORY MOVE FAILED: Filesystem move operation failed!");
         mpParent->AddChild(this);
         return false;
     }

@@ -155,7 +155,7 @@ SNameKey CreateKey(uint32 ID, const char* pkTypeName)
 void LoadMap()
 {
     ASSERT(!gMapIsLoaded);
-    debugf("Loading property map");
+    NLog::Debug("Loading property map");
 
     if constexpr (gkUseLegacyMapForNameLookups)
     {
@@ -202,7 +202,7 @@ void SaveMap(bool Force)
         }
     }
 
-    debugf("Saving property map");
+    NLog::Debug("Saving property map");
 
     if (gMapIsDirty || Force)
     {

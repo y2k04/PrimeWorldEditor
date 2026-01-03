@@ -1,4 +1,6 @@
-#include "IMetaAnimation.h"
+#include "Core/Resource/Animation/IMetaAnimation.h"
+
+#include <Common/Log.h>
 
 // ************ CMetaAnimFactory ************
 CMetaAnimFactory gMetaAnimFactory;
@@ -23,7 +25,7 @@ std::unique_ptr<IMetaAnimation> CMetaAnimFactory::LoadFromStream(IInputStream& r
         return std::make_unique<CMetaAnimSequence>(rInput, Game);
 
     default:
-        errorf("Unrecognized meta-animation type: %d", static_cast<int>(Type));
+        NLog::Error("Unrecognized meta-animation type: {}", static_cast<int>(Type));
         return nullptr;
     }
 }

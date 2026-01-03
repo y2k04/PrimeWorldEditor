@@ -19,6 +19,7 @@
 #include "Core/Scene/CScriptNode.h"
 #include "Core/Scene/CStaticNode.h"
 
+#include <Common/Log.h>
 #include <Common/TString.h>
 
 #include <list>
@@ -45,7 +46,7 @@ uint32_t CScene::CreateNodeID(uint32_t SuggestedID) const
     if (SuggestedID != UINT32_MAX)
     {
         if (IsNodeIDUsed(SuggestedID))
-            errorf("Suggested node ID is already being used! New ID will be created.");
+            NLog::Error("Suggested node ID is already being used! New ID will be created.");
         else
             return SuggestedID;
     }
@@ -256,7 +257,7 @@ void CScene::SetActiveArea(CWorld *pWorld, CGameArea *pArea)
     }
 
     mRanPostLoad = false;
-    debugf("%d nodes", CSceneNode::NumNodes());
+    NLog::Debug("{} nodes", CSceneNode::NumNodes());
 }
 
 void CScene::PostLoad()

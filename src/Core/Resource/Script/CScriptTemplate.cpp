@@ -78,7 +78,7 @@ void CScriptTemplate::Save(bool Force)
 {
     if (IsDirty() || Force)
     {
-        debugf("Saving script template: %s", *mSourceFile);
+        NLog::Debug("Saving script template: {}", *mSourceFile);
         CXMLWriter Writer(mSourceFile, "ScriptObject", 0, mpGame->Game());
         ASSERT(Writer.IsValid());
         Serialize(Writer);
@@ -95,7 +95,7 @@ EVolumeShape CScriptTemplate::VolumeShape(CScriptObject *pObj)
 {
     if (pObj->Template() != this)
     {
-        errorf("%s instance somehow called VolumeShape() on %s template", *pObj->Template()->Name(), *Name());
+        NLog::Error("{} instance somehow called VolumeShape() on {} template", *pObj->Template()->Name(), *Name());
         return EVolumeShape::InvalidShape;
     }
 
@@ -115,7 +115,7 @@ float CScriptTemplate::VolumeScale(CScriptObject *pObj)
 {
     if (pObj->Template() != this)
     {
-        errorf("%s instance somehow called VolumeScale() on %s template", *pObj->Template()->Name(), *Name());
+        NLog::Error("{} instance somehow called VolumeScale() on {} template", *pObj->Template()->Name(), *Name());
         return -1;
     }
 
@@ -178,8 +178,8 @@ int32 CScriptTemplate::CheckVolumeConditions(CScriptObject *pObj, bool LogErrors
 
         if (LogErrors)
         {
-            errorf("%s instance %08X has unexpected volume shape value of 0x%X", *pObj->Template()->Name(),
-                   static_cast<uint32>(pObj->InstanceID()), Val);
+            NLog::Error("{} instance {:08X} has unexpected volume shape value of 0x{:X}", *pObj->Template()->Name(),
+                        static_cast<uint32>(pObj->InstanceID()), Val);
         }
     }
 

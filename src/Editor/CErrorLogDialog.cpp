@@ -15,6 +15,8 @@ CErrorLogDialog::~CErrorLogDialog() = default;
 
 bool CErrorLogDialog::GatherErrors()
 {
+    // TODO: Replace with log sink
+#if 0
     const TStringList& rkErrors = NLog::GetErrorLog();
     if (rkErrors.empty())
         return false;
@@ -45,5 +47,6 @@ bool CErrorLogDialog::GatherErrors()
 
     ui->ErrorLogTextEdit->setText(DialogString);
     NLog::ClearErrorLog();
+#endif
     return true;
 }

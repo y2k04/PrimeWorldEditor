@@ -187,7 +187,7 @@ void CAnimSetLoader::LoadReturnsCHAR(IInputStream& rCHAR)
                 rCHAR.Skip(0xC);
                 break;
             default:
-                errorf("%s [0x%X]: Invalid transition type: %u", *rCHAR.GetSourceString(), rCHAR.Tell() - 2, Type);
+                NLog::Error("{} [0x{:X}]: Invalid transition type: {}", *rCHAR.GetSourceString(), rCHAR.Tell() - 2, Type);
                 return;
             }
         }
@@ -515,7 +515,7 @@ std::unique_ptr<CAnimSet> CAnimSetLoader::LoadANCS(IInputStream& rANCS, CResourc
     const uint32 Magic = rANCS.ReadULong();
     if (Magic != 0x00010001)
     {
-        errorf("%s: Invalid ANCS magic: 0x%08X", *rANCS.GetSourceString(), Magic);
+        NLog::Error("{}: Invalid ANCS magic: 0x{:08X}", *rANCS.GetSourceString(), Magic);
         return nullptr;
     }
 
@@ -653,7 +653,7 @@ std::unique_ptr<CAnimSet> CAnimSetLoader::LoadCHAR(IInputStream& rCHAR, CResourc
         return ptr;
     }
 
-    errorf("%s: CHAR has invalid first byte: 0x%02X", *rCHAR.GetSourceString(), Check);
+    NLog::Error("{}: CHAR has invalid first byte: 0x{:02X}", *rCHAR.GetSourceString(), Check);
     return nullptr;
 }
 

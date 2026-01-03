@@ -22,11 +22,21 @@ static void QtLogRedirect(QtMsgType Type, const QMessageLogContext& /*rkContext*
 {
     switch (Type)
     {
-    case QtDebugMsg:    debugf("Qt Debug: %s",    *TO_TSTRING(rkMessage)); break;
-    case QtWarningMsg:  warnf ("Qt Warning: %s",  *TO_TSTRING(rkMessage)); break;
-    case QtCriticalMsg: errorf("Qt Critical: %s", *TO_TSTRING(rkMessage)); break;
-    case QtFatalMsg:    fatalf("Qt Fatal: %s",    *TO_TSTRING(rkMessage)); break;
-    case QtInfoMsg:     debugf("Qt Info: %s",     *TO_TSTRING(rkMessage)); break;
+    case QtDebugMsg:
+        NLog::Debug("Qt Debug: %s", *TO_TSTRING(rkMessage));
+        break;
+    case QtWarningMsg:
+        NLog::Warn("Qt Warning: %s", *TO_TSTRING(rkMessage));
+        break;
+    case QtCriticalMsg:
+        NLog::Error("Qt Critical: %s", *TO_TSTRING(rkMessage));
+        break;
+    case QtFatalMsg:
+        NLog::Fatal("Qt Fatal: %s", *TO_TSTRING(rkMessage));
+        break;
+    case QtInfoMsg:
+        NLog::Debug("Qt Info: %s", *TO_TSTRING(rkMessage));
+        break;
     }
 }
 
@@ -37,7 +47,7 @@ static TString LocateDataDirectory()
     {
         /* This is for build-configured root */
         TString dir = FileUtil::MakeAbsolute(PWE_DATADIR);
-        debugf("Checking '%s' for resources", *dir);
+        NLog::Debug("Checking '{}' for resources", *dir);
         if (FileUtil::IsDirectory(dir + "resources"))
             return dir;
     }
@@ -45,7 +55,7 @@ static TString LocateDataDirectory()
     {
         /* This is for locating appimage root */
         TString dir = FileUtil::MakeAbsolute(TString(QCoreApplication::applicationDirPath().toUtf8().data()) + "/../share/PrimeWorldEditor");
-        debugf("Checking '%s' for resources", *dir);
+        NLog::Debug("Checking '{}' for resources", *dir);
         if (FileUtil::IsDirectory(dir + "resources"))
             return dir;
     }
@@ -54,7 +64,7 @@ static TString LocateDataDirectory()
     {
         /* This is for locating mac bundle root */
         TString dir = FileUtil::MakeAbsolute(TString(QCoreApplication::applicationDirPath().toUtf8().data()) + "/../Resources");
-        debugf("Checking '%s' for resources", *dir);
+        NLog::Debug("Checking '{}' for resources", *dir);
         if (FileUtil::IsDirectory(dir + "resources"))
             return dir;
     }
@@ -62,12 +72,12 @@ static TString LocateDataDirectory()
     {
         /* This is for locating build directory root */
         TString dir = FileUtil::MakeAbsolute(TString(QCoreApplication::applicationDirPath().toUtf8().data()) + "/..");
-        debugf("Checking '%s' for resources", *dir);
+        NLog::Debug("Checking '{}' for resources", *dir);
         if (FileUtil::IsDirectory(dir + "resources"))
             return dir;
     }
     TString dir = FileUtil::MakeAbsolute("..");
-    warnf("Falling back to '%s' for resources", *dir);
+    NLog::Warn("Falling back to '{}' for resources", *dir);
     return dir;
 }
 
@@ -137,13 +147,13 @@ public:
 
         if (!gpEditorStore->AreAllEntriesValid())
         {
-            debugf("Editor store has invalid entries. Rebuilding database...");
+            NLog::Debug("Editor store has invalid entries. Rebuilding database...");
             gpEditorStore->RebuildFromDirectory();
             gpEditorStore->ConditionalSaveStore();
         }
 
         // Check for unit tests being run
-        if ( NCoreTests::RunTests(argc, argv) )
+        if (NCoreTests::RunTests(argc, argv))
         {
             return 0;
         }

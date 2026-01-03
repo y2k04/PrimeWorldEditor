@@ -1,5 +1,7 @@
 #include "Core/Resource/Model/EVertexAttribute.h"
 
+#include <Common/Log.h>
+
 const uint32_t gkNumVertexAttribs = 22;
 
 uint32_t VertexAttributeSize(EVertexAttribute Attrib)
@@ -25,7 +27,7 @@ uint32_t VertexAttributeSize(EVertexAttribute Attrib)
     case EVertexAttribute::BoneIndices:
         return 0x04;
     default:
-        errorf("AttributeSize(): Unknown vertex attribute: %d", Attrib);
+        NLog::Error("AttributeSize(): Unknown vertex attribute: {}", int(Attrib));
         return 0x00;
     }
 }

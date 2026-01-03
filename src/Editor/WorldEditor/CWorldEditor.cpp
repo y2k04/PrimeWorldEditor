@@ -29,6 +29,7 @@
 #include "Editor/WorldEditor/WModifyTab.h"
 
 #include <Common/FileUtil.h>
+#include <Common/Log.h>
 #include <Core/SRayIntersection.h>
 #include <Core/GameProject/CGameProject.h>
 #include <Core/Resource/CWorld.h>
@@ -52,7 +53,7 @@ CWorldEditor::CWorldEditor(QWidget *parent)
     , mpGeneratePropertyNamesDialog(new CGeneratePropertyNamesDialog(this))
     , mpTweakEditor(new CTweakEditor(this))
 {
-    debugf("Creating World Editor");
+    NLog::Debug("Creating World Editor");
     ui->setupUi(this);
     UpdateWindowTitle();
 
@@ -308,9 +309,9 @@ bool CWorldEditor::SetArea(CWorld *pWorld, int AreaIndex)
     QString AreaName = TO_QSTRING(mpWorld->AreaInGameName(AreaIndex));
 
     if (CurrentGame() < EGame::DKCReturns)
-        debugf("Loaded area: %s (%s)", *mpArea->Entry()->Name(), *TO_TSTRING(AreaName));
+        NLog::Debug("Loaded area: {} ({})", *mpArea->Entry()->Name(), *TO_TSTRING(AreaName));
     else
-        debugf("Loaded level: World %s / Area %s (%s)", *mpWorld->Entry()->Name(), *mpArea->Entry()->Name(), *TO_TSTRING(AreaName));
+        NLog::Debug("Loaded level: World {} / Area {} ({})", *mpWorld->Entry()->Name(), *mpArea->Entry()->Name(), *TO_TSTRING(AreaName));
 
     // Update paste action
     OnClipboardDataModified();

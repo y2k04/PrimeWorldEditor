@@ -211,7 +211,7 @@ std::unique_ptr<CMaterial> CMaterialLoader::ReadPrimeMaterial()
         case 6: // Model Matrix
             break;
         default:
-            errorf("%s [0x%X]: Unsupported animation mode encountered: %d", *mpFile->GetSourceString(), mpFile->Tell() - 4, Anim.Mode);
+            NLog::Error("{} [0x{:X}]: Unsupported animation mode encountered: {}", *mpFile->GetSourceString(), mpFile->Tell() - 4, Anim.Mode);
             break;
         }
     }
@@ -423,14 +423,14 @@ std::unique_ptr<CMaterial> CMaterialLoader::ReadCorruptionMaterial()
                         Pass.mAnimParams[5] = mpFile->ReadFloat();
                         Pass.mAnimParams[6] = mpFile->ReadFloat();
                         Pass.mAnimParams[7] = mpFile->ReadFloat();
-                        debugf("%s: UVMode8 Used with type %i",
-                                *mpFile->GetSourceString(), static_cast<int>(Pass.mAnimConvolutedModeBType));
+                        NLog::Debug("{}: UVMode8 Used with type {}",
+                                    *mpFile->GetSourceString(), static_cast<int>(Pass.mAnimConvolutedModeBType));
                         break;
                     case EUVAnimMode::Eleven:
                         break;
                     default:
-                        errorf("%s [0x%X]: Unsupported animation mode encountered: %d",
-                                *mpFile->GetSourceString(), mpFile->Tell() - 8, Pass.mAnimMode);
+                        NLog::Error("{} [0x{:X}]: Unsupported animation mode encountered: {}",
+                                    *mpFile->GetSourceString(), mpFile->Tell() - 8, int(Pass.mAnimMode));
                         break;
                 }
             }

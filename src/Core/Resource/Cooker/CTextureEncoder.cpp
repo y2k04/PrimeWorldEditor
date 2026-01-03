@@ -2,7 +2,7 @@
 
 #include "Core/Resource/CTexture.h"
 
-#include <Common/Macros.h>
+#include <Common/Log.h>
 #include <Common/FileIO/CMemoryInStream.h>
 
 CTextureEncoder::CTextureEncoder() = default;
@@ -75,7 +75,7 @@ void CTextureEncoder::EncodeTXTR(IOutputStream& rTXTR, CTexture *pTex)
 {
     if (pTex->mTexelFormat != ETexelFormat::DXT1)
     {
-        errorf("Unsupported texel format for decoding");
+        NLog::Error("Unsupported texel format for decoding");
         return;
     }
 

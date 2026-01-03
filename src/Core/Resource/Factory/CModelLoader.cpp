@@ -463,7 +463,7 @@ std::unique_ptr<CModel> CModelLoader::LoadCMDL(IInputStream& rCMDL, CResourceEnt
     }
     else
     {
-        errorf("%s: Invalid CMDL magic: 0x%08X", *rCMDL.GetSourceString(), Magic);
+        NLog::Error("{}: Invalid CMDL magic: 0x{:08X}", *rCMDL.GetSourceString(), Magic);
         return nullptr;
     }
 
@@ -472,7 +472,7 @@ std::unique_ptr<CModel> CModelLoader::LoadCMDL(IInputStream& rCMDL, CResourceEnt
 
     if (Loader.mVersion == EGame::Invalid)
     {
-        errorf("%s: Unsupported CMDL version: 0x%X", *rCMDL.GetSourceString(), Magic);
+        NLog::Error("{}: Unsupported CMDL version: 0x{:X}", *rCMDL.GetSourceString(), Magic);
         return nullptr;
     }
 

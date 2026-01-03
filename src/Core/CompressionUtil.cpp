@@ -1,5 +1,5 @@
 #include "Core/CompressionUtil.h"
-#include <Common/Macros.h>
+#include <Common/Log.h>
 
 #include <vector>
 
@@ -97,7 +97,7 @@ namespace CompressionUtil
         // Check for errors
         if (Error && Error != Z_STREAM_END)
         {
-            errorf("zlib error: %s", ErrorText_zlib(Error));
+            NLog::Error("zlib error: {}", ErrorText_zlib(Error));
             return false;
         }
 
@@ -113,7 +113,7 @@ namespace CompressionUtil
 
         if (Result < lzokay::EResult::Success)
         {
-            errorf("LZO error: %s", ErrorText_LZO(Result));
+            NLog::Error("LZO error: {}", ErrorText_LZO(Result));
             return false;
         }
 
@@ -126,7 +126,7 @@ namespace CompressionUtil
 
         if (Error)
         {
-            errorf("LZO error: %s", ErrorText_LZO(Error));
+            NLog::Error("LZO error: {}", ErrorText_LZO(Error));
             return false;
         }
 
@@ -212,11 +212,11 @@ namespace CompressionUtil
 
         if (Error && Error != Z_STREAM_END)
         {
-            errorf("zlib error: %s", ErrorText_zlib(Error));
+            NLog::Error("zlib error: {}", ErrorText_zlib(Error));
             return false;
         }
 
-        else return true;
+        return true;
     }
 
     bool CompressLZO(uint8_t *pSrc, uint32_t SrcLen, uint8_t *pDst, uint32_t DstLen, uint32_t& rTotalOut)
@@ -228,7 +228,7 @@ namespace CompressionUtil
 
         if (Result < lzokay::EResult::Success)
         {
-            errorf("LZO error: %s", ErrorText_LZO(Result));
+            NLog::Error("LZO error: {}", ErrorText_LZO(Result));
             return false;
         }
 
@@ -242,7 +242,7 @@ namespace CompressionUtil
 
         if (Error)
         {
-            errorf("LZO error: %s", ErrorText_LZO(Error));
+            NLog::Error("LZO error: {}", ErrorText_LZO(Error));
             return false;
         }
 

@@ -1,6 +1,7 @@
 #ifndef CDOLHEADER_H
 #define CDOLHEADER_H
 
+#include <Common/Log.h>
 #include <Common/FileIO/IOutputStream.h>
 #include <Common/FileIO/IInputStream.h>
 
@@ -69,7 +70,7 @@ public:
     {
         if ((size & 0x1f) != 0)
         {
-            warnf("Unable to add text section: Size not 32-bit aligned.");
+            NLog::Warn("Unable to add text section: Size not 32-bit aligned.");
             return false;
         }
 
@@ -84,7 +85,7 @@ public:
             }
         }
 
-        warnf("Unable to add text section: no empty section found.");
+        NLog::Warn("Unable to add text section: no empty section found.");
         return false;
     }
 
@@ -98,7 +99,7 @@ public:
                 return sec.Offset + (address - sec.BaseAddress);
             }
         }
-        warnf("Unable to add section for address: %x", address);
+        NLog::Warn("Unable to add section for address: {:x}", address);
         return 0;
     }
 };

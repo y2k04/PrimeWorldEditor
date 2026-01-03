@@ -1,6 +1,7 @@
 #include "Core/GameProject/DependencyListBuilders.h"
 
 #include "Core/Resource/CDependencyGroup.h"
+#include <Common/Log.h>
 
 // ************ CCharacterUsageMap ************
 bool CCharacterUsageMap::IsCharacterUsed(const CAssetID& rkID, size_t CharacterIndex) const
@@ -114,7 +115,7 @@ void CCharacterUsageMap::DebugPrintContents()
         {
             const bool Used = usedList.size() > iChar && usedList[iChar];
             const TString CharName = pSet->Character(iChar)->Name;
-            debugf("%s : Char %zu : %s : %s", *ID.ToString(), iChar, *CharName, (Used ? "USED" : "UNUSED"));
+            NLog::Debug("{} : Char {} : {} : {}", *ID.ToString(), iChar, *CharName, (Used ? "USED" : "UNUSED"));
         }
     }
 }

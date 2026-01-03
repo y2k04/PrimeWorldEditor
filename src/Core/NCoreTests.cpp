@@ -6,6 +6,7 @@
 #include "Core/GameProject/CResourceIterator.h"
 #include "Core/Resource/Cooker/CResourceCooker.h"
 #include <Common/FileUtil.h>
+#include <Common/Log.h>
 #include <Common/FileIO/CFileInStream.h>
 #include <Common/FileIO/CFileOutStream.h>
 
@@ -80,8 +81,8 @@ bool RunTests(int argc, char* argv[])
 /** Validate all cooker output for the given resource type matches the original asset data */
 bool ValidateCooker(EResourceType ResourceType, bool DumpInvalidFileContents)
 {
-    debugf("Validating output of %s cooker...",
-           TEnumReflection<EResourceType>::ConvertValueToString(ResourceType));
+    NLog::Debug("Validating output of {} cooker...",
+                TEnumReflection<EResourceType>::ConvertValueToString(ResourceType));
 
     // There must be a project loaded
     CResourceStore* pStore = gpResourceStore;
@@ -89,7 +90,7 @@ bool ValidateCooker(EResourceType ResourceType, bool DumpInvalidFileContents)
 
     if (!pProject)
     {
-        errorf("Cooker unit test failed; no project loaded");
+        NLog::Error("Cooker unit test failed; no project loaded");
         return false;
     }
 
@@ -174,12 +175,12 @@ bool ValidateCooker(EResourceType ResourceType, bool DumpInvalidFileContents)
         // Print test results
         if (IsValid)
         {
-            debugf("[SUCCESS] %s", *CookedPath);
+            NLog::Debug("[SUCCESS] {}", *CookedPath);
             NumValid++;
         }
         else
         {
-            debugf("[FAILED: %s] %s", pkInvalidReason, *CookedPath);
+            NLog::Debug("[FAILED: {}] {}", pkInvalidReason, *CookedPath);
             NumInvalid++;
         }
 
@@ -195,17 +196,17 @@ bool ValidateCooker(EResourceType ResourceType, bool DumpInvalidFileContents)
 
         if (NumInvalid >= 100)
         {
-            debugf("Test aborted; at least 100 invalid resources. Checked %d resources, %d passed, %d failed",
-                   NumValid + NumInvalid, NumValid, NumInvalid);
+            NLog::Debug("Test aborted; at least 100 invalid resources. Checked {} resources, {} passed, {} failed",
+                        NumValid + NumInvalid, NumValid, NumInvalid);
             return false;
         }
     }
 
     // Test complete
     bool TestSuccess = (NumInvalid == 0);
-    debugf("Test %s; checked %d resources, %d passed, %d failed",
-           TestSuccess ? "SUCCEEDED" : "FAILED",
-           NumValid + NumInvalid, NumValid, NumInvalid);
+    NLog::Debug("Test {}; checked {} resources, {} passed, {} failed",
+                TestSuccess ? "SUCCEEDED" : "FAILED",
+                NumValid + NumInvalid, NumValid, NumInvalid);
 
     return TestSuccess;
 }

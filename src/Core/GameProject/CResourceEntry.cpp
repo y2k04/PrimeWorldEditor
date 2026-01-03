@@ -105,7 +105,7 @@ bool CResourceEntry::LoadMetadata()
     }
     else
     {
-        errorf("%s: Failed to load metadata file!", *Path);
+        NLog::Error("{}: Failed to load metadata file!", *Path);
     }
 
     return false;
@@ -182,7 +182,7 @@ void CResourceEntry::UpdateDependencies()
 
     if (!mpResource)
     {
-        errorf("Unable to update cached dependencies; failed to load resource");
+        NLog::Error("Unable to update cached dependencies; failed to load resource");
         mpDependencies = std::make_unique<CDependencyTree>();
         return;
     }
@@ -301,7 +301,7 @@ bool CResourceEntry::Save(bool SkipCacheSave /*= false*/, bool FlagForRecook /*=
 
         if (!Writer.Save())
         {
-            errorf("Failed to save raw resource: %s", *Path);
+            NLog::Error("Failed to save raw resource: {}", *Path);
             return false;
         }
 
@@ -318,7 +318,7 @@ bool CResourceEntry::Save(bool SkipCacheSave /*= false*/, bool FlagForRecook /*=
 
         if (!CookSuccess)
         {
-            errorf("Failed to save resource: %s.%s", *Name(), *CookedExtension().ToString());
+            NLog::Error("Failed to save resource: {}.{}", *Name(), *CookedExtension().ToString());
             return false;
         }
     }
@@ -362,7 +362,7 @@ bool CResourceEntry::Cook()
     CFileOutStream File(Path, std::endian::big);
     if (!File.IsValid())
     {
-        errorf("Failed to open cooked file for writing: %s", *Path);
+        NLog::Error("Failed to open cooked file for writing: {}", *Path);
         return false;
     }
 
@@ -401,7 +401,7 @@ CResource* CResourceEntry::Load()
 
             if (!Reader.IsValid())
             {
-                errorf("Failed to load raw resource; falling back on cooked. Raw path: %s", *RawAssetPath());
+                NLog::Error("Failed to load raw resource; falling back on cooked. Raw path: {}", *RawAssetPath());
                 mpResource.reset();
             }
 
@@ -424,18 +424,15 @@ CResource* CResourceEntry::Load()
 
         if (!File.IsValid())
         {
-            errorf("Failed to open cooked resource: %s", *CookedAssetPath(true));
+            NLog::Error("Failed to open cooked resource: {}", *CookedAssetPath(true));
             return nullptr;
         }
 
         return LoadCooked(File);
     }
 
-    else
-    {
-        errorf("Couldn't locate resource: %s", *CookedAssetPath(true));
-        return nullptr;
-    }
+    NLog::Error("Couldn't locate resource: {}", *CookedAssetPath(true));
+    return nullptr;
 }
 
 CResource* CResourceEntry::LoadCooked(IInputStream& rInput)
@@ -524,9 +521,9 @@ bool CResourceEntry::MoveAndRename(const TString& rkDir, const TString& rkName, 
     TString NewRawPath = RawAssetPath();
     TString NewMetaPath = MetadataFilePath();
 
-    debugf("MOVING RESOURCE: %s --> %s",
-           *FileUtil::MakeRelative(OldCookedPath, mpStore->ResourcesDir()),
-           *FileUtil::MakeRelative(NewCookedPath, mpStore->ResourcesDir())
+    NLog::Debug("MOVING RESOURCE: {} --> {}",
+                *FileUtil::MakeRelative(OldCookedPath, mpStore->ResourcesDir()),
+                *FileUtil::MakeRelative(NewCookedPath, mpStore->ResourcesDir())
     );
 
     // If the old/new paths are the same then we should have already exited as CanMoveTo() should have returned false
@@ -609,11 +606,10 @@ bool CResourceEntry::MoveAndRename(const TString& rkDir, const TString& rkName, 
         SaveMetadata();
         return true;
     }
-
     // Otherwise, revert changes and let the caller know the move failed
     else
     {
-        errorf("MOVE FAILED: %s", *MoveFailReason);
+        NLog::Error("MOVE FAILED: {}", MoveFailReason.ToStdString());
         mpDirectory = pOldDir;
         mName = OldName;
 
@@ -728,7 +724,7 @@ void CResourceEntry::MarkDeleted(bool InDeleted)
         }
 
         mpStore->SetCacheDirty();
-        debugf("%s FOR DELETION: [%s] %s", InDeleted ? "MARKED" : "UNMARKED", *ID().ToString(), *CookedPath.GetFileName());
+        NLog::Debug("{} FOR DELETION: [{}] {}", InDeleted ? "MARKED" : "UNMARKED", *ID().ToString(), *CookedPath.GetFileName());
     }
 }
 

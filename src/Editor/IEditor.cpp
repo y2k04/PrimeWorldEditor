@@ -3,6 +3,8 @@
 #include "Editor/CEditorApplication.h"
 #include "Editor/Undo/IUndoCommand.h"
 
+#include <Common/Log.h>
+
 #include <QCloseEvent>
 #include <QMenu>
 #include <QMessageBox>
@@ -90,7 +92,7 @@ bool IEditor::Save()
 {
     // Default implementation for editor windows that do not support resaving assets.
     // This should not be called.
-    errorf("Base IEditor::Save() implementation called. Changes will not be saved.");
+    NLog::Error("Base IEditor::Save() implementation called. Changes will not be saved.");
     return true;
 }
 

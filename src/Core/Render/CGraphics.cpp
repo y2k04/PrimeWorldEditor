@@ -6,6 +6,7 @@
 #include "Core/Render/CBoneTransformData.h"
 #include "Core/Resource/CMaterial.h"
 
+#include <Common/Log.h>
 #include <Common/Math/CVector3f.h>
 #include <Common/Math/CTransform4f.h>
 
@@ -41,12 +42,12 @@ void CGraphics::Initialize()
 {
     if (!mInitialized)
     {
-        debugf("Initializing GLEW");
+        NLog::Debug("Initializing GLEW");
         glewExperimental = true;
         glewInit();
         glGetError(); // This is to work around a glew bug - error is always set after initializing
 
-        debugf("Creating uniform buffers");
+        NLog::Debug("Creating uniform buffers");
         mpMVPBlockBuffer = new CUniformBuffer(sizeof(sMVPBlock));
         mpVertexBlockBuffer = new CUniformBuffer(sizeof(sVertexBlock));
         mpPixelBlockBuffer = new CUniformBuffer(sizeof(sPixelBlock));
@@ -71,7 +72,7 @@ void CGraphics::Shutdown()
 {
     if (mInitialized)
     {
-        debugf("Shutting down CGraphics");
+        NLog::Debug("Shutting down CGraphics");
         delete mpMVPBlockBuffer;
         delete mpVertexBlockBuffer;
         delete mpPixelBlockBuffer;

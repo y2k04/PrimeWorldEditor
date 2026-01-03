@@ -1,6 +1,7 @@
 #include "Core/Resource/StringTable/CStringTable.h"
 
 #include "Core/GameProject/CGameProject.h"
+#include <Common/Log.h>
 #include <Common/Macros.h>
 #include <algorithm>
 #include <array>
@@ -332,7 +333,7 @@ std::unique_ptr<CDependencyTree> CStringTable::BuildDependencyTree()
                     }
                     else
                     {
-                        warnf("Unrecognized image type: %s", *ImageType);
+                        NLog::Warn("Unrecognized image type: {}", *ImageType);
                         continue;
                     }
 

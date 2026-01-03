@@ -64,7 +64,7 @@ void CGameTemplate::Load(const TString& kFilePath)
 
 void CGameTemplate::Save()
 {
-    debugf("Saving game template: %s", *mSourceFile);
+    NLog::Debug("Saving game template: {}", *mSourceFile);
     CXMLWriter Writer(mSourceFile, "Game", 0, mGame);
     ASSERT(Writer.IsValid());
     Serialize(Writer);
@@ -118,7 +118,7 @@ void CGameTemplate::SaveGameTemplates(bool ForceAll)
                 const TString kOutPath = kGameDir + Path.Path;
                 FileUtil::MakeDirectory(kOutPath.GetFileDirectory());
 
-                debugf("Saving property template: %s", *kOutPath);
+                NLog::Debug("Saving property template: {}", *kOutPath);
                 CXMLWriter Writer(kOutPath, "PropertyTemplate", 0, Game());
                 ASSERT(Writer.IsValid());
 

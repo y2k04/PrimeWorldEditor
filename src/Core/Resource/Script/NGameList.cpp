@@ -96,7 +96,7 @@ void SerializeGameList(IArchive& Arc)
 void LoadGameList()
 {
     ASSERT(!gLoadedGameList);
-    debugf("Loading game list");
+    NLog::Debug("Loading game list");
 
     CXMLReader Reader(gDataDir + gkGameListPath);
     ASSERT(Reader.IsValid());
@@ -109,7 +109,7 @@ void LoadGameList()
 void SaveGameList()
 {
     ASSERT(gLoadedGameList);
-    debugf("Saving game list");
+    NLog::Debug("Saving game list");
 
     CXMLWriter Writer(gDataDir + gkGameListPath, "GameList");
     ASSERT(Writer.IsValid());

@@ -1,5 +1,7 @@
-#include "IMetaTransition.h"
-#include "IMetaAnimation.h"
+#include "Core/Resource/Animation/IMetaTransition.h"
+
+#include "Core/Resource/Animation/IMetaAnimation.h"
+#include <Common/Log.h>
 
 // ************ CMetaTransFactory ************
 CMetaTransFactory gMetaTransFactory;
@@ -24,7 +26,7 @@ std::unique_ptr<IMetaTransition> CMetaTransFactory::LoadFromStream(IInputStream&
         return std::make_unique<CMetaTransType4>(rInput, Game);
 
     default:
-        errorf("Unrecognized meta-transition type: %d", static_cast<int>(Type));
+        NLog::Error("Unrecognized meta-transition type: {}", static_cast<int>(Type));
         return nullptr;
     }
 }

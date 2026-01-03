@@ -1,4 +1,5 @@
-#include "CScriptLoader.h"
+#include "Core/Resource/Factory/CScriptLoader.h"
+
 #include "Core/GameProject/CResourceStore.h"
 #include "Core/Resource/Area/CGameArea.h"
 #include "Core/Resource/Script/CGameTemplate.h"
@@ -9,6 +10,8 @@
 #include "Core/Resource/Script/Property/CAssetProperty.h"
 #include "Core/Resource/Script/Property/CEnumProperty.h"
 #include "Core/Resource/Script/Property/CFlagsProperty.h"
+
+#include <Common/Log.h>
 
 // Whether to ensure the values of enum/flag properties are valid
 #define VALIDATE_PROPERTY_VALUES 1
@@ -66,12 +69,12 @@ void CScriptLoader::ReadProperty(IProperty *pProp, uint32 Size, IInputStream& rS
         if (!pChoice->HasValidValue(pData))
         {
             uint32 Value = pChoice->ValueRef(pData);
-            errorf("%s [0x%X]: Choice property \"%s\" (%s) has unrecognized value: 0x%08X",
-                   *rSCLY.GetSourceString(),
-                   rSCLY.Tell() - 4,
-                   *pChoice->Name(),
-                   *pChoice->IDString(true),
-                   Value);
+            NLog::Error("{} [0x{:X}]: Choice property \"{}\" ({}) has unrecognized value: 0x{:08X}",
+                        *rSCLY.GetSourceString(),
+                        rSCLY.Tell() - 4,
+                        *pChoice->Name(),
+                        *pChoice->IDString(true),
+                        Value);
         }
 #endif
         break;
@@ -86,12 +89,12 @@ void CScriptLoader::ReadProperty(IProperty *pProp, uint32 Size, IInputStream& rS
         if (!pEnum->HasValidValue(pData))
         {
             uint32 Value = pEnum->ValueRef(pData);
-            errorf("%s [0x%X]: Enum property \"%s\" (%s) has unrecognized value: 0x%08X",
-                   *rSCLY.GetSourceString(),
-                   rSCLY.Tell() - 4,
-                   *pEnum->Name(),
-                   *pEnum->IDString(true),
-                   Value);
+            NLog::Error("{} [0x{:X}]: Enum property \"{}\" ({}) has unrecognized value: 0x{:08X}",
+                        *rSCLY.GetSourceString(),
+                        rSCLY.Tell() - 4,
+                        *pEnum->Name(),
+                        *pEnum->IDString(true),
+                        Value);
         }
 #endif
         break;
@@ -107,12 +110,12 @@ void CScriptLoader::ReadProperty(IProperty *pProp, uint32 Size, IInputStream& rS
 
         if (InvalidBits)
         {
-            warnf("%s [0x%X]: Flags property \"%s\" (%s) has unrecognized flags set: 0x%08X",
-                  *rSCLY.GetSourceString(),
-                  rSCLY.Tell() - 4,
-                  *pFlags->Name(),
-                  *pFlags->IDString(true),
-                  InvalidBits);
+            NLog::Warn("{} [0x{:X}]: Flags property \"{}\" ({}) has unrecognized flags set: 0x{:08X}",
+                       *rSCLY.GetSourceString(),
+                       rSCLY.Tell() - 4,
+                       *pFlags->Name(),
+                       *pFlags->IDString(true),
+                       InvalidBits);
         }
 #endif
         break;
@@ -158,12 +161,12 @@ void CScriptLoader::ReadProperty(IProperty *pProp, uint32 Size, IInputStream& rS
 
                 if (!Valid)
                 {
-                    warnf("%s [0x%X]: Asset property \"%s\" (%s) has a reference to an illegal asset type: %s",
-                          *rSCLY.GetSourceString(),
-                          rSCLY.Tell() - static_cast<uint32>(ID.Length()),
-                          *pAsset->Name(),
-                          *pAsset->IDString(true),
-                          *pEntry->CookedExtension().ToString());
+                    NLog::Warn("{} [0x{:X}]: Asset property \"{}\" ({}) has a reference to an illegal asset type: {}",
+                               *rSCLY.GetSourceString(),
+                               rSCLY.Tell() - static_cast<uint32>(ID.Length()),
+                               *pAsset->Name(),
+                               *pAsset->IDString(true),
+                               *pEntry->CookedExtension().ToString());
                 }
             }
         }
@@ -300,7 +303,7 @@ CScriptObject* CScriptLoader::LoadObjectMP1(IInputStream& rSCLY)
     if (!pTemplate)
     {
         // No valid template for this object; can't load
-        errorf("%s [0x%X]: Unknown object ID encountered: 0x%02X", *rSCLY.GetSourceString(), StartOffset, Type);
+        NLog::Error("{} [0x{:X}]: Unknown object ID encountered: 0x{:02X}", *rSCLY.GetSourceString(), StartOffset, Type);
         rSCLY.Seek(End, SEEK_SET);
         return nullptr;
     }
@@ -393,7 +396,7 @@ void CScriptLoader::LoadStructMP2(IInputStream& rSCLY, CStructProperty* pStruct)
         if (pProperty)
             ReadProperty(pProperty, PropertySize, rSCLY);
         else
-            errorf("%s [0x%X]: Can't find template for property 0x%08X - skipping", *rSCLY.GetSourceString(), PropertyStart, PropertyID);
+            NLog::Error("{} [0x{:X}]: Can't find template for property 0x{:08X} - skipping", *rSCLY.GetSourceString(), PropertyStart, PropertyID);
 
         if (NextProperty > 0)
             rSCLY.Seek(NextProperty, SEEK_SET);
@@ -411,7 +414,7 @@ CScriptObject* CScriptLoader::LoadObjectMP2(IInputStream& rSCLY)
 
     if (!pTemplate)
     {
-        errorf("%s [0x%X]: Unknown object ID encountered: %s", *rSCLY.GetSourceString(), ObjStart, *CFourCC(ObjectID).ToString());
+        NLog::Error("{} [0x{:X}]: Unknown object ID encountered: {}", *rSCLY.GetSourceString(), ObjStart, *CFourCC(ObjectID).ToString());
         rSCLY.Seek(ObjEnd, SEEK_SET);
         return nullptr;
     }
@@ -478,7 +481,7 @@ std::unique_ptr<CScriptLayer> CScriptLoader::LoadLayer(IInputStream& rSCLY, CGam
 
     if (!Loader.mpGameTemplate)
     {
-        debugf("This game doesn't have a game template; couldn't load script layer");
+        NLog::Debug("This game doesn't have a game template; couldn't load script layer");
         return nullptr;
     }
 
@@ -501,7 +504,7 @@ CScriptObject* CScriptLoader::LoadInstance(IInputStream& rSCLY, CGameArea *pArea
 
     if (!Loader.mpGameTemplate)
     {
-        debugf("This game doesn't have a game template; couldn't load script instance");
+        NLog::Debug("This game doesn't have a game template; couldn't load script instance");
         return nullptr;
     }
 
