@@ -88,7 +88,7 @@ QModelIndex CSkeletonHierarchyModel::IndexForBone(const CBone *pBone) const
 {
     const CBone* pParent = pBone->Parent();
     if (!pParent)
-        return index(0, 0, QModelIndex());
+        return index(0, 0);
 
     const QModelIndex ParentIndex = IndexForBone(pParent);
 

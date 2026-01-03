@@ -18,7 +18,7 @@ int CLayerModel::rowCount(const QModelIndex& /*parent*/) const
 
 QVariant CLayerModel::data(const QModelIndex &index, int role) const
 {
-    if (mpArea && (role == Qt::DisplayRole) && (index.row() < rowCount(QModelIndex())))
+    if (mpArea && (role == Qt::DisplayRole) && (index.row() < rowCount()))
         return TO_QSTRING(Layer(index)->Name());
 
     return QVariant();

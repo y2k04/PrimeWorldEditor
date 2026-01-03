@@ -39,7 +39,7 @@ int CPoiMapModel::rowCount(const QModelIndex& /*rkParent*/) const
 
 QVariant CPoiMapModel::data(const QModelIndex& rkIndex, int Role) const
 {
-    if (rkIndex.row() < rowCount(QModelIndex()))
+    if (rkIndex.row() < rowCount())
     {
         const CPoiToWorld::SPoiMap* pkMap = mpPoiToWorld->MapByIndex(static_cast<size_t>(rkIndex.row()));
         const CScriptObject* pPOI = mpArea->InstanceByID(pkMap->PoiID);

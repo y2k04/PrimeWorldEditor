@@ -423,7 +423,7 @@ void CInstancesModel::NodeCreated(CSceneNode *pNode)
 
             if (pObj->Template()->NumObjects() == 1)
             {
-                const QModelIndex ScriptRootIdx = index(0, 0, QModelIndex());
+                const QModelIndex ScriptRootIdx = index(0, 0);
                 int NewIndex = 0;
 
                 for (; NewIndex < mTemplateList.size(); NewIndex++)
@@ -452,7 +452,7 @@ void CInstancesModel::NodeAboutToBeDeleted(CSceneNode *pNode)
 
         if (pObj->Template()->NumObjects() <= 1)
         {
-            const QModelIndex ScriptRootIdx = index(0, 0, QModelIndex());
+            const QModelIndex ScriptRootIdx = index(0, 0);
             const int TempIdx = mTemplateList.indexOf(pObj->Template());
             beginRemoveRows(ScriptRootIdx, TempIdx, TempIdx);
             mTemplateList.removeOne(pObj->Template());
@@ -486,7 +486,7 @@ void CInstancesModel::PropertyModified(IProperty *pProp, CScriptObject *pInst)
     if (pProp->Name() != "Name")
         return;
 
-    const QModelIndex ScriptRoot = index(0, 0, QModelIndex());
+    const QModelIndex ScriptRoot = index(0, 0);
 
     if (mModelType == EInstanceModelType::Layers)
     {
@@ -523,7 +523,7 @@ void CInstancesModel::InstancesLayerPostChange(const QList<CScriptNode*>& rkInst
     for (CScriptNode *pNode : rkInstanceList)
         InstanceList.push_back(pNode->Instance());
 
-    const QModelIndex ScriptIdx = index(0, 0, QModelIndex());
+    const QModelIndex ScriptIdx = index(0, 0);
 
     // For types, just find the instances that have changed layers and emit dataChanged for column 1.
     if (mModelType == EInstanceModelType::Types)

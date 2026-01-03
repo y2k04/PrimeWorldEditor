@@ -11,10 +11,10 @@ class CSkeletonHierarchyModel : public QAbstractItemModel
 public:
     explicit CSkeletonHierarchyModel(QObject *pParent = nullptr);
 
-    QModelIndex index(int Row, int Column, const QModelIndex& rkParent) const override;
+    QModelIndex index(int Row, int Column, const QModelIndex& rkParent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex& rkChild) const override;
-    int rowCount(const QModelIndex& rkParent) const override;
-    int columnCount(const QModelIndex& rkParent) const override;
+    int rowCount(const QModelIndex& rkParent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& rkParent = QModelIndex()) const override;
     QVariant data(const QModelIndex& rkIndex, int Role) const override;
 
     CBone* BoneForIndex(const QModelIndex& rkIndex) const;

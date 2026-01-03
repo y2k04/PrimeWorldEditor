@@ -324,7 +324,7 @@ void CWorldTreeModel::OnProjectChanged(CGameProject *pProj)
 
             for (TResourceIterator<EResourceType::World> It; It; ++It)
             {
-                if (UsedWorlds.find(It->ID()) == UsedWorlds.end())
+                if (!UsedWorlds.contains(It->ID()))
                     pInfo->Areas.push_back(*It);
             }
 
@@ -342,9 +342,9 @@ void CWorldTreeModel::OnMapChanged()
 {
     // Flag all data as changed to ensure the font updates correctly based on which areas are loaded
     // note we don't know which areas used to be loaded, so flagging those specific indices isn't an option
-    const int MaxRow = rowCount(QModelIndex()) - 1;
-    const int MaxCol = columnCount(QModelIndex()) - 1;
-    emit dataChanged(index(0, 0, QModelIndex()), index(MaxRow, MaxCol, QModelIndex()));
+    const int MaxRow = rowCount() - 1;
+    const int MaxCol = columnCount() - 1;
+    emit dataChanged(index(0, 0), index(MaxRow, MaxCol));
 }
 
 // ************ PROXY MODEL ************

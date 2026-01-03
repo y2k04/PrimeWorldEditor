@@ -87,11 +87,11 @@ void CWorldInfoSidebar::OnAreaFilterStringChanged(const QString& rkFilter)
     mProxyModel.setFilterRegularExpression(QRegularExpression(rkFilter, QRegularExpression::CaseInsensitiveOption));
 
     // Expand top-level items that contain matches for the new filter string
-    int NumTopLevel = mModel.rowCount(QModelIndex());
+    int NumTopLevel = mModel.rowCount();
 
     for (int iRow = 0; iRow < NumTopLevel; iRow++)
     {
-        QModelIndex Index = mModel.index(iRow, 0, QModelIndex());
+        QModelIndex Index = mModel.index(iRow, 0);
         QModelIndex ProxyIndex = mProxyModel.mapFromSource(Index);
         bool Matches = !rkFilter.isEmpty() && mProxyModel.rowCount(ProxyIndex) > 0;
         mpUI->WorldTreeView->setExpanded(ProxyIndex, Matches);

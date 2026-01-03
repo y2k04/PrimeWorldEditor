@@ -166,10 +166,10 @@ QModelIndex CResourceTableModel::GetIndexForEntry(const CResourceEntry *pEntry) 
     const auto Iter = std::find(mEntries.cbegin(), mEntries.cend(), pEntry);
 
     if (Iter == mEntries.cend())
-        return QModelIndex();
+        return {};
 
     const int Index = std::distance(mEntries.begin(), Iter);
-    return index(mDirectories.size() + Index, 0, QModelIndex());
+    return index(mDirectories.size() + Index, 0);
 }
 
 QModelIndex CResourceTableModel::GetIndexForDirectory(const CVirtualDirectory *pDir) const
@@ -177,10 +177,10 @@ QModelIndex CResourceTableModel::GetIndexForDirectory(const CVirtualDirectory *p
     for (int DirIdx = 0; DirIdx < mDirectories.size(); DirIdx++)
     {
         if (mDirectories[DirIdx] == pDir)
-            return index(DirIdx, 0, QModelIndex());
+            return index(DirIdx, 0);
     }
 
-    return QModelIndex();
+    return {};
 }
 
 CResourceEntry* CResourceTableModel::IndexEntry(const QModelIndex& rkIndex) const
@@ -286,8 +286,8 @@ int CResourceTableModel::EntryListIndex(const CResourceEntry *pEntry) const
 
 void CResourceTableModel::RefreshAllIndices()
 {
-    const int NumRows = rowCount(QModelIndex());
-    const int NumCols = columnCount(QModelIndex());
+    const int NumRows = rowCount();
+    const int NumCols = columnCount();
 
     if (NumRows > 0 && NumCols > 0)
     {
@@ -355,7 +355,7 @@ void CResourceTableModel::OnResourceMoved(CResourceEntry *pEntry, CVirtualDirect
     {
         const int ResIdx = EntryListIndex(pEntry);
         const int Row = ResIdx + mDirectories.size();
-        const QModelIndex Index = index(Row, 0, QModelIndex());
+        const QModelIndex Index = index(Row, 0);
         emit dataChanged(Index, Index);
     }
     else if (pNewDir != pOldDir)

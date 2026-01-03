@@ -35,9 +35,9 @@ public:
     explicit CWorldTreeModel(CWorldEditor *pEditor);
     ~CWorldTreeModel() override;
 
-    int rowCount(const QModelIndex& rkParent) const override;
-    int columnCount(const QModelIndex& rkParent) const override;
-    QModelIndex index(int Row, int Column, const QModelIndex& rkParent) const override;
+    int rowCount(const QModelIndex& rkParent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& rkParent = QModelIndex()) const override;
+    QModelIndex index(int Row, int Column, const QModelIndex& rkParent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex& rkChild) const override;
     QVariant data(const QModelIndex& rkIndex, int Role) const override;
     QVariant headerData(int Section, Qt::Orientation Orientation, int Role) const override;

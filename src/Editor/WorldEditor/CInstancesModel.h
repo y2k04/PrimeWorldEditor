@@ -51,8 +51,8 @@ public:
     QVariant headerData(int Section, Qt::Orientation Orientation, int Role) const override;
     QModelIndex index(int Row, int Column, const QModelIndex& rkParent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex& rkChild) const override;
-    int rowCount(const QModelIndex& rkParent) const override;
-    int columnCount(const QModelIndex& rkParent) const override;
+    int rowCount(const QModelIndex& rkParent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& rkParent = QModelIndex()) const override;
     QVariant data(const QModelIndex& rkIndex, int Role) const override;
 
     void SetModelType(EInstanceModelType Type);

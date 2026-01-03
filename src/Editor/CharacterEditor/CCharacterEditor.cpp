@@ -199,7 +199,7 @@ void CCharacterEditor::SetActiveAnimSet(CAnimSet *pSet)
     ui->SkeletonHierarchyTreeView->resizeColumnToContents(0);
 
     // Select first child bone of root (which should be Skeleton_Root) to line up the camera for orbiting.
-    QModelIndex RootIndex = mSkeletonModel.index(0, 0, QModelIndex());
+    QModelIndex RootIndex = mSkeletonModel.index(0, 0);
     ui->SkeletonHierarchyTreeView->selectionModel()->setCurrentIndex( mSkeletonModel.index(0, 0, RootIndex), QItemSelectionModel::ClearAndSelect );
 
     // Run CCamera::SetOrbit to reset orbit distance.

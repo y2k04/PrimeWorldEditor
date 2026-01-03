@@ -24,8 +24,8 @@ public:
     ~CResourceTableModel() override;
 
     // Interface
-    int rowCount(const QModelIndex& /*rkParent*/) const override;
-    int columnCount(const QModelIndex& /*rkParent*/) const override;
+    int rowCount(const QModelIndex& = QModelIndex()) const override;
+    int columnCount(const QModelIndex& = QModelIndex()) const override;
     QVariant data(const QModelIndex& rkIndex, int Role) const override;
     Qt::ItemFlags flags(const QModelIndex& rkIndex) const override;
 
