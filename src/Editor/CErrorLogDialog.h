@@ -17,8 +17,6 @@ public:
     explicit CErrorLogDialog(QWidget *pParent = nullptr);
     ~CErrorLogDialog() override;
 
-    bool GatherErrors();
-
 private:
     std::unique_ptr<Ui::CErrorLogDialog> ui;
 };

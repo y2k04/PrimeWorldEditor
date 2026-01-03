@@ -1,7 +1,10 @@
-#include "CErrorLogDialog.h"
+#include "Editor/CErrorLogDialog.h"
 #include "ui_CErrorLogDialog.h"
-#include "UICommon.h"
-#include <Common/Log.h>
+
+#include "Editor/UICommon.h"
+
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/qt_sinks.h>
 
 CErrorLogDialog::CErrorLogDialog(QWidget *pParent)
     : QDialog(pParent)
@@ -9,44 +12,13 @@ CErrorLogDialog::CErrorLogDialog(QWidget *pParent)
 {
     ui->setupUi(this);
     connect(ui->CloseButton, &QPushButton::clicked, this, &CErrorLogDialog::close);
+
+    constexpr int max_lines = 300;
+    auto axio = spdlog::get("axio");
+    axio->sinks().push_back(std::make_shared<spdlog::sinks::qt_color_sink_mt>(ui->ErrorLogTextEdit, max_lines, false, true));
 }
 
-CErrorLogDialog::~CErrorLogDialog() = default;
-
-bool CErrorLogDialog::GatherErrors()
+CErrorLogDialog::~CErrorLogDialog()
 {
-    // TODO: Replace with log sink
-#if 0
-    const TStringList& rkErrors = NLog::GetErrorLog();
-    if (rkErrors.empty())
-        return false;
-
-    QString DialogString;
-
-    for (const auto& rkError : rkErrors)
-    {
-        QString Error = TO_QSTRING(rkError);
-        QString LineColor;
-
-        if (Error.startsWith(QStringLiteral("ERROR: ")))
-            LineColor = QStringLiteral("#ff0000");
-        else if (Error.startsWith(QStringLiteral("Warning: ")))
-            LineColor = QStringLiteral("#ff8000");
-
-        QString FullLine = Error;
-
-        if (!LineColor.isEmpty())
-        {
-            FullLine.prepend(QStringLiteral("<font color=\"%1\">").arg(LineColor));
-            FullLine.append(QStringLiteral("</font>"));
-        }
-        FullLine.append(QStringLiteral("<br />"));
-
-        DialogString += FullLine;
-    }
-
-    ui->ErrorLogTextEdit->setText(DialogString);
-    NLog::ClearErrorLog();
-#endif
-    return true;
+    spdlog::get("axio")->sinks().pop_back();
 }
