@@ -226,32 +226,31 @@ void CWorldTreeModel::OnProjectChanged(CGameProject *pProj)
             // Metroid Prime series; fetch all world assets
             std::list<CAssetID> WorldIDs;
             pProj->GetWorldList(WorldIDs);
-            auto QWorldIDs = QList<CAssetID>(WorldIDs.begin(), WorldIDs.end());
 
-            for (const CAssetID& rkID : QWorldIDs)
+            for (const CAssetID& rkID : WorldIDs)
             {
-                if (CResourceEntry* pEntry = pProj->ResourceStore()->FindEntry(rkID))
+                CResourceEntry* pEntry = pProj->ResourceStore()->FindEntry(rkID);
+                if (!pEntry)
+                    continue;
+
+                TResPtr<CWorld> pWorld = pEntry->Load();
+                if (pWorld == nullptr)
+                    continue;
+
+                SWorldInfo Info;
+                Info.WorldName = TO_QSTRING(pWorld->Name());
+                Info.pWorld = pWorld;
+
+                // Add areas
+                for (size_t iArea = 0; iArea < pWorld->NumAreas(); iArea++)
                 {
-                    TResPtr<CWorld> pWorld = pEntry->Load();
-
-                    if (pWorld != nullptr)
-                    {
-                        SWorldInfo Info;
-                        Info.WorldName = TO_QSTRING( pWorld->Name() );
-                        Info.pWorld = pWorld;
-
-                        // Add areas
-                        for (size_t iArea = 0; iArea < pWorld->NumAreas(); iArea++)
-                        {
-                            const CAssetID& AreaID = pWorld->AreaResourceID(iArea);
-                            CResourceEntry *pAreaEntry = pWorld->Entry()->ResourceStore()->FindEntry(AreaID);
-                            ASSERT(pAreaEntry);
-                            Info.Areas.push_back(pAreaEntry);
-                        }
-
-                        mWorldList.push_back(Info);
-                    }
+                    const CAssetID& AreaID = pWorld->AreaResourceID(iArea);
+                    CResourceEntry *pAreaEntry = pWorld->Entry()->ResourceStore()->FindEntry(AreaID);
+                    ASSERT(pAreaEntry);
+                    Info.Areas.push_back(pAreaEntry);
                 }
+
+                mWorldList.push_back(std::move(Info));
             }
 
             // Sort in alphabetical order for MP3
@@ -305,9 +304,8 @@ void CWorldTreeModel::OnProjectChanged(CGameProject *pProj)
 
                         if (!pInfo || pInfo->WorldName != WorldNameQ)
                         {
-                            mWorldList.push_back(SWorldInfo());
-                            pInfo = &mWorldList.back();
-                            pInfo->WorldName = WorldNameQ;
+                            pInfo = &mWorldList.emplace_back();
+                            pInfo->WorldName = std::move(WorldNameQ);
                         }
 
                         pInfo->Areas.push_back(pEntry);
