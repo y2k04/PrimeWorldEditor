@@ -17,29 +17,29 @@ bool CAnimationLoader::UncompressedCheckEchoes()
     // a little weird because we have to make sure we don't try to seek or read anything
     // past the end of the file. The +4 being added to each size we test is to account
     // for the next size value of the next array.
-    const uint32 End = mpInput->Size();
+    const auto End = mpInput->Size();
 
-    const uint32 NumRotIndices = mpInput->ReadLong();
+    const auto NumRotIndices = mpInput->ReadULong();
     if (mpInput->Tell() + NumRotIndices + 4 >= End) return false;
     mpInput->Seek(NumRotIndices, SEEK_CUR);
 
-    const uint32 NumTransIndices = mpInput->ReadLong();
+    const auto NumTransIndices = mpInput->ReadULong();
     if (mpInput->Tell() + NumTransIndices + 4 >= End) return false;
     mpInput->Seek(NumTransIndices, SEEK_CUR);
 
-    const uint32 NumScaleIndices = mpInput->ReadLong();
+    const auto NumScaleIndices = mpInput->ReadULong();
     if (mpInput->Tell() + NumScaleIndices + 4 >= End) return false;
     mpInput->Seek(NumScaleIndices, SEEK_CUR);
 
-    const uint32 ScaleKeysSize = mpInput->ReadLong() * 0xC;
+    const auto ScaleKeysSize = mpInput->ReadULong() * 0xC;
     if (mpInput->Tell() + ScaleKeysSize + 4 >= End) return false;
     mpInput->Seek(ScaleKeysSize, SEEK_CUR);
 
-    const uint32 RotKeysSize = mpInput->ReadLong() * 0x10;
+    const auto RotKeysSize = mpInput->ReadULong() * 0x10;
     if (mpInput->Tell() + RotKeysSize + 4 >= End) return false;
     mpInput->Seek(RotKeysSize, SEEK_CUR);
 
-    const uint32 TransKeysSize = mpInput->ReadLong() * 0xC;
+    const auto TransKeysSize = mpInput->ReadULong() * 0xC;
     return (mpInput->Tell() + TransKeysSize == End);
 }
 
@@ -47,7 +47,7 @@ EGame CAnimationLoader::UncompressedCheckVersion()
 {
     // Call this function after the bone channel index array
     // No version number, so this is how we have to determine the version...
-    const uint32 Start = mpInput->Tell();
+    const auto Start = mpInput->Tell();
     const bool Echoes = UncompressedCheckEchoes();
     mpInput->Seek(Start, SEEK_SET);
     return (Echoes ? EGame::Echoes : EGame::Prime);
@@ -60,7 +60,7 @@ void CAnimationLoader::ReadUncompressedANIM()
     mpAnim->mTickInterval = mpInput->ReadFloat();
     mpInput->Seek(0x4, SEEK_CUR); // Skip differential state
 
-    mpAnim->mNumKeys = mpInput->ReadLong();
+    mpAnim->mNumKeys = mpInput->ReadULong();
     mpInput->Seek(0x4, SEEK_CUR); // Skip root bone ID
 
     // Read bone channel info
@@ -70,13 +70,13 @@ void CAnimationLoader::ReadUncompressedANIM()
     uint32 NumTranslationChannels = 0;
 
     // Bone channel list
-    const uint32 NumBoneIndices = mpInput->ReadLong();
+    const auto NumBoneIndices = mpInput->ReadULong();
     ASSERT(NumBoneIndices == 100);
     std::vector<uint8> BoneIndices(NumBoneIndices);
 
     for (auto& index : BoneIndices)
     {
-        index = static_cast<uint8>(mpInput->ReadByte());
+        index = mpInput->ReadUByte();
 
         if (index != 0xFF)
             NumBoneChannels++;
@@ -90,12 +90,12 @@ void CAnimationLoader::ReadUncompressedANIM()
 
     if (mGame >= EGame::EchoesDemo)
     {
-        const uint32 NumRotationIndices = mpInput->ReadLong();
+        const auto NumRotationIndices = mpInput->ReadULong();
         RotationIndices.resize(NumRotationIndices);
 
         for (auto& index : RotationIndices)
         {
-            index = static_cast<uint8>(mpInput->ReadByte());
+            index = mpInput->ReadUByte();
 
             if (index != 0xFF)
                 NumRotationChannels++;
@@ -117,12 +117,12 @@ void CAnimationLoader::ReadUncompressedANIM()
     }
 
     // Translation channel indices
-    const uint32 NumTransIndices = mpInput->ReadLong();
+    const auto NumTransIndices = mpInput->ReadULong();
     std::vector<uint8> TransIndices(NumTransIndices);
 
     for (auto& index : TransIndices)
     {
-        index = static_cast<uint8>(mpInput->ReadByte());
+        index = mpInput->ReadUByte();
 
         if (index != 0xFF)
             NumTranslationChannels++;
@@ -133,12 +133,12 @@ void CAnimationLoader::ReadUncompressedANIM()
 
     if (mGame >= EGame::EchoesDemo)
     {
-        const uint32 NumScaleIndices = mpInput->ReadLong();
+        const auto NumScaleIndices = mpInput->ReadULong();
         ScaleIndices.resize(NumScaleIndices);
 
         for (auto& index : ScaleIndices)
         {
-            index = static_cast<uint8>(mpInput->ReadByte());
+            index = mpInput->ReadUByte();
 
             if (index != 0xFF)
                 NumScaleChannels++;
@@ -229,15 +229,15 @@ void CAnimationLoader::ReadCompressedANIM()
     mpAnim->mTickInterval = mpInput->ReadFloat();
     mpInput->Seek(0x8, SEEK_CUR); // Skip two unknown values
 
-    mRotationDivisor = mpInput->ReadLong();
+    mRotationDivisor = mpInput->ReadULong();
     mTranslationMultiplier = mpInput->ReadFloat();
     if (mGame >= EGame::EchoesDemo)
         mScaleMultiplier = mpInput->ReadFloat();
-    const uint32 NumBoneChannels = mpInput->ReadLong();
+    const auto NumBoneChannels = mpInput->ReadULong();
     mpInput->Seek(0x4, SEEK_CUR); // Skip unknown value
 
     // Read key flags
-    const uint32 NumKeys = mpInput->ReadLong();
+    const auto NumKeys = mpInput->ReadULong();
     mpAnim->mNumKeys = NumKeys;
     mKeyFlags.resize(NumKeys);
     {
@@ -259,17 +259,17 @@ void CAnimationLoader::ReadCompressedANIM()
     for (size_t iChan = 0; iChan < NumBoneChannels; iChan++)
     {
         SCompressedChannel& rChan = mCompressedChannels[iChan];
-        rChan.BoneID = (mGame == EGame::Prime ? mpInput->ReadLong() : mpInput->ReadByte());
+        rChan.BoneID = (mGame == EGame::Prime ? mpInput->ReadULong() : mpInput->ReadUByte());
 
         // Read rotation parameters
-        rChan.NumRotationKeys = mpInput->ReadShort();
+        rChan.NumRotationKeys = mpInput->ReadUShort();
 
         if (rChan.NumRotationKeys > 0)
         {
             for (size_t iComp = 0; iComp < 3; iComp++)
             {
                 rChan.Rotation[iComp] = mpInput->ReadShort();
-                rChan.RotationBits[iComp] = mpInput->ReadByte();
+                rChan.RotationBits[iComp] = mpInput->ReadUByte();
             }
 
             mpAnim->mBoneInfo[rChan.BoneID].RotationChannelIdx = static_cast<uint8>(iChan);
@@ -280,14 +280,14 @@ void CAnimationLoader::ReadCompressedANIM()
         }
 
         // Read translation parameters
-        rChan.NumTranslationKeys = mpInput->ReadShort();
+        rChan.NumTranslationKeys = mpInput->ReadUShort();
 
         if (rChan.NumTranslationKeys > 0)
         {
             for (size_t iComp = 0; iComp < 3; iComp++)
             {
                 rChan.Translation[iComp] = mpInput->ReadShort();
-                rChan.TranslationBits[iComp] = mpInput->ReadByte();
+                rChan.TranslationBits[iComp] = mpInput->ReadUByte();
             }
 
             mpAnim->mBoneInfo[rChan.BoneID].TranslationChannelIdx = static_cast<uint8>(iChan);
@@ -302,14 +302,14 @@ void CAnimationLoader::ReadCompressedANIM()
 
         if (mGame >= EGame::EchoesDemo)
         {
-            rChan.NumScaleKeys = mpInput->ReadShort();
+            rChan.NumScaleKeys = mpInput->ReadUShort();
 
             if (rChan.NumScaleKeys > 0)
             {
                 for (size_t iComp = 0; iComp < 3; iComp++)
                 {
                     rChan.Scale[iComp] = mpInput->ReadShort();
-                    rChan.ScaleBits[iComp] = mpInput->ReadByte();
+                    rChan.ScaleBits[iComp] = mpInput->ReadUByte();
                 }
 
                 ScaleIdx = static_cast<uint8>(iChan);
@@ -489,8 +489,7 @@ std::unique_ptr<CAnimation> CAnimationLoader::LoadANIM(IInputStream& rANIM, CRes
     if (pEntry->Game() > EGame::Echoes)
         return std::make_unique<CAnimation>(pEntry);
 
-    const uint32 CompressionType = rANIM.ReadLong();
-
+    const auto CompressionType = rANIM.ReadULong();
     if (CompressionType != 0 && CompressionType != 2)
     {
         NLog::Error("{}: Unknown ANIM compression type: {}", *rANIM.GetSourceString(), CompressionType);
