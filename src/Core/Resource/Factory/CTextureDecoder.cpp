@@ -165,7 +165,7 @@ std::unique_ptr<CTexture> CTextureDecoder::CreateTexture()
     pTex->mHeight = mHeight;
     pTex->mNumMipMaps = mNumMipMaps;
     pTex->mLinearSize = static_cast<uint32>(mWidth * mHeight * gskPixelsToBytes[static_cast<size_t>(mTexelFormat)]);
-    pTex->mpImgDataBuffer = mpDataBuffer;
+    pTex->mpImgDataBuffer = std::move(mpDataBuffer);
     pTex->mImgDataSize = mDataBufferSize;
     pTex->mBufferExists = true;
 
@@ -335,9 +335,9 @@ void CTextureDecoder::PartialDecodeGXTexture(IInputStream& TXTR)
     mDataBufferSize = ImageSize * (gskOutputBpp[static_cast<size_t>(mTexelFormat)] / gskSourceBpp[static_cast<size_t>(mTexelFormat)]);
     if (mHasPalettes && mPaletteFormat == EGXPaletteFormat::RGB5A3)
         mDataBufferSize *= 2;
-    mpDataBuffer = new uint8[mDataBufferSize];
+    mpDataBuffer = std::make_unique_for_overwrite<uint8_t[]>(mDataBufferSize);
 
-    CMemoryOutStream Out(mpDataBuffer, mDataBufferSize, std::endian::native);
+    CMemoryOutStream Out(mpDataBuffer.get(), mDataBufferSize, std::endian::native);
 
     // Initializing more stuff before we start the mipmap loop
     uint32 MipW = mWidth;
@@ -443,9 +443,9 @@ void CTextureDecoder::FullDecodeGXTexture(IInputStream& rTXTR)
     rTXTR.Seek(ImageStart, SEEK_SET);
 
     mDataBufferSize = ImageSize * (32 / gskSourceBpp[static_cast<size_t>(mTexelFormat)]);
-    mpDataBuffer = new uint8[mDataBufferSize];
+    mpDataBuffer = std::make_unique_for_overwrite<uint8_t[]>(mDataBufferSize);
 
-    CMemoryOutStream Out(mpDataBuffer, mDataBufferSize, std::endian::native);
+    CMemoryOutStream Out(mpDataBuffer.get(), mDataBufferSize, std::endian::native);
 
     // Initializing more stuff before we start the mipmap loop
     uint32 MipW = mWidth;
@@ -542,9 +542,9 @@ void CTextureDecoder::DecodeDDS(IInputStream& rDDS)
         mDataBufferSize *= (32 / mDDSInfo.BitCount);
     else
         mDataBufferSize *= 4;
-    mpDataBuffer = new uint8[mDataBufferSize];
+    mpDataBuffer = std::make_unique_for_overwrite<uint8_t[]>(mDataBufferSize);
 
-    CMemoryOutStream Out(mpDataBuffer, mDataBufferSize, std::endian::native);
+    CMemoryOutStream Out(mpDataBuffer.get(), mDataBufferSize, std::endian::native);
 
     // Initializing more stuff before we start the mipmap loop
     uint32 MipW = mWidth;

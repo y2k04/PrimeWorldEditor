@@ -71,7 +71,7 @@ bool CTexture::BufferGL()
 
     for (uint32 iMip = 0; iMip < mNumMipMaps; iMip++)
     {
-        GLvoid *pData = (mBufferExists) ? (mpImgDataBuffer + MipOffset) : NULL;
+        GLvoid *pData = (mBufferExists) ? (mpImgDataBuffer.get() + MipOffset) : NULL;
 
         if (!IsCompressed)
         {
@@ -146,7 +146,7 @@ float CTexture::ReadTexelAlpha(const CVector2f& rkTexCoord)
 
     if (mTexelFormat == ETexelFormat::DXT1 && mBufferExists)
     {
-        CMemoryInStream Buffer(mpImgDataBuffer, mImgDataSize, std::endian::native);
+        CMemoryInStream Buffer(mpImgDataBuffer.get(), mImgDataSize, std::endian::native);
 
         // 8 bytes per 4x4 16-pixel block, left-to-right top-to-bottom
         const uint32 BlockIdxX = TexelX / 4;
@@ -259,7 +259,7 @@ bool CTexture::WriteDDS(IOutputStream& rOut)
     rOut.WriteLong(0);        // dwCaps4
     rOut.WriteLong(0);        // dwReserved2
 
-    rOut.WriteBytes(mpImgDataBuffer, mImgDataSize); // Image data
+    rOut.WriteBytes(mpImgDataBuffer.get(), mImgDataSize); // Image data
     return true;
 }
 
@@ -318,7 +318,7 @@ void CTexture::CopyGLBuffer()
     // Clear existing buffer
     if (mBufferExists)
     {
-        delete[] mpImgDataBuffer;
+        mpImgDataBuffer.reset();
         mBufferExists = false;
         mpImgDataBuffer = nullptr;
         mImgDataSize = 0;
@@ -326,7 +326,7 @@ void CTexture::CopyGLBuffer()
 
     // Calculate buffer size
     mImgDataSize = CalcTotalSize();
-    mpImgDataBuffer = new uint8[mImgDataSize];
+    mpImgDataBuffer = std::make_unique_for_overwrite<uint8_t[]>(mImgDataSize);
     mBufferExists = true;
 
     // Get texture
@@ -338,7 +338,7 @@ void CTexture::CopyGLBuffer()
 
     for (uint32 iMip = 0; iMip < mNumMipMaps; iMip++)
     {
-        void *pData = mpImgDataBuffer + MipOffset;
+        void *pData = mpImgDataBuffer.get() + MipOffset;
 
         glGetTexImage(BindTarget, iMip, GL_RGBA, GL_UNSIGNED_BYTE, pData);
 
@@ -355,7 +355,7 @@ void CTexture::DeleteBuffers()
 {
     if (mBufferExists)
     {
-        delete[] mpImgDataBuffer;
+        mpImgDataBuffer.reset();
         mBufferExists = false;
         mpImgDataBuffer = nullptr;
         mImgDataSize = 0;

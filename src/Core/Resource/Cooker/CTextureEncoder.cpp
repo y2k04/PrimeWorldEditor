@@ -18,7 +18,7 @@ void CTextureEncoder::WriteTXTR(IOutputStream& rTXTR)
 
     uint32 MipW = mpTexture->Width() / 4;
     uint32 MipH = mpTexture->Height() / 4;
-    CMemoryInStream Image(mpTexture->mpImgDataBuffer, mpTexture->mImgDataSize, std::endian::little);
+    CMemoryInStream Image(mpTexture->mpImgDataBuffer.get(), mpTexture->mImgDataSize, std::endian::little);
     uint32 MipOffset = Image.Tell();
 
     for (uint32 iMip = 0; iMip < mpTexture->mNumMipMaps; iMip++)

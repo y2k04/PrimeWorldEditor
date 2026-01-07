@@ -15,13 +15,13 @@ class IOutputStream;
 
 class CTextureDecoder
 {
-    CResourceEntry *mpEntry;
-    ETexelFormat mTexelFormat;
-    uint16_t mWidth, mHeight;
-    uint32_t mNumMipMaps;
+    CResourceEntry* mpEntry{};
+    ETexelFormat mTexelFormat{};
+    uint16_t mWidth{}, mHeight{};
+    uint32_t mNumMipMaps{};
 
-    bool mHasPalettes;
-    EGXPaletteFormat mPaletteFormat;
+    bool mHasPalettes{};
+    EGXPaletteFormat mPaletteFormat{};
     std::vector<uint8_t> mPalettes;
     CMemoryInStream mPaletteInput;
 
@@ -33,10 +33,10 @@ class CTextureDecoder
         uint32_t RBitMask, GBitMask, BBitMask, ABitMask;
         uint32_t RShift, GShift, BShift, AShift;
         uint32_t RSize, GSize, BSize, ASize;
-    } mDDSInfo;
+    } mDDSInfo{};
 
-    uint8_t *mpDataBuffer;
-    uint32_t mDataBufferSize;
+    std::unique_ptr<uint8_t[]> mpDataBuffer;
+    uint32_t mDataBufferSize{};
 
     // Private Functions
     CTextureDecoder();

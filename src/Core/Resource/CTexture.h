@@ -4,6 +4,8 @@
 #include "Core/Resource/CResource.h"
 #include "Core/Resource/ETexelFormat.h"
 
+#include <memory>
+
 #include <GL/glew.h>
 
 class CVector2f;
@@ -23,8 +25,8 @@ class CTexture : public CResource
 
     bool mEnableMultisampling = false;  // Whether multisample should be enabled (if this texture is a render target).
     bool mBufferExists = false;         // Indicates whether image data buffer has valid data
-    uint8_t* mpImgDataBuffer = nullptr;   // Pointer to image data buffer
-    uint32_t mImgDataSize = 0;            // Size of image data buffer
+    std::unique_ptr<uint8_t[]> mpImgDataBuffer; // Pointer to image data buffer
+    uint32_t mImgDataSize = 0;                  // Size of image data buffer
 
     bool mGLBufferExists = false; // Indicates whether GL buffer has valid data
     GLuint mTextureID = 0;        // ID for texture GL buffer
@@ -43,9 +45,9 @@ public:
     // Accessors
     ETexelFormat TexelFormat() const        { return mTexelFormat; }
     ETexelFormat SourceTexelFormat() const  { return mSourceTexelFormat; }
-    uint32_t Width() const                    { return (uint32_t) mWidth; }
-    uint32_t Height() const                   { return (uint32_t) mHeight; }
-    uint32_t NumMipMaps() const               { return mNumMipMaps; }
+    uint32_t Width() const                  { return (uint32_t) mWidth; }
+    uint32_t Height() const                 { return (uint32_t) mHeight; }
+    uint32_t NumMipMaps() const             { return mNumMipMaps; }
     GLuint TextureID() const                { return mTextureID; }
 
     void SetMultisamplingEnabled(bool Enable)
