@@ -75,12 +75,12 @@ void CAreaLoader::ReadGeometryPrime()
         else // For Echoes+, load surface mesh IDs, then skip to the start of the next mesh
         {
             auto& pModel = FileModels.emplace_back(CModelLoader::LoadWorldModel(*mpMREA, *mpSectionMgr, *mpArea->mpMaterialSet, mVersion));
-            const size_t NumSurfaces = mpMREA->ReadShort();
+            const size_t NumSurfaces = mpMREA->ReadUShort();
 
             for (size_t iSurf = 0; iSurf < NumSurfaces; iSurf++)
             {
                 mpMREA->Seek(0x2, SEEK_CUR);
-                pModel->GetSurface(iSurf)->MeshID = mpMREA->ReadShort();
+                pModel->GetSurface(iSurf)->MeshID = mpMREA->ReadUShort();
             }
 
             mpSectionMgr->ToNextSection();
@@ -120,7 +120,7 @@ void CAreaLoader::ReadSCLYPrime()
     std::vector<uint32> LayerSizes(mNumLayers);
 
     for (auto& layerSize : LayerSizes)
-        layerSize = mpMREA->ReadLong();
+        layerSize = mpMREA->ReadULong();
 
     // SCLY
     for (size_t iLyr = 0; iLyr < mNumLayers; iLyr++)
@@ -327,7 +327,7 @@ void CAreaLoader::ReadHeaderCorruption()
     for (uint32 iNum = 0; iNum < SectionNumberCount; iNum++)
     {
         CFourCC Type(*mpMREA);
-        uint32 Num = mpMREA->ReadLong();
+        uint32 Num = mpMREA->ReadULong();
 
         if      (Type == CFourCC("AABB")) mBoundingBoxesBlockNum = Num;
         else if (Type == CFourCC("APTL")) mPTLABlockNum = Num;
