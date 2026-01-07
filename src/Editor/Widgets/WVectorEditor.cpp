@@ -89,19 +89,9 @@ void WVectorEditor::SetSingleStep(double Step)
 
 void WVectorEditor::SetLabelsHidden(bool Hidden)
 {
-    if (Hidden)
-    {
-        mpLabelX->hide();
-        mpLabelY->hide();
-        mpLabelZ->hide();
-    }
-
-    else
-    {
-        mpLabelX->show();
-        mpLabelY->show();
-        mpLabelZ->show();
-    }
+    mpLabelX->setHidden(Hidden);
+    mpLabelY->setHidden(Hidden);
+    mpLabelZ->setHidden(Hidden);
 }
 
 bool WVectorEditor::IsBeingDragged() const
