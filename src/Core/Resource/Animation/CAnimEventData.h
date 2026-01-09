@@ -47,7 +47,7 @@ public:
     uint32_t EventCharacterIndex(size_t EventIdx) const  { return mEvents[EventIdx].mCharacterIndex; }
     const CAssetID& EventAssetRef(size_t EventIdx) const { return mEvents[EventIdx].mAssetRef; }
 
-    void AddEvent(uint32_t CharIdx, const CAssetID& AssetID) { mEvents.push_back(SEvent{CharIdx, AssetID}); }
+    void AddEvent(uint32_t CharIdx, const CAssetID& AssetID) { mEvents.emplace_back(CharIdx, AssetID); }
 };
 
 #endif // CANIMEVENTDATA
