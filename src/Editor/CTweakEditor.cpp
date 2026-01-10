@@ -123,12 +123,7 @@ void CTweakEditor::OnProjectChanged(CGameProject* pNewProject)
     if (pNewProject != nullptr)
     {
         const auto& tweakObjects = pNewProject->TweakManager()->TweakObjects();
-        mTweakAssets.reserve(static_cast<int>(tweakObjects.size()));
-
-        for (CTweakData* tweakData : tweakObjects)
-        {
-            mTweakAssets.push_back(tweakData);
-        }
+        mTweakAssets.assign(tweakObjects.begin(), tweakObjects.end());
     }
 
     // Sort in alphabetical order and create tabs
