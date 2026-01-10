@@ -28,7 +28,7 @@ public:
     void SetPreviewLanguage(ELanguage InLanguage);
 
     /** QAbstractListModel interface */
-    int rowCount(const QModelIndex& kParent) const override;
+    int rowCount(const QModelIndex& kParent = QModelIndex()) const override;
     QVariant data(const QModelIndex& kIndex, int Role) const override;
     Qt::ItemFlags flags(const QModelIndex& kIndex) const override;
 
