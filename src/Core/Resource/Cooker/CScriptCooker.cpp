@@ -257,7 +257,7 @@ void CScriptCooker::WriteInstance(IOutputStream& rOut, CScriptObject *pInstance)
     IsPrime1 ? rOut.WriteLong(0) : rOut.WriteShort(0);
 
     const uint32 InstanceStart = rOut.Tell();
-    const uint32 InstanceID = (pInstance->Layer()->AreaIndex() << 26) | pInstance->InstanceID();
+    const uint32 InstanceID = (pInstance->Layer()->AreaIndex() << 26) | pInstance->InstanceID().Value();
     rOut.WriteULong(InstanceID);
 
     const size_t NumLinks = pInstance->NumLinks(ELinkType::Outgoing);
@@ -268,7 +268,7 @@ void CScriptCooker::WriteInstance(IOutputStream& rOut, CScriptObject *pInstance)
         const CLink *pLink = pInstance->Link(ELinkType::Outgoing, LinkIdx);
         rOut.WriteULong(pLink->State());
         rOut.WriteULong(pLink->Message());
-        rOut.WriteULong(pLink->ReceiverID());
+        rOut.WriteULong(pLink->ReceiverID().Value());
     }
 
     WriteProperty(rOut, pInstance->Template()->Properties(), pInstance->PropertyData(), false);

@@ -46,7 +46,7 @@ QVariant CLinkModel::data(const QModelIndex& rkIndex, int Role) const
         {
         case 0: // Column 0 - Target Object
         {
-            const uint32 TargetID = (mType == ELinkType::Incoming ? pLink->SenderID() : pLink->ReceiverID());
+            const auto TargetID = (mType == ELinkType::Incoming ? pLink->SenderID() : pLink->ReceiverID());
             const CScriptObject *pTarget = mpObject->Area()->InstanceByID(TargetID);
 
             if (pTarget)
@@ -56,7 +56,7 @@ QVariant CLinkModel::data(const QModelIndex& rkIndex, int Role) const
             }
             else
             {
-                QString StrID = QString::number(TargetID, 16).toUpper();
+                QString StrID = QString::number(TargetID.Value(), 16).toUpper();
                 while (StrID.length() < 8)
                     StrID = QLatin1Char{'0'} + StrID;
                 return tr("External: %1").arg(StrID);

@@ -9,7 +9,7 @@ bool CPoiToWorldCooker::CookEGMC(const CPoiToWorld* pPoiToWorld, IOutputStream& 
     struct SPoiMapping
     {
         uint32 MeshID;
-        uint32 PoiID;
+        CInstanceID PoiID;
     };
     std::vector<SPoiMapping> Mappings;
 
@@ -19,7 +19,7 @@ bool CPoiToWorldCooker::CookEGMC(const CPoiToWorld* pPoiToWorld, IOutputStream& 
 
         for (const auto meshID : pkMap->ModelIDs)
         {
-            Mappings.push_back({meshID, pkMap->PoiID});
+            Mappings.emplace_back(meshID, pkMap->PoiID);
         }
     }
 
@@ -29,7 +29,7 @@ bool CPoiToWorldCooker::CookEGMC(const CPoiToWorld* pPoiToWorld, IOutputStream& 
     for (const auto& mapping : Mappings)
     {
         rOut.WriteULong(mapping.MeshID);
-        rOut.WriteULong(mapping.PoiID);
+        rOut.WriteULong(mapping.PoiID.Value());
     }
 
     return true;

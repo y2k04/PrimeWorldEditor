@@ -133,9 +133,9 @@ size_t CGameArea::TotalInstanceCount() const
     return Num;
 }
 
-CScriptObject* CGameArea::InstanceByID(uint32 InstanceID)
+CScriptObject* CGameArea::InstanceByID(CInstanceID ID)
 {
-    const auto it = mObjectMap.find(InstanceID);
+    const auto it = mObjectMap.find(ID);
 
     if (it != mObjectMap.cend())
         return it->second;
@@ -143,23 +143,23 @@ CScriptObject* CGameArea::InstanceByID(uint32 InstanceID)
     return nullptr;
 }
 
-uint32 CGameArea::FindUnusedInstanceID() const
+CInstanceID CGameArea::FindUnusedInstanceID() const
 {
-    uint32 InstanceID = (mWorldIndex << 16) | 1;
+    auto ID = CInstanceID((mWorldIndex << 16) | 1);
 
-    while (mObjectMap.contains(InstanceID))
-        InstanceID++;
+    while (mObjectMap.contains(ID))
+        ID = CInstanceID(ID.Value() + 1);
 
-    return InstanceID;
+    return ID;
 }
 
 CScriptObject* CGameArea::SpawnInstance(CScriptTemplate *pTemplate,
                                         CScriptLayer *pLayer,
-                                        const CVector3f& rkPosition /*= CVector3f::skZero*/,
-                                        const CQuaternion& rkRotation /*= CQuaternion::skIdentity*/,
-                                        const CVector3f& rkScale /*= CVector3f::skOne*/,
-                                        uint32 SuggestedID /*= -1*/,
-                                        uint32 SuggestedLayerIndex /*= -1*/ )
+                                        const CVector3f& rkPosition,
+                                        const CQuaternion& rkRotation,
+                                        const CVector3f& rkScale,
+                                        CInstanceID SuggestedID,
+                                        uint32 SuggestedLayerIndex)
 {
     // Verify we can fit another instance in this area.
     const size_t NumInstances = TotalInstanceCount();
@@ -171,16 +171,16 @@ CScriptObject* CGameArea::SpawnInstance(CScriptTemplate *pTemplate,
     }
 
     // Check whether the suggested instance ID is valid
-    uint32 InstanceID = SuggestedID;
+    auto InstanceID = SuggestedID;
 
-    if (InstanceID != UINT32_MAX)
+    if (InstanceID.IsValid())
     {
         if (!mObjectMap.contains(InstanceID))
-            InstanceID = UINT32_MAX;
+            InstanceID.Invalidate();
     }
 
     // If not valid (or if there's no suggested ID) then determine a new instance ID
-    if (InstanceID == UINT32_MAX)
+    if (InstanceID.IsInvalid())
     {
         // Determine layer index
         const uint32 LayerIndex = pLayer->AreaIndex();
@@ -223,7 +223,8 @@ void CGameArea::DeleteInstance(CScriptObject *pInstance)
     pInstance->Template()->RemoveObject(pInstance);
 
     auto it = mObjectMap.find(pInstance->InstanceID());
-    if (it != mObjectMap.end()) mObjectMap.erase(it);
+    if (it != mObjectMap.end())
+        mObjectMap.erase(it);
 
     if (mpPoiToWorldMap && mpPoiToWorldMap->HasPoiMappings(pInstance->InstanceID()))
         mpPoiToWorldMap->RemovePoi(pInstance->InstanceID());

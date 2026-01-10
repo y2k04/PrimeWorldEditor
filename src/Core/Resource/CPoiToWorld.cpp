@@ -7,7 +7,7 @@ CPoiToWorld::CPoiToWorld(CResourceEntry *pEntry)
 
 CPoiToWorld::~CPoiToWorld() = default;
 
-void CPoiToWorld::AddPoi(uint32 PoiID)
+void CPoiToWorld::AddPoi(CInstanceID PoiID)
 {
     // Check if this POI already exists
     const auto it = mPoiLookupMap.find(PoiID);
@@ -22,7 +22,7 @@ void CPoiToWorld::AddPoi(uint32 PoiID)
     mPoiLookupMap.insert_or_assign(PoiID, ptr);
 }
 
-void CPoiToWorld::AddPoiMeshMap(uint32 PoiID, uint32 ModelID)
+void CPoiToWorld::AddPoiMeshMap(CInstanceID PoiID, uint32 ModelID)
 {
     // Make sure the POI exists; the add function won't do anything if it does
     AddPoi(PoiID);
@@ -39,7 +39,7 @@ void CPoiToWorld::AddPoiMeshMap(uint32 PoiID, uint32 ModelID)
     pMap->ModelIDs.push_back(ModelID);
 }
 
-void CPoiToWorld::RemovePoi(uint32 PoiID)
+void CPoiToWorld::RemovePoi(CInstanceID PoiID)
 {
     for (auto it = mMaps.begin(); it != mMaps.end(); ++it)
     {
@@ -52,7 +52,7 @@ void CPoiToWorld::RemovePoi(uint32 PoiID)
     }
 }
 
-void CPoiToWorld::RemovePoiMeshMap(uint32 PoiID, uint32 ModelID)
+void CPoiToWorld::RemovePoiMeshMap(CInstanceID PoiID, uint32 ModelID)
 {
     const auto MapIt = mPoiLookupMap.find(PoiID);
 

@@ -633,7 +633,7 @@ void CAreaLoader::SetUpObjects(CScriptLayer *pGenLayer)
         for (size_t InstIdx = 0; InstIdx < pLayer->NumInstances(); InstIdx++)
         {
             CScriptObject *pInst = pLayer->InstanceByIndex(InstIdx);
-            const uint32 InstanceID = pInst->InstanceID();
+            const auto InstanceID = pInst->InstanceID();
             [[maybe_unused]] CScriptObject *pExisting = mpArea->InstanceByID(InstanceID);
             ASSERT(pExisting == nullptr);
             mpArea->mObjectMap[InstanceID] = pInst;
@@ -646,7 +646,7 @@ void CAreaLoader::SetUpObjects(CScriptLayer *pGenLayer)
         while (pGenLayer->NumInstances() != 0)
         {
             CScriptObject *pInst = pGenLayer->InstanceByIndex(0);
-            const uint32 InstanceID = pInst->InstanceID();
+            const auto InstanceID = pInst->InstanceID();
 
             // Check if this is a duplicate of an existing instance (this only happens with DKCR GenericCreature as far as I'm aware)
             if (mpArea->InstanceByID(InstanceID) != nullptr)
@@ -654,7 +654,7 @@ void CAreaLoader::SetUpObjects(CScriptLayer *pGenLayer)
                 if (pInst->ObjectTypeID() != FOURCC('GCTR'))
                 {
                     NLog::Debug("Duplicate SCGN object: [{}] {} ({:08X})", *pInst->Template()->Name(), *pInst->InstanceName(),
-                                static_cast<uint32>(pInst->InstanceID()));
+                                pInst->InstanceID());
                 }
 
                 pGenLayer->RemoveInstance(pInst);
@@ -662,7 +662,7 @@ void CAreaLoader::SetUpObjects(CScriptLayer *pGenLayer)
             }
             else
             {
-                const uint32 LayerIdx = (InstanceID >> 26) & 0x3F;
+                const uint32 LayerIdx = InstanceID.Layer();
                 pInst->SetLayer(mpArea->ScriptLayer(LayerIdx));
                 mpArea->mObjectMap[InstanceID] = pInst;
             }
@@ -696,7 +696,7 @@ void CAreaLoader::SetUpObjects(CScriptLayer *pGenLayer)
     // Store connections
     for (auto it = mpArea->mObjectMap.begin(); it != mpArea->mObjectMap.end(); ++it)
     {
-        const uint32 InstanceID = it->first;
+        const auto InstanceID = it->first;
         const auto iConMap = mConnectionMap.find(InstanceID);
 
         if (iConMap != mConnectionMap.cend())

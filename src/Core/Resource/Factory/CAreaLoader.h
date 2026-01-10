@@ -3,6 +3,7 @@
 
 #include <Common/EGame.h>
 #include <Core/Resource/TResPtr.h>
+#include <Core/Resource/Script/CInstanceID.h>
 
 #include <memory>
 #include <unordered_map>
@@ -27,7 +28,7 @@ class CAreaLoader
     uint32_t mNumLayers = 0;
 
     // Object connections
-    std::unordered_map<uint32_t, std::vector<CLink*>> mConnectionMap;
+    std::unordered_map<CInstanceID, std::vector<CLink*>> mConnectionMap;
 
     // Compression
     uint8_t *mpDecmpBuffer = nullptr;

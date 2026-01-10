@@ -263,16 +263,15 @@ void WModifyTab::OnLinkTableDoubleClick(const QModelIndex& Index)
     if (Index.column() == 0)
     {
         // The link table will only be visible if the selected node is a script node
-        CScriptNode *pNode = static_cast<CScriptNode*>(mpSelectedNode);
-        uint32 InstanceID = 0;
+        auto* pNode = static_cast<CScriptNode*>(mpSelectedNode);
+        CInstanceID InstanceID;
 
         if (sender() == ui->InLinksTableView)
             InstanceID = pNode->Instance()->Link(ELinkType::Incoming, Index.row())->SenderID();
         else if (sender() == ui->OutLinksTableView)
             InstanceID = pNode->Instance()->Link(ELinkType::Outgoing, Index.row())->ReceiverID();
 
-        CScriptNode *pLinkedNode = pNode->Scene()->NodeForInstanceID(InstanceID);
-
+        auto* pLinkedNode = pNode->Scene()->NodeForInstanceID(InstanceID);
         if (pLinkedNode)
             mpWorldEditor->ClearAndSelectNode(pLinkedNode);
 

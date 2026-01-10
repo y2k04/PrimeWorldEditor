@@ -245,7 +245,7 @@ QMouseEvent CSceneViewport::CreateMouseEvent()
     return QMouseEvent(QEvent::MouseMove, mapFromGlobal(QCursor::pos()), QCursor::pos(), Qt::NoButton, qApp->mouseButtons(), qApp->keyboardModifiers());
 }
 
-void CSceneViewport::FindConnectedObjects(uint32 InstanceID, bool SearchOutgoing, bool SearchIncoming, QList<uint32>& rIDList)
+void CSceneViewport::FindConnectedObjects(CInstanceID InstanceID, bool SearchOutgoing, bool SearchIncoming, QList<CInstanceID>& rIDList)
 {
     const CScriptNode* pScript = mpScene->NodeForInstanceID(InstanceID);
     if (!pScript)
@@ -449,14 +449,14 @@ void CSceneViewport::OnToggleSelect()
 
 void CSceneViewport::OnSelectConnected()
 {
-    QList<uint32> InstanceIDs;
+    QList<CInstanceID> InstanceIDs;
     bool SearchOutgoing = (sender() == mpSelectConnectedOutgoingAction || sender() == mpSelectConnectedAllAction);
     bool SearchIncoming = (sender() == mpSelectConnectedIncomingAction || sender() == mpSelectConnectedAllAction);
     FindConnectedObjects(static_cast<CScriptNode*>(mpMenuNode)->Instance()->InstanceID(), SearchOutgoing, SearchIncoming, InstanceIDs);
 
     QList<CSceneNode*> Nodes;
     Nodes.reserve(InstanceIDs.size());
-    for (const uint32 ID : InstanceIDs)
+    for (const auto ID : InstanceIDs)
         Nodes.push_back(mpScene->NodeForInstanceID(ID));
 
     const bool ShouldClear = ((qApp->keyboardModifiers() & Qt::ControlModifier) == 0);

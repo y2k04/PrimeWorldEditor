@@ -30,7 +30,7 @@ public:
         CQuaternion Rotation;
         CVector3f Scale;
 
-        uint32 OriginalInstanceID;
+        CInstanceID OriginalInstanceID;
         std::vector<char> InstanceData;
     };
 
@@ -97,19 +97,19 @@ public:
         }
     }
 
-    int IndexOfInstanceID(uint32 InstanceID) const
+    int IndexOfInstanceID(CInstanceID ID) const
     {
         for (int iNode = 0; iNode < mCopiedNodes.size(); iNode++)
         {
-            if (mCopiedNodes[iNode].OriginalInstanceID == InstanceID)
+            if (mCopiedNodes[iNode].OriginalInstanceID == ID)
                 return iNode;
         }
 
         return -1;
     }
 
-    CAssetID AreaID() const                         { return mAreaID; }
-    EGame Game() const                              { return mGame; }
+    CAssetID AreaID() const                       { return mAreaID; }
+    EGame Game() const                            { return mGame; }
     const QList<SCopiedNode>& CopiedNodes() const { return mCopiedNodes; }
 };
 

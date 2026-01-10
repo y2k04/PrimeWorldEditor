@@ -7,6 +7,7 @@
 #include "Editor/CLineRenderable.h"
 #include "Editor/INodeEditor.h"
 
+class CInstanceID;
 class CRenderer;
 
 class CSceneViewport : public CBasicViewport
@@ -79,7 +80,7 @@ public:
 protected:
     void CreateContextMenu();
     QMouseEvent CreateMouseEvent();
-    void FindConnectedObjects(uint32 InstanceID, bool SearchOutgoing, bool SearchIncoming, QList<uint32>& rIDList);
+    void FindConnectedObjects(CInstanceID InstanceID, bool SearchOutgoing, bool SearchIncoming, QList<CInstanceID>& rIDList);
 
 signals:
     void InputProcessed(const SRayIntersection& rkIntersect, QMouseEvent *pEvent);

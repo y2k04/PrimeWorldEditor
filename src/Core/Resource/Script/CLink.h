@@ -65,15 +65,15 @@ class CLink
     CGameArea *mpArea;
     uint32_t mStateID = UINT32_MAX;
     uint32_t mMessageID = UINT32_MAX;
-    uint32_t mSenderID = UINT32_MAX;
-    uint32_t mReceiverID = UINT32_MAX;
+    CInstanceID mSenderID{};
+    CInstanceID mReceiverID{};
 
 public:
     explicit CLink(CGameArea *pArea)
         : mpArea(pArea)
     {}
 
-    CLink(CGameArea *pArea, uint32_t StateID, uint32_t MessageID, uint32_t SenderID, uint32_t ReceiverID)
+    CLink(CGameArea *pArea, uint32_t StateID, uint32_t MessageID, CInstanceID SenderID, CInstanceID ReceiverID)
         : mpArea(pArea)
         , mStateID(StateID)
         , mMessageID(MessageID)
@@ -81,9 +81,9 @@ public:
         , mReceiverID(ReceiverID)
     {}
 
-    void SetSender(uint32_t NewSenderID, uint32_t Index = UINT32_MAX)
+    void SetSender(CInstanceID NewSenderID, uint32_t Index = UINT32_MAX)
     {
-        const uint32_t OldSenderID = mSenderID;
+        const auto OldSenderID = mSenderID;
         CScriptObject *pOldSender = mpArea->InstanceByID(OldSenderID);
         CScriptObject *pNewSender = mpArea->InstanceByID(NewSenderID);
 
@@ -95,9 +95,9 @@ public:
         pNewSender->AddLink(ELinkType::Outgoing, this, Index);
     }
 
-    void SetReceiver(uint32_t NewReceiverID, uint32_t Index = UINT32_MAX)
+    void SetReceiver(CInstanceID NewReceiverID, uint32_t Index = UINT32_MAX)
     {
-        const uint32_t OldReceiverID = mSenderID;
+        const auto OldReceiverID = mSenderID;
         CScriptObject *pOldReceiver = mpArea->InstanceByID(OldReceiverID);
         CScriptObject *pNewReceiver = mpArea->InstanceByID(NewReceiverID);
 
@@ -144,8 +144,8 @@ public:
     CGameArea* Area() const          { return mpArea; }
     uint32_t State() const           { return mStateID; }
     uint32_t Message() const         { return mMessageID; }
-    uint32_t SenderID() const        { return mSenderID; }
-    uint32_t ReceiverID() const      { return mReceiverID; }
+    CInstanceID SenderID() const     { return mSenderID; }
+    CInstanceID ReceiverID() const   { return mReceiverID; }
     CScriptObject* Sender() const    { return mpArea->InstanceByID(mSenderID); }
     CScriptObject* Receiver() const  { return mpArea->InstanceByID(mReceiverID); }
 

@@ -2,6 +2,7 @@
 #define CSCENE_H
 
 #include "Core/Resource/TResPtr.h"
+#include "Core/Resource/Script/CInstanceID.h"
 #include <Core/Scene/ENodeType.h>
 #include "Core/Scene/FShowFlags.h"
 
@@ -51,7 +52,7 @@ class CScene
 
     // Node Management
     std::unordered_map<uint32_t, CSceneNode*> mNodeMap;
-    std::unordered_map<uint32_t, CScriptNode*> mScriptMap;
+    std::unordered_map<CInstanceID, CScriptNode*> mScriptMap;
 
 public:
     CScene();
@@ -73,7 +74,7 @@ public:
     void AddSceneToRenderer(CRenderer *pRenderer, const SViewInfo& rkViewInfo);
     SRayIntersection SceneRayCast(const CRay& rkRay, const SViewInfo& rkViewInfo);
     CSceneNode* NodeByID(uint32_t NodeID);
-    CScriptNode* NodeForInstanceID(uint32_t InstanceID);
+    CScriptNode* NodeForInstanceID(CInstanceID ID);
     CScriptNode* NodeForInstance(const CScriptObject *pObj);
     CLightNode* NodeForLight(const CLight *pLight);
     CModel* ActiveSkybox();

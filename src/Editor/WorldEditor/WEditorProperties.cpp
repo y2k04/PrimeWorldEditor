@@ -138,12 +138,12 @@ void WEditorProperties::OnSelectionModified()
     }
     else
     {
-        CScriptNode *pScript = static_cast<CScriptNode*>(mpDisplayNode);
-        CInstanceID InstanceID = pScript->Instance()->InstanceID();
-        TString ObjectType = pScript->Template()->Name();
+        const auto* pScript = static_cast<CScriptNode*>(mpDisplayNode);
+        const auto InstanceID = pScript->Instance()->InstanceID();
+        const auto& ObjectType = pScript->Template()->Name();
         mpInstanceInfoLabel->setText(tr("[%1] [%2]")
                                          .arg(TO_QSTRING(ObjectType))
-                                         .arg(TO_QSTRING(TString::HexString(InstanceID, 8, false))));
+                                         .arg(TO_QSTRING(TString::HexString(InstanceID.Value(), 8, false))));
         mpInstanceInfoLabel->setToolTip(tr("[Layer: %1] [Area: %2] [ID: %3]")
                                             .arg(InstanceID.Layer())
                                             .arg(InstanceID.Area())

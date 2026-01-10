@@ -8,6 +8,7 @@
 #include "Core/Resource/Collision/CCollisionMeshGroup.h"
 #include "Core/Resource/Model/CModel.h"
 #include "Core/Resource/Model/CStaticModel.h"
+#include "Core/Resource/Script/CInstanceID.h"
 #include <Common/Math/CQuaternion.h>
 #include <Common/Math/CTransform4f.h>
 
@@ -50,7 +51,7 @@ class CGameArea : public CResource
     std::vector<std::unique_ptr<CStaticModel>> mStaticWorldModels; // StaticTerrainModels is the merged terrain for faster rendering in the world editor
     // Script
     std::vector<std::unique_ptr<CScriptLayer>> mScriptLayers;
-    std::unordered_map<uint32_t, CScriptObject*> mObjectMap;
+    std::unordered_map<CInstanceID, CScriptObject*> mObjectMap;
     // Collision
     std::unique_ptr<CCollisionMeshGroup> mpCollision;
     // Lights
@@ -75,13 +76,13 @@ public:
     void ClearTerrain();
     void ClearScriptLayers();
     size_t TotalInstanceCount() const;
-    CScriptObject* InstanceByID(uint32_t InstanceID);
-    uint32_t FindUnusedInstanceID() const;
+    CScriptObject* InstanceByID(CInstanceID ID);
+    CInstanceID FindUnusedInstanceID() const;
     CScriptObject* SpawnInstance(CScriptTemplate* pTemplate, CScriptLayer* pLayer,
                                  const CVector3f& rkPosition = CVector3f::Zero(),
                                  const CQuaternion& rkRotation = CQuaternion::Identity(),
                                  const CVector3f& rkScale = CVector3f::One(),
-                                 uint32_t SuggestedID = UINT32_MAX,
+                                 CInstanceID SuggestedID = {},
                                  uint32_t SuggestedLayerIndex = UINT32_MAX);
     void AddInstanceToArea(CScriptObject *pInstance);
     void DeleteInstance(CScriptObject *pInstance);

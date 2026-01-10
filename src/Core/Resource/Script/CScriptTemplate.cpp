@@ -179,7 +179,7 @@ int32 CScriptTemplate::CheckVolumeConditions(CScriptObject *pObj, bool LogErrors
         if (LogErrors)
         {
             NLog::Error("{} instance {:08X} has unexpected volume shape value of 0x{:X}", *pObj->Template()->Name(),
-                        static_cast<uint32>(pObj->InstanceID()), Val);
+                        pObj->InstanceID(), Val);
         }
     }
 

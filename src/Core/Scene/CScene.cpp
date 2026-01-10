@@ -103,8 +103,8 @@ CScriptNode* CScene::CreateScriptNode(CScriptObject *pObj, uint32_t NodeID)
     if (pObj == nullptr)
         return nullptr;
 
-    const uint32_t ID = CreateNodeID(NodeID);
-    const uint32_t InstanceID = pObj->InstanceID();
+    const auto ID = CreateNodeID(NodeID);
+    const auto InstanceID = pObj->InstanceID();
 
     auto *pNode = new CScriptNode(this, ID, mpAreaRootNode, pObj);
     mNodes[ENodeType::Script].push_back(pNode);
@@ -327,9 +327,9 @@ CSceneNode* CScene::NodeByID(uint32_t NodeID)
     return nullptr;
 }
 
-CScriptNode* CScene::NodeForInstanceID(uint32_t InstanceID)
+CScriptNode* CScene::NodeForInstanceID(CInstanceID ID)
 {
-    const auto it = mScriptMap.find(InstanceID);
+    const auto it = mScriptMap.find(ID);
 
     if (it != mScriptMap.cend())
         return it->second;

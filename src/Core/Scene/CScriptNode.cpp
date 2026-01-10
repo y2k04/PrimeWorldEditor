@@ -596,7 +596,7 @@ void CScriptNode::GeneratePosition()
         // In the case of one link, apply an offset so the new position isn't the same place as the object it's linked to
         if (NumLinks == 1)
         {
-            const uint32_t LinkedID = (mpInstance->NumLinks(ELinkType::Incoming) > 0 ? mpInstance->Link(ELinkType::Incoming, 0)->SenderID() : mpInstance->Link(ELinkType::Outgoing, 0)->ReceiverID());
+            const auto LinkedID = (mpInstance->NumLinks(ELinkType::Incoming) > 0 ? mpInstance->Link(ELinkType::Incoming, 0)->SenderID() : mpInstance->Link(ELinkType::Outgoing, 0)->ReceiverID());
             CScriptNode* pNode = mpScene->NodeForInstanceID(LinkedID);
             pNode->GeneratePosition();
             mPosition = pNode->AbsolutePosition();

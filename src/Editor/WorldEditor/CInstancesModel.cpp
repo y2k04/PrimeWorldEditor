@@ -256,7 +256,7 @@ QVariant CInstancesModel::data(const QModelIndex& rkIndex, int Role) const
                 return TO_QSTRING(pObj->InstanceName());
             
             if (rkIndex.column() == 1)
-                return TO_QSTRING(TString::HexString(pObj->InstanceID(), 8, true));
+                return TO_QSTRING(TString::HexString(pObj->InstanceID().Value(), 8, true));
 
             if (rkIndex.column() == 2)
             {

@@ -4,6 +4,7 @@
 #include <Common/Math/CVector3f.h>
 #include "Core/Resource/TResPtr.h"
 #include "Core/Resource/Script/EVolumeShape.h"
+#include "Core/Resource/Script/CInstanceID.h"
 #include "Core/Resource/Script/Property/TPropertyRef.h"
 
 #include <cstdint>
@@ -20,19 +21,6 @@ enum class ELinkType
 {
     Incoming,
     Outgoing
-};
-
-class CInstanceID
-{
-    uint32_t mId = 0;
-public:
-    constexpr operator uint32_t() const { return mId; }
-    constexpr CInstanceID() = default;
-    constexpr CInstanceID(uint32_t id) : mId(id) {}
-    constexpr CInstanceID& operator=(uint32_t id) { mId = id; return *this; }
-    [[nodiscard]] constexpr uint8_t Layer() const { return uint8_t((mId >> 26u) & 0x3fu); }
-    [[nodiscard]] constexpr uint16_t Area() const { return uint16_t((mId >> 16u) & 0x3ffu); }
-    [[nodiscard]] constexpr uint16_t Id() const { return uint16_t(mId & 0xffffu); }
 };
 
 class CScriptObject
@@ -70,7 +58,7 @@ class CScriptObject
     mutable bool mIsCheckingNearVisibleActivation = false;
 
 public:
-    CScriptObject(uint32_t InstanceID, CGameArea *pArea, CScriptLayer *pLayer, CScriptTemplate *pTemplate);
+    CScriptObject(CInstanceID ID, CGameArea *pArea, CScriptLayer *pLayer, CScriptTemplate *pTemplate);
     ~CScriptObject();
 
     void CopyProperties(CScriptObject* pObject);

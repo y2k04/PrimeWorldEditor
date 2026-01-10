@@ -12,11 +12,11 @@
 
 #include <algorithm>
 
-CScriptObject::CScriptObject(uint32_t InstanceID, CGameArea *pArea, CScriptLayer *pLayer, CScriptTemplate *pTemplate)
+CScriptObject::CScriptObject(CInstanceID ID, CGameArea *pArea, CScriptLayer *pLayer, CScriptTemplate *pTemplate)
     : mpTemplate(pTemplate)
     , mpArea(pArea)
     , mpLayer(pLayer)
-    , mInstanceID(InstanceID)
+    , mInstanceID(ID)
 {
     mpTemplate->AddObject(this);
 

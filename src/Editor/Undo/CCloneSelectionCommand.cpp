@@ -56,8 +56,8 @@ void CCloneSelectionCommand::redo()
 {
     QList<CSceneNode*> ToClone = mNodesToClone.DereferenceList();
     QList<CSceneNode*> ClonedNodes;
-    QList<uint32> ToCloneInstanceIDs;
-    QList<uint32> ClonedInstanceIDs;
+    QList<CInstanceID> ToCloneInstanceIDs;
+    QList<CInstanceID> ClonedInstanceIDs;
 
     // Clone nodes
     for (CSceneNode *pNode : ToClone)
@@ -94,7 +94,7 @@ void CCloneSelectionCommand::redo()
             CLink *pSrcLink = pSrc->Link(ELinkType::Outgoing, iLink);
 
             // If we're cloning the receiver then target the cloned receiver instead of the original one.
-            uint32 ReceiverID = pSrcLink->ReceiverID();
+            auto ReceiverID = pSrcLink->ReceiverID();
             if (ToCloneInstanceIDs.contains(ReceiverID))
                 ReceiverID = ClonedInstanceIDs[ToCloneInstanceIDs.indexOf(ReceiverID)];
 

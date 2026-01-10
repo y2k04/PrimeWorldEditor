@@ -30,9 +30,9 @@ struct CDeleteSelectionCommand::SDeletedLink
 {
     uint32_t State;
     uint32_t Message;
-    uint32_t SenderID;
+    CInstanceID SenderID;
     uint32_t SenderIndex;
-    uint32_t ReceiverID;
+    CInstanceID ReceiverID;
     uint32_t ReceiverIndex;
     CInstancePtr pSender;
     CInstancePtr pReceiver;
@@ -124,7 +124,7 @@ CDeleteSelectionCommand::~CDeleteSelectionCommand() = default;
 void CDeleteSelectionCommand::undo()
 {
     QList<CSceneNode*> NewNodes;
-    QList<uint32> NewInstanceIDs;
+    QList<CInstanceID> NewInstanceIDs;
 
     // Spawn nodes
     for (SDeletedNode& rNode : mDeletedNodes)

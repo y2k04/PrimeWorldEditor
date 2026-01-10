@@ -59,7 +59,7 @@ public:
         mInstances.erase(mInstances.begin() + Index);
     }
 
-    void RemoveInstanceByID(uint32_t ID)
+    void RemoveInstanceByID(CInstanceID ID)
     {
         const auto it = std::find_if(mInstances.cbegin(), mInstances.cend(),
                                      [ID](const auto* instance) { return instance->InstanceID() == ID; });
@@ -83,7 +83,7 @@ public:
     size_t NumInstances() const  { return mInstances.size(); }
     CScriptObject* InstanceByIndex(size_t Index) const { return mInstances[Index]; }
 
-    CScriptObject* InstanceByID(uint32_t ID) const
+    CScriptObject* InstanceByID(CInstanceID ID) const
     {
         const auto it = std::find_if(mInstances.begin(), mInstances.end(),
                                      [ID](const auto* instance) { return instance->InstanceID() == ID; });
