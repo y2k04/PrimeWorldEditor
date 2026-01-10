@@ -46,12 +46,12 @@ public:
     }
 
     // QAbstractTableModel interface
-    int rowCount(const QModelIndex&) const override
+    int rowCount(const QModelIndex& = QModelIndex()) const override
     {
         return mEntries.size();
     }
 
-    int columnCount(const QModelIndex&) const override
+    int columnCount(const QModelIndex& = QModelIndex()) const override
     {
         return 1;
     }
