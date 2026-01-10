@@ -228,6 +228,20 @@ CWorldEditor::CWorldEditor(QWidget *parent)
 
 CWorldEditor::~CWorldEditor()
 {
+    // During destruction we need to ensure that no scene nodes are selected, as
+    // CNodeSelection will attempt to unselect all nodes on destruction. This is
+    // usually fine, however, in the event of the whole application shutting down,
+    // this must come first, since the ClearScene() call below will remove all tracked
+    // CSceneNode instances. If we don't do this, there's potential of a crash due to
+    // CNodeSelection attempting to access nodes that no longer exist.
+    //
+    // We also block the Modified signal that would be emitted on clearing, since the
+    // application is shutting down, so any UI updates aren't meaningful here.
+    {
+        [[maybe_unused]] const QSignalBlocker blocker{mpSelection};
+        mpSelection->Clear();
+    }
+
     mScene.ClearScene();
     mpArea = nullptr;
     mpWorld = nullptr;
