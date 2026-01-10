@@ -20,6 +20,12 @@
 #include <Core/GameProject/CPackage.h>
 #include <Core/GameProject/CResourceIterator.h>
 #include <Core/Resource/CWorld.h>
+#include <Core/Resource/Animation/CAnimSet.h>
+#include <Core/Resource/Collision/CCollisionMeshGroup.h>
+#include <Core/Resource/Model/CModel.h>
+#include <Core/Resource/Scan/CScan.h>
+#include <Core/Resource/StringTable/CStringTable.h>
+#include <Core/Tweaks/CTweakData.h>
 #include <Core/Tweaks/CTweakManager.h>
 
 #include <QFuture>
@@ -124,7 +130,6 @@ void CEditorApplication::EditResource(CResourceEntry *pEntry)
         pEd->show();
         pEd->raise();
     }
-
     else
     {
         // Attempt to load asset
@@ -147,7 +152,7 @@ void CEditorApplication::EditResource(CResourceEntry *pEntry)
             {
                 if (It->Dependencies()->HasDependency(pEntry->ID()))
                 {
-                    CWorld *pWorld = (CWorld*) It->Load();
+                    auto* pWorld = static_cast<CWorld*>(It->Load());
                     uint32 AreaIdx = pWorld->AreaIndex(pEntry->ID());
 
                     if (AreaIdx != UINT32_MAX)
@@ -160,32 +165,32 @@ void CEditorApplication::EditResource(CResourceEntry *pEntry)
             break;
 
         case EResourceType::Model:
-            pEd = new CModelEditorWindow((CModel*) pRes, mpWorldEditor);
+            pEd = new CModelEditorWindow(static_cast<CModel*>(pRes), mpWorldEditor);
             break;
 
         case EResourceType::AnimSet:
-            pEd = new CCharacterEditor((CAnimSet*) pRes, mpWorldEditor);
+            pEd = new CCharacterEditor(static_cast<CAnimSet*>(pRes), mpWorldEditor);
             break;
 
         case EResourceType::Scan:
-            pEd = new CScanEditor((CScan*) pRes, mpWorldEditor);
+            pEd = new CScanEditor(static_cast<CScan*>(pRes), mpWorldEditor);
             break;
 
         case EResourceType::StringTable:
-            pEd = new CStringEditor((CStringTable*) pRes, mpWorldEditor);
+            pEd = new CStringEditor(static_cast<CStringTable*>(pRes), mpWorldEditor);
             break;
 
         case EResourceType::Tweaks:
         {
             CTweakEditor* pTweakEditor = mpWorldEditor->TweakEditor();
-            pTweakEditor->SetActiveTweakData( (CTweakData*) pRes );
+            pTweakEditor->SetActiveTweakData(static_cast<CTweakData*>(pRes));
             pEd = pTweakEditor;
             break;
         }
 
         case EResourceType::DynamicCollision:
         {
-            pEd = new CCollisionEditor((CCollisionMeshGroup*) pRes, mpWorldEditor);
+            pEd = new CCollisionEditor(static_cast<CCollisionMeshGroup*>(pRes), mpWorldEditor);
             break;
         }
         default: break;

@@ -68,7 +68,7 @@ bool CTweakEditor::Save()
     }
 }
 
-void CTweakEditor::SetActiveTweakData(CTweakData* pTweakData)
+void CTweakEditor::SetActiveTweakData(const CTweakData* pTweakData)
 {
     const auto iter = std::ranges::find_if(mTweakAssets, [&](const auto* asset) { return asset == pTweakData; });
     if (iter == mTweakAssets.end())

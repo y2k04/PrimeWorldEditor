@@ -37,7 +37,7 @@ public:
     bool Save() override;
 
 public slots:
-    void SetActiveTweakData(CTweakData* pTweakData);
+    void SetActiveTweakData(const CTweakData* pTweakData);
     void SetActiveTweakIndex(int Index);
     void OnTweakTabClicked(int Index);
     void OnProjectChanged(CGameProject* pNewProject);
