@@ -13,13 +13,14 @@
 #include <unordered_map>
 #include <vector>
 
-#define CFONT_DEFAULT_SIZE UINT32_MAX
-
 class CRenderer;
 
 class CFont : public CResource
 {
     DECLARE_RESOURCE_TYPE(Font)
+
+    static constexpr uint32_t s_font_default_size = UINT32_MAX;
+
     friend class CFontLoader;
     static std::optional<CDynamicVertexBuffer> smGlyphVertices; // This is the vertex buffer used to draw glyphs. It has two attributes - Pos and Tex0. Tex0 should be updated for each glyph.
     static CIndexBuffer smGlyphIndices; // This is the index buffer used to draw glyphs. It uses a triangle strip.
@@ -65,7 +66,7 @@ public:
     CVector2f RenderString(const TString& rkString, CRenderer *pRenderer, float AspectRatio,
                            CVector2f Position = CVector2f(0,0),
                            CColor FillColor = CColor::White(), CColor StrokeColor = CColor::Black(),
-                           uint32_t FontSize = CFONT_DEFAULT_SIZE);
+                           uint32_t FontSize = s_font_default_size);
 
     // Accessors
     const TString& FontName() const { return mFontName; }

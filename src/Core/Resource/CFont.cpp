@@ -52,10 +52,8 @@ CVector2f CFont::RenderString(const TString& rkString, CRenderer* /*pRenderer*/,
     const CTransform4f PtScale = CTransform4f::ScaleMatrix(PtsToFloat(1));
     SGlyph *pPrevGlyph = nullptr;
 
-    float Scale;
-    if (FontSize == CFONT_DEFAULT_SIZE)
-        Scale = 1.f;
-    else
+    float Scale = 1.f;
+    if (FontSize != s_font_default_size)
         Scale = static_cast<float>(FontSize) / (mDefaultSize != 0 ? mDefaultSize : 18);
 
     for (uint32 iChar = 0; iChar < rkString.Length(); iChar++)
