@@ -91,15 +91,15 @@ IDependencyNode* IDependencyNode::ArchiveConstructor(EDependencyNodeType Type)
 {
     switch (Type)
     {
-    case EDependencyNodeType::DependencyTree:       return new CDependencyTree;
-    case EDependencyNodeType::Resource:             return new CResourceDependency;
-    case EDependencyNodeType::ScriptInstance:       return new CScriptInstanceDependency;
-    case EDependencyNodeType::ScriptProperty:       return new CPropertyDependency;
-    case EDependencyNodeType::CharacterProperty:    return new CCharPropertyDependency;
-    case EDependencyNodeType::SetCharacter:         return new CSetCharacterDependency;
-    case EDependencyNodeType::SetAnimation:         return new CSetAnimationDependency;
-    case EDependencyNodeType::AnimEvent:            return new CAnimEventDependency;
-    case EDependencyNodeType::Area:                 return new CAreaDependencyTree;
+    case EDependencyNodeType::DependencyTree:       return new CDependencyTree();
+    case EDependencyNodeType::Resource:             return new CResourceDependency();
+    case EDependencyNodeType::ScriptInstance:       return new CScriptInstanceDependency();
+    case EDependencyNodeType::ScriptProperty:       return new CPropertyDependency();
+    case EDependencyNodeType::CharacterProperty:    return new CCharPropertyDependency();
+    case EDependencyNodeType::SetCharacter:         return new CSetCharacterDependency();
+    case EDependencyNodeType::SetAnimation:         return new CSetAnimationDependency();
+    case EDependencyNodeType::AnimEvent:            return new CAnimEventDependency();
+    case EDependencyNodeType::Area:                 return new CAreaDependencyTree();
     default:                                        ASSERT(false); return nullptr;
     }
 }
