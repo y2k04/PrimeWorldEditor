@@ -499,7 +499,8 @@ void INodeEditor::OnScaleTriggered()
 
 void INodeEditor::OnTransformSpaceChanged(int SpaceIndex)
 {
-    if ((mGizmo.Mode() == CGizmo::EGizmoMode::Scale) || (mGizmo.Mode() == CGizmo::EGizmoMode::Off)) return;
+    if ((mGizmo.Mode() == CGizmo::EGizmoMode::Scale) || (mGizmo.Mode() == CGizmo::EGizmoMode::Off))
+        return;
 
     ETransformSpace Space = (SpaceIndex == 0 ? ETransformSpace::World : ETransformSpace::Local);
 
