@@ -45,6 +45,16 @@ FetchContent_MakeAvailable(zlib)
 set(ZLIB_INCLUDE_DIR ${zlib_SOURCE_DIR} ${zlib_BINARY_DIR})
 
 FetchContent_Declare(
+  fmt
+  GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+  GIT_TAG        12.1.0
+  OVERRIDE_FIND_PACKAGE
+  EXCLUDE_FROM_ALL
+)
+FetchContent_MakeAvailable(fmt)
+
+set(SPDLOG_FMT_EXTERNAL ON)
+FetchContent_Declare(
   spdlog
   GIT_REPOSITORY https://github.com/gabime/spdlog.git
   GIT_TAG        v1.16.0
