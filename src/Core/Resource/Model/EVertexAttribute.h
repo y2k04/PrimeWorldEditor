@@ -32,7 +32,6 @@ enum class EVertexAttribute
 };
 DECLARE_FLAGS_ENUMCLASS(EVertexAttribute, FVertexDescription)
 
-extern const uint32_t gkNumVertexAttribs;
 uint32_t VertexAttributeSize(EVertexAttribute Attrib);
 
 #endif // EVERTEXATTRIBUTE
