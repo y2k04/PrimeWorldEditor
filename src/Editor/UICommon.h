@@ -71,12 +71,16 @@ ObjectT* FindAncestor(QObject* pObject)
 // TString/TWideString <-> QString
 inline QString ToQString(const TString& rkStr)
 {
-    return QString::fromUtf8(*rkStr);
+    return QString::fromStdString(rkStr.ToStdString());
 }
 
 inline QString ToQString(const T16String& rkStr)
 {
-    return QString::fromUtf16(*rkStr);
+    return QString::fromUtf16(rkStr.Data(), rkStr.Size());
+}
+inline QString ToQString(const std::string& str)
+{
+    return QString::fromStdString(str);
 }
 
 inline TString ToTString(const QString& rkStr)

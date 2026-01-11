@@ -318,7 +318,7 @@ void CGeneratePropertyNamesDialog::CheckForNewResults()
                 TO_QSTRING(rkName.Name),
                 TO_QSTRING(rkName.Type),
                 TO_QSTRING(TString::HexString(rkName.ID)),
-                TO_QSTRING(NPropertyMap::GetPropertyName(rkName.ID, *rkName.Type)),
+                TO_QSTRING(std::string(NPropertyMap::GetPropertyName(rkName.ID, *rkName.Type))),
             };
 
             auto* pItem = new CCheckableTreeWidgetItem(pTreeWidget, ColumnText);

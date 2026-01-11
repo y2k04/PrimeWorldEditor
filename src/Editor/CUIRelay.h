@@ -25,19 +25,19 @@ public:
 
     // Note: All function calls should be deferred with QMetaObject::invokeMethod to ensure
     // that they run on the UI thread instead of whatever thread we happen to be on.
-    void ShowMessageBox(const TString& rkInfoBoxTitle, const TString& rkMessage) override
+    void ShowMessageBox(const std::string& rkInfoBoxTitle, const std::string& rkMessage) override
     {
         QMetaObject::invokeMethod(this, &CUIRelay::MessageBoxSlot, GetConnectionType(),
                                   TO_QSTRING(rkInfoBoxTitle), TO_QSTRING(rkMessage));
     }
 
-    void ShowMessageBoxAsync(const TString& rkInfoBoxTitle, const TString& rkMessage) override
+    void ShowMessageBoxAsync(const std::string&rkInfoBoxTitle, const std::string& rkMessage) override
     {
         QMetaObject::invokeMethod(this, &CUIRelay::MessageBoxSlot, Qt::QueuedConnection,
                                   TO_QSTRING(rkInfoBoxTitle), TO_QSTRING(rkMessage));
     }
 
-    bool AskYesNoQuestion(const TString& rkInfoBoxTitle, const TString& rkQuestion) override
+    bool AskYesNoQuestion(const std::string& rkInfoBoxTitle, const std::string& rkQuestion) override
     {
         bool RetVal;
         QMetaObject::invokeMethod(this, &CUIRelay::AskYesNoQuestionSlot, GetConnectionType(), qReturnArg(RetVal),
@@ -45,7 +45,7 @@ public:
         return RetVal;
     }
 
-    bool OpenProject(const TString& kPath = "") override
+    bool OpenProject(const std::string& kPath = {}) override
     {
         bool RetVal;
         QMetaObject::invokeMethod(this, &CUIRelay::OpenProjectSlot, GetConnectionType(), qReturnArg(RetVal),
