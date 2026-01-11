@@ -31,9 +31,9 @@ public:
     GLenum GetPrimitiveType() const;
     void SetPrimitiveType(GLenum type);
 
-    void TrianglesToStrips(uint16_t *indices, size_t count);
-    void FansToStrips(uint16_t *indices, size_t count);
-    void QuadsToStrips(uint16_t *indices, size_t count);
+    void TrianglesToStrips(const uint16_t* indices, size_t count);
+    void FansToStrips(const uint16_t* indices, size_t count);
+    void QuadsToStrips(const uint16_t* indices, size_t count);
 };
 
 #endif // CINDEXBUFFER_H

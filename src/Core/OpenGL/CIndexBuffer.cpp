@@ -97,7 +97,7 @@ void CIndexBuffer::SetPrimitiveType(GLenum type)
     mPrimitiveType = type;
 }
 
-void CIndexBuffer::TrianglesToStrips(uint16_t *indices, size_t count)
+void CIndexBuffer::TrianglesToStrips(const uint16_t* indices, size_t count)
 {
     Reserve(count + (count / 3));
 
@@ -110,7 +110,7 @@ void CIndexBuffer::TrianglesToStrips(uint16_t *indices, size_t count)
     }
 }
 
-void CIndexBuffer::FansToStrips(uint16_t *indices, size_t count)
+void CIndexBuffer::FansToStrips(const uint16_t* indices, size_t count)
 {
     Reserve(count);
     const uint16_t firstIndex = *indices;
@@ -128,9 +128,9 @@ void CIndexBuffer::FansToStrips(uint16_t *indices, size_t count)
     }
 }
 
-void CIndexBuffer::QuadsToStrips(uint16_t *indices, size_t count)
+void CIndexBuffer::QuadsToStrips(const uint16_t* indices, size_t count)
 {
-    Reserve(static_cast<size_t>(count * 1.25));
+    Reserve(static_cast<size_t>(count * 1.25f));
 
     size_t i = 3;
     for (; i < count; i += 4)
@@ -150,5 +150,4 @@ void CIndexBuffer::QuadsToStrips(uint16_t *indices, size_t count)
         mIndices.push_back(indices[i - 1]);
         mIndices.push_back(0xFFFF);
     }
-
 }
