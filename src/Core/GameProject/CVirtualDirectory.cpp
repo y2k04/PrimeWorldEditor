@@ -41,7 +41,7 @@ bool CVirtualDirectory::IsEmpty(bool CheckFilesystem) const
             return false;
     }
 
-    if (CheckFilesystem && !FileUtil::IsEmpty( AbsolutePath() ))
+    if (CheckFilesystem && !FileUtil::IsEmpty(AbsolutePath()))
         return false;
 
     return true;
@@ -55,23 +55,13 @@ bool CVirtualDirectory::IsDescendantOf(const CVirtualDirectory *pDir) const
 bool CVirtualDirectory::IsSafeToDelete() const
 {
     // Return false if we contain any referenced assets.
-    for (CResourceEntry* pEntry : mResources)
-    {
-        if (pEntry->IsLoaded() && pEntry->Resource()->IsReferenced())
-        {
-            return false;
-        }
-    }
+    const bool HasReferences = std::ranges::any_of(mResources, [](const auto* entry) {
+        return entry->IsLoaded() && entry->Resource()->IsReferenced();
+    });
+    if (HasReferences)
+        return false;
 
-    for (CVirtualDirectory* pSubdir : mSubdirectories)
-    {
-        if (!pSubdir->IsSafeToDelete())
-        {
-            return false;
-        }
-    }
-
-    return true;
+    return std::ranges::all_of(mSubdirectories, &CVirtualDirectory::IsSafeToDelete);
 }
 
 TString CVirtualDirectory::FullPath() const
@@ -97,20 +87,19 @@ CVirtualDirectory* CVirtualDirectory::FindChildDirectory(const TString& rkName, 
     const auto SlashIdx = rkName.IndexOf("\\/");
     const TString DirName = (SlashIdx == -1 ? rkName : TString(rkName.SubString(0, SlashIdx)));
 
-    for (auto* child : mSubdirectories)
+    const auto childIt = std::ranges::find_if(mSubdirectories, [&](const auto* child) {
+        return child->Name().CaseInsensitiveCompare(DirName);
+    });
+    if (childIt != mSubdirectories.end())
     {
-        if (child->Name().CaseInsensitiveCompare(DirName))
-        {
-            if (SlashIdx == -1)
-                return child;
+        if (SlashIdx == -1)
+            return *childIt;
 
-            const TString Remaining = rkName.SubString(SlashIdx + 1, rkName.Size() - SlashIdx);
+        const TString Remaining = rkName.SubString(SlashIdx + 1, rkName.Size() - SlashIdx);
+        if (Remaining.IsEmpty())
+            return *childIt;
 
-            if (Remaining.IsEmpty())
-                return child;
-
-            return child->FindChildDirectory(Remaining, AllowCreate);
-        }
+        return (*childIt)->FindChildDirectory(Remaining, AllowCreate);
     }
 
     if (AllowCreate)
@@ -149,7 +138,7 @@ CResourceEntry* CVirtualDirectory::FindChildResource(const TString& rkPath)
 
 CResourceEntry* CVirtualDirectory::FindChildResource(const TString& rkName, EResourceType Type)
 {
-    const auto it = std::find_if(mResources.begin(), mResources.end(), [&](const auto* resource) {
+    const auto it = std::ranges::find_if(mResources, [&](const auto* resource) {
         return rkName.CaseInsensitiveCompare(resource->Name()) && resource->ResourceType() == Type;
     });
 
@@ -179,16 +168,8 @@ bool CVirtualDirectory::AddChild(const TString &rkPath, CResourceEntry *pEntry)
         const TString Remaining = (SlashIdx == -1 ? "" : rkPath.SubString(SlashIdx + 1, rkPath.Size() - SlashIdx));
 
         // Check if this subdirectory already exists
-        CVirtualDirectory* pSubdir = nullptr;
-
-        for (auto* subdirectory : mSubdirectories)
-        {
-            if (subdirectory->Name() == DirName)
-            {
-                pSubdir = subdirectory;
-                break;
-            }
-        }
+        const auto subIter = std::ranges::find_if(mSubdirectories, [&](const auto* dir) { return dir->Name() == DirName; });
+        CVirtualDirectory* pSubdir = (subIter == mSubdirectories.end()) ? nullptr : *subIter;
 
         if (pSubdir == nullptr)
         {
@@ -254,8 +235,8 @@ bool CVirtualDirectory::AddChild(CVirtualDirectory *pDir)
 
 bool CVirtualDirectory::RemoveChildDirectory(CVirtualDirectory *pSubdir)
 {
-    const auto it = std::find_if(mSubdirectories.cbegin(), mSubdirectories.cend(),
-                                 [pSubdir](const auto* dir) { return dir == pSubdir; });
+    const auto it = std::ranges::find_if(mSubdirectories,
+                                         [pSubdir](const auto* dir) { return dir == pSubdir; });
 
     if (it == mSubdirectories.cend())
         return false;
@@ -266,8 +247,8 @@ bool CVirtualDirectory::RemoveChildDirectory(CVirtualDirectory *pSubdir)
 
 bool CVirtualDirectory::RemoveChildResource(CResourceEntry *pEntry)
 {
-    const auto it = std::find_if(mResources.cbegin(), mResources.cend(),
-                                 [pEntry](const auto* resource) { return resource == pEntry; });
+    const auto it = std::ranges::find_if(mResources,
+                                         [pEntry](const auto* resource) { return resource == pEntry; });
 
     if (it == mResources.cend())
         return false;
@@ -278,7 +259,7 @@ bool CVirtualDirectory::RemoveChildResource(CResourceEntry *pEntry)
 
 void CVirtualDirectory::SortSubdirectories()
 {
-    std::sort(mSubdirectories.begin(), mSubdirectories.end(), [](const auto* pLeft, const auto* pRight) {
+    std::ranges::sort(mSubdirectories, [](const auto* pLeft, const auto* pRight) {
         return pLeft->Name().ToUpper() < pRight->Name().ToUpper();
     });
 }
