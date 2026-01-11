@@ -365,7 +365,7 @@ bool CShaderGenerator::CreateVertexShader(const CMaterial& rkMat)
 
 
     // Done!
-    return mpShader->CompileVertexSource(ShaderCode.str().c_str());
+    return mpShader->CompileVertexSource(ShaderCode.str());
 }
 
 static std::string GetColorInputExpression(const CMaterialPass* pPass, ETevColorInput iInput)
@@ -527,7 +527,7 @@ bool CShaderGenerator::CreatePixelShader(const CMaterial& rkMat)
                << "}\n\n";
 
     // Done!
-    return mpShader->CompilePixelSource(ShaderCode.str().c_str());
+    return mpShader->CompilePixelSource(ShaderCode.str());
 }
 
 CShader* CShaderGenerator::GenerateShader(const CMaterial& rkMat)

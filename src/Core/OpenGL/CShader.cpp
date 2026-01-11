@@ -18,12 +18,12 @@ CShader::CShader()
     smNumShaders++;
 }
 
-CShader::CShader(const char *pkVertexSource, const char *pkPixelSource)
+CShader::CShader(std::string_view vertexSource, std::string_view pixelSource)
 {
     smNumShaders++;
 
-    CompileVertexSource(pkVertexSource);
-    CompilePixelSource(pkPixelSource);
+    CompileVertexSource(vertexSource);
+    CompilePixelSource(pixelSource);
     LinkShaders();
 }
 
@@ -44,14 +44,18 @@ CShader::~CShader()
     smNumShaders--;
 }
 
-bool CShader::CompileVertexSource(const char* pkSource)
+bool CShader::CompileVertexSource(std::string_view source)
 {
     mVertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(mVertexShader, 1, (const GLchar**) &pkSource, nullptr);
+
+    const auto* srcPtr = source.data();
+    const auto srcLen = int(source.size());
+
+    glShaderSource(mVertexShader, 1, &srcPtr, &srcLen);
     glCompileShader(mVertexShader);
 
     // Shader should be compiled - check for errors
-    GLint CompileStatus;
+    GLint CompileStatus{};
     glGetShaderiv(mVertexShader, GL_COMPILE_STATUS, &CompileStatus);
 
     if (CompileStatus == GL_FALSE)
@@ -64,7 +68,6 @@ bool CShader::CompileVertexSource(const char* pkSource)
         glDeleteShader(mVertexShader);
         return false;
     }
-
     // Debug dump
     else if (gDebugDumpShaders == true)
     {
@@ -79,14 +82,17 @@ bool CShader::CompileVertexSource(const char* pkSource)
     return true;
 }
 
-bool CShader::CompilePixelSource(const char* pkSource)
+bool CShader::CompilePixelSource(std::string_view source)
 {
+    const auto* srcPtr = source.data();
+    const auto srcLen = int(source.size());
+
     mPixelShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(mPixelShader, 1, (const GLchar**) &pkSource, nullptr);
+    glShaderSource(mPixelShader, 1, &srcPtr, &srcLen);
     glCompileShader(mPixelShader);
 
     // Shader should be compiled - check for errors
-    GLint CompileStatus;
+    GLint CompileStatus{};
     glGetShaderiv(mPixelShader, GL_COMPILE_STATUS, &CompileStatus);
 
     if (CompileStatus == GL_FALSE)
@@ -138,9 +144,9 @@ bool CShader::LinkShaders()
         TString Out = "dump/BadLink_" + TString::FromInt64(gFailedCompileCount, 8, 10) + ".txt";
         NLog::Error("Unable to link shaders. Dumped error log to {}", *Out);
 
-        GLint LogLen;
+        GLint LogLen{};
         glGetProgramiv(mProgram, GL_INFO_LOG_LENGTH, &LogLen);
-        auto pInfoLog = std::unique_ptr<GLchar[]>(new GLchar[LogLen]);
+        auto pInfoLog = std::make_unique_for_overwrite<GLchar[]>(LogLen);
         glGetProgramInfoLog(mProgram, LogLen, nullptr, pInfoLog.get());
 
         std::ofstream LinkOut(*Out);
@@ -229,11 +235,7 @@ std::unique_ptr<CShader> CShader::FromResourceFile(const TString& rkShaderName)
     if (VertexShaderText.IsEmpty() || PixelShaderText.IsEmpty())
         return nullptr;
 
-    auto pShader = std::make_unique<CShader>();
-    pShader->CompileVertexSource(*VertexShaderText);
-    pShader->CompilePixelSource(*PixelShaderText);
-    pShader->LinkShaders();
-    return pShader;
+    return std::make_unique<CShader>(VertexShaderText, PixelShaderText);
 }
 
 CShader* CShader::CurrentShader()
@@ -251,8 +253,8 @@ void CShader::CacheCommonUniforms()
 {
     for (size_t iTex = 0; iTex < 8; iTex++)
     {
-        const TString TexUniform = "Texture" + std::to_string(iTex);
-        mTextureUniforms[iTex] = glGetUniformLocation(mProgram, *TexUniform);
+        const auto TexUniform = "Texture" + std::to_string(iTex);
+        mTextureUniforms[iTex] = glGetUniformLocation(mProgram, TexUniform.c_str());
     }
 
     mNumLightsUniform = glGetUniformLocation(mProgram, "NumLights");
@@ -262,12 +264,12 @@ void CShader::DumpShaderSource(GLuint Shader, const TString& rkOut)
 {
     GLint SourceLen = 0;
     glGetShaderiv(Shader, GL_SHADER_SOURCE_LENGTH, &SourceLen);
-    auto Source = std::unique_ptr<GLchar[]>(new GLchar[SourceLen]);
+    auto Source = std::make_unique_for_overwrite<GLchar[]>(SourceLen);
     glGetShaderSource(Shader, SourceLen, nullptr, Source.get());
 
     GLint LogLen = 0;
     glGetShaderiv(Shader, GL_INFO_LOG_LENGTH, &LogLen);
-    auto pInfoLog = std::unique_ptr<GLchar[]>(new GLchar[LogLen]);
+    auto pInfoLog = std::make_unique_for_overwrite<GLchar[]>(LogLen);
     glGetShaderInfoLog(Shader, LogLen, nullptr, pInfoLog.get());
 
     std::ofstream ShaderOut(*rkOut);

@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 #include <array>
 #include <memory>
+#include <string_view>
 
 class CShader
 {
@@ -30,10 +31,10 @@ class CShader
 
 public:
     CShader();
-    CShader(const char* pkVertexSource, const char* pkPixelSource);
+    CShader(std::string_view vertexSource, std::string_view pixelSource);
     ~CShader();
-    bool CompileVertexSource(const char* pkSource);
-    bool CompilePixelSource(const char* pkSource);
+    bool CompileVertexSource(std::string_view source);
+    bool CompilePixelSource(std::string_view source);
     bool LinkShaders();
     bool IsValidProgram() const;
     GLuint GetProgramID() const;
