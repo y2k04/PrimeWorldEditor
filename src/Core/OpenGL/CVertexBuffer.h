@@ -4,9 +4,12 @@
 #include "Core/Resource/TResPtr.h"
 #include "Core/Resource/Model/CVertex.h"
 #include "Core/Resource/Model/EVertexAttribute.h"
+
 #include <array>
 #include <cstdint>
+#include <initializer_list>
 #include <vector>
+
 #include <GL/glew.h>
 
 class CSkin;
@@ -30,7 +33,9 @@ public:
     ~CVertexBuffer();
 
     uint16_t AddVertex(const CVertex& rkVtx);
+    void AddVertices(std::initializer_list<CVertex> vertices);
     uint16_t AddIfUnique(const CVertex& rkVtx, uint16_t Start);
+
     void Reserve(size_t Size);
     void Clear();
     void Buffer();

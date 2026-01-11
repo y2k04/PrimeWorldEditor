@@ -388,16 +388,16 @@ void CDrawUtil::InitGrid()
          if (i == 0)
              continue;
 
-         mGridVertices->AddVertex(CVector3f(MinIdx * kGridSpacing, i * kGridSpacing, 0.0f));
-         mGridVertices->AddVertex(CVector3f(MaxIdx * kGridSpacing, i * kGridSpacing, 0.0f));
-         mGridVertices->AddVertex(CVector3f(i * kGridSpacing, MinIdx * kGridSpacing, 0.0f));
-         mGridVertices->AddVertex(CVector3f(i * kGridSpacing, MaxIdx * kGridSpacing, 0.0f));
+         mGridVertices->AddVertices({CVector3f(MinIdx * kGridSpacing, i * kGridSpacing, 0.0f),
+                                     CVector3f(MaxIdx * kGridSpacing, i * kGridSpacing, 0.0f),
+                                     CVector3f(i * kGridSpacing, MinIdx * kGridSpacing, 0.0f),
+                                     CVector3f(i * kGridSpacing, MaxIdx * kGridSpacing, 0.0f)});
      }
 
-     mGridVertices->AddVertex(CVector3f(MinIdx * kGridSpacing, 0, 0.0f));
-     mGridVertices->AddVertex(CVector3f(MaxIdx * kGridSpacing, 0, 0.0f));
-     mGridVertices->AddVertex(CVector3f(0, MinIdx * kGridSpacing, 0.0f));
-     mGridVertices->AddVertex(CVector3f(0, MaxIdx * kGridSpacing, 0.0f));
+     mGridVertices->AddVertices({CVector3f(MinIdx * kGridSpacing, 0, 0.0f),
+                                 CVector3f(MaxIdx * kGridSpacing, 0, 0.0f),
+                                 CVector3f(0, MinIdx * kGridSpacing, 0.0f),
+                                 CVector3f(0, MaxIdx * kGridSpacing, 0.0f)});
 
      const auto NumIndices = static_cast<size_t>(kGridSize * 4);
      mGridIndices.Reserve(NumIndices);
@@ -481,14 +481,14 @@ void CDrawUtil::InitWireCube()
     mWireCubeVertices.emplace();
     mWireCubeVertices->SetVertexDesc(EVertexAttribute::Position);
     mWireCubeVertices->Reserve(8);
-    mWireCubeVertices->AddVertex(CVector3f(-0.5f, -0.5f, -0.5f));
-    mWireCubeVertices->AddVertex(CVector3f(-0.5f,  0.5f, -0.5f));
-    mWireCubeVertices->AddVertex(CVector3f( 0.5f,  0.5f, -0.5f));
-    mWireCubeVertices->AddVertex(CVector3f( 0.5f, -0.5f, -0.5f));
-    mWireCubeVertices->AddVertex(CVector3f(-0.5f, -0.5f,  0.5f));
-    mWireCubeVertices->AddVertex(CVector3f( 0.5f, -0.5f,  0.5f));
-    mWireCubeVertices->AddVertex(CVector3f( 0.5f,  0.5f,  0.5f));
-    mWireCubeVertices->AddVertex(CVector3f(-0.5f,  0.5f,  0.5f));
+    mWireCubeVertices->AddVertices({CVector3f(-0.5f, -0.5f, -0.5f),
+                                    CVector3f(-0.5f,  0.5f, -0.5f),
+                                    CVector3f( 0.5f,  0.5f, -0.5f),
+                                    CVector3f( 0.5f, -0.5f, -0.5f),
+                                    CVector3f(-0.5f, -0.5f,  0.5f),
+                                    CVector3f( 0.5f, -0.5f,  0.5f),
+                                    CVector3f( 0.5f,  0.5f,  0.5f),
+                                    CVector3f(-0.5f,  0.5f,  0.5f)});
 
     static constexpr std::array<uint16, 24> Indices{
         0, 1,

@@ -64,7 +64,13 @@ uint16 CVertexBuffer::AddVertex(const CVertex& rkVtx)
     return mPositions.size() - 1;
 }
 
-uint16 CVertexBuffer::AddIfUnique(const CVertex& rkVtx, uint16 Start)
+void CVertexBuffer::AddVertices(std::initializer_list<CVertex> vertices)
+{
+    for (const auto& vert : vertices)
+        AddVertex(vert);
+}
+
+uint16_t CVertexBuffer::AddIfUnique(const CVertex& rkVtx, uint16_t Start)
 {
     if (Start < mPositions.size())
     {
