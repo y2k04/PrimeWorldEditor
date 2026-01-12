@@ -354,22 +354,15 @@ CModel* CScene::ActiveSkybox()
 {
     bool SkyEnabled = false;
 
-    for (auto& rkAttributes : mAreaAttributesObjects)
-    {
-        if (rkAttributes.IsSkyEnabled())
+    const auto iter = std::ranges::find_if(mAreaAttributesObjects, [&](const auto& obj) {
+        const bool HasSky = obj.IsSkyEnabled();
+        if (HasSky)
             SkyEnabled = true;
+        return HasSky && obj.IsLayerEnabled() && obj.SkyModel() != nullptr;
+    });
 
-        if (rkAttributes.IsLayerEnabled())
-        {
-            if (rkAttributes.IsSkyEnabled())
-            {
-                SkyEnabled = true;
-                CModel *pSky = rkAttributes.SkyModel();
-                if (pSky != nullptr)
-                    return pSky;
-            }
-        }
-    }
+    if (iter != mAreaAttributesObjects.end())
+        return iter->SkyModel();
 
     if (SkyEnabled)
         return mpWorld->DefaultSkybox();
