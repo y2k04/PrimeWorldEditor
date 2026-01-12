@@ -27,14 +27,13 @@
 #include <string>
 
 CScene::CScene()
-    : mpSceneRootNode(new CRootNode(this, UINT32_MAX, nullptr))
+    : mpSceneRootNode(std::make_unique<CRootNode>(this, UINT32_MAX, nullptr))
 {
 }
 
 CScene::~CScene()
 {
     ClearScene();
-    delete mpSceneRootNode;
 }
 
 bool CScene::IsNodeIDUsed(uint32_t ID) const
@@ -66,7 +65,7 @@ CModelNode* CScene::CreateModelNode(CModel *pModel, uint32_t NodeID)
         return nullptr;
 
     const uint32_t ID = CreateNodeID(NodeID);
-    auto* pNode = new CModelNode(this, ID, mpAreaRootNode, pModel);
+    auto* pNode = new CModelNode(this, ID, mpAreaRootNode.get(), pModel);
     mNodes[ENodeType::Model].push_back(pNode);
     mNodeMap.insert_or_assign(ID, pNode);
     mNumNodes++;
@@ -79,7 +78,7 @@ CStaticNode* CScene::CreateStaticNode(CStaticModel *pModel, uint32_t NodeID)
         return nullptr;
 
     const uint32_t ID = CreateNodeID(NodeID);
-    auto* pNode = new CStaticNode(this, ID, mpAreaRootNode, pModel);
+    auto* pNode = new CStaticNode(this, ID, mpAreaRootNode.get(), pModel);
     mNodes[ENodeType::Static].push_back(pNode);
     mNodeMap.insert_or_assign(ID, pNode);
     mNumNodes++;
@@ -92,7 +91,7 @@ CCollisionNode* CScene::CreateCollisionNode(CCollisionMeshGroup *pMesh, uint32_t
         return nullptr;
 
     const uint32_t ID = CreateNodeID(NodeID);
-    auto* pNode = new CCollisionNode(this, ID, mpAreaRootNode, pMesh);
+    auto* pNode = new CCollisionNode(this, ID, mpAreaRootNode.get(), pMesh);
     mNodes[ENodeType::Collision].push_back(pNode);
     mNodeMap.insert_or_assign(ID, pNode);
     mNumNodes++;
@@ -107,7 +106,7 @@ CScriptNode* CScene::CreateScriptNode(CScriptObject *pObj, uint32_t NodeID)
     const auto ID = CreateNodeID(NodeID);
     const auto InstanceID = pObj->InstanceID();
 
-    auto *pNode = new CScriptNode(this, ID, mpAreaRootNode, pObj);
+    auto *pNode = new CScriptNode(this, ID, mpAreaRootNode.get(), pObj);
     mNodes[ENodeType::Script].push_back(pNode);
     mNodeMap.insert_or_assign(ID, pNode);
     mScriptMap.insert_or_assign(InstanceID, pNode);
@@ -132,7 +131,7 @@ CLightNode* CScene::CreateLightNode(CLight *pLight, uint32_t NodeID)
         return nullptr;
 
     const uint32_t ID = CreateNodeID(NodeID);
-    auto *pNode = new CLightNode(this, ID, mpAreaRootNode, pLight);
+    auto *pNode = new CLightNode(this, ID, mpAreaRootNode.get(), pLight);
     mNodes[ENodeType::Light].push_back(pNode);
     mNodeMap.insert_or_assign(ID, pNode);
     mNumNodes++;
@@ -185,7 +184,7 @@ void CScene::SetActiveArea(CWorld *pWorld, CGameArea *pArea)
     // Create nodes for new area
     mpWorld = pWorld;
     mpArea = pArea;
-    mpAreaRootNode = new CRootNode(this, UINT32_MAX, mpSceneRootNode);
+    mpAreaRootNode = std::make_unique<CRootNode>(this, UINT32_MAX, mpSceneRootNode.get());
 
     // Create static nodes
     size_t Count = mpArea->NumStaticModels();
@@ -265,8 +264,7 @@ void CScene::ClearScene()
     if (mpAreaRootNode)
     {
         mpAreaRootNode->Unparent();
-        delete mpAreaRootNode;
-        mpAreaRootNode = nullptr;
+        mpAreaRootNode.reset();
     }
 
     mNodes.clear();

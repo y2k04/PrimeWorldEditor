@@ -7,6 +7,7 @@
 #include "Core/Scene/FShowFlags.h"
 
 #include <cstdint>
+#include <memory>
 #include <unordered_map>
 #include <vector>
 
@@ -40,12 +41,12 @@ class CScene
     bool mRanPostLoad = false;
 
     uint32_t mNumNodes = 0;
-    CRootNode *mpSceneRootNode = nullptr;
+    std::unique_ptr<CRootNode> mpSceneRootNode;
     std::unordered_map<ENodeType, std::vector<CSceneNode*>> mNodes;
 
     TResPtr<CGameArea> mpArea;
     TResPtr<CWorld> mpWorld;
-    CRootNode *mpAreaRootNode = nullptr;
+    std::unique_ptr<CRootNode> mpAreaRootNode;
 
     // Environment
     std::vector<CAreaAttributes> mAreaAttributesObjects;
