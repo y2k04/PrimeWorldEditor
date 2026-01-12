@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: actions/checkout@latest
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: recursive
@@ -37,7 +37,7 @@ jobs:
         run: ci/build-appimage.sh
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@latest
+        uses: actions/upload-artifact@v6
         with:
           name: pwe-${{github.run_number}}-linux-gcc-x86_64
           path: PrimeWorldEditor-*.AppImage
@@ -47,7 +47,7 @@ jobs:
     runs-on: macos-10.15
 
     steps:
-      - uses: actions/checkout@latest
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: recursive
@@ -88,7 +88,7 @@ jobs:
 #            --team-id "${{secrets.MACOS_ASC_TEAM_ID}}"
 #
       - name: Upload artifacts
-        uses: actions/upload-artifact@latest
+        uses: actions/upload-artifact@v6
         with:
           name: urde-${{github.run_number}}-macos-appleclang-x86_64
           path: build/*
@@ -101,20 +101,20 @@ jobs:
       Qt_VERSION: 5.15.2
 
     steps:
-      - uses: actions/checkout@latest
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: recursive
 
       - name: Cache Qt
         id: cache-qt
-        uses: actions/cache@latest
+        uses: actions/cache@v5
         with:
           path: ../Qt
           key: ${{runner.os}}-QtCache-${{env.Qt_VERSION}}
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@latest
+        uses: jurplel/install-qt-action@v4.3
         with:
           version: ${{env.Qt_VERSION}}
           cached: ${{steps.cache-qt.outputs.cache-hit}}
@@ -131,7 +131,7 @@ jobs:
         run: choco install ninja
 
       - name: Enable Visual Studio environment
-        uses: ilammy/msvc-dev-cmd@latest
+        uses: ilammy/msvc-dev-cmd@v1
 
       - name: Create build directory
         run: cmake -E make_directory ${{github.workspace}}/build
@@ -147,7 +147,7 @@ jobs:
         run: cmake --build . --config $BUILD_TYPE
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@latest
+        uses: actions/upload-artifact@v6
         with:
           name: urde-${{github.run_number}}-win32-msvc-x86_64
           path: build/*
