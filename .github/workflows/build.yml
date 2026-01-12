@@ -13,6 +13,7 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
+          repository: 'AxioDL/PrimeWorldEditor'
 
       - name: Install dependencies
         run: |
@@ -51,6 +52,7 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
+          repository: 'AxioDL/PrimeWorldEditor'
 
       - name: Install dependencies
         run: |
@@ -105,6 +107,7 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
+          repository: 'AxioDL/PrimeWorldEditor'
 
       - name: Cache Qt
         id: cache-qt
